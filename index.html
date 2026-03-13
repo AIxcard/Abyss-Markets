@@ -108,6 +108,13 @@ text-decoration:none;
 font-size:18px;
 }
 
+.searchBox{
+padding:6px 10px;
+border-radius:6px;
+border:none;
+margin-left:20px;
+}
+
 /* SECTIONS */
 
 section{
@@ -139,6 +146,11 @@ cursor:pointer;
 transform:scale(1.03);
 border-color:#38bdf8;
 box-shadow:0 0 15px #2563eb;
+}
+
+.highlight{
+box-shadow:0 0 25px #38bdf8;
+border-color:#38bdf8;
 }
 
 /* DROPDOWN */
@@ -239,6 +251,8 @@ margin-top:50px;
 <nav>
 
 <a href="#snacks">Snacks</a> <a href="#games">Roblox Services</a> <a href="#terms">Terms</a> <a href="#qa">Q&A</a>
+
+<input class="searchBox" id="search" placeholder="Search products...">
 
 </nav>
 
@@ -415,6 +429,32 @@ document.getElementById("settings").style.display="block"
 function closeSettings(){
 document.getElementById("settings").style.display="none"
 }
+
+document.getElementById("search").addEventListener("keyup",function(){
+
+let input=this.value.toLowerCase()
+
+let cards=document.querySelectorAll(".card")
+
+cards.forEach(card=>{
+
+card.classList.remove("highlight")
+
+if(card.innerText.toLowerCase().includes(input) && input!=""){
+
+let parent=card.closest("details")
+
+if(parent){parent.open=true}
+
+card.scrollIntoView({behavior:"smooth",block:"center"})
+
+card.classList.add("highlight")
+
+}
+
+})
+
+})
 
 </script>
 
