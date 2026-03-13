@@ -1,463 +1,164 @@
-<!DOCTYPE html>
+<section id="store">
 
-<html>
-<head>
+<h2>Snacks</h2>
 
-<title>Abyss Market</title>
+<details>
+<summary>Snacks</summary>
 
-<style>
+<p>Skittles — 23 Baht Each — Stock: 3 (none atm)</p>
+<p>Chips — 16 Baht Each — Stock: 10 (none atm)</p>
+<p>Chuppa Lollipop — 8 Baht Each — Stock: 10 (none atm)</p>
+<p>Beng Beng — 9 Baht Each — Stock: 10 (monday)</p>
 
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial}
-
-body{
-background:#020617;
-color:white;
-overflow-x:hidden;
-}
-
-/* galaxy background */
-
-.stars{
-position:fixed;
-width:100%;
-height:200%;
-top:-100%;
-left:0;
-background:
-radial-gradient(white 1px,transparent 1px),
-radial-gradient(#60a5fa 1px,transparent 1px),
-radial-gradient(#3b82f6 2px,transparent 2px);
-background-size:120px 120px,200px 200px,300px 300px;
-animation:scroll 120s linear infinite;
-z-index:-2;
-}
-
-@keyframes scroll{
-from{transform:translateY(0)}
-to{transform:translateY(2000px)}
-}
-
-/* header */
-
-header{
-text-align:center;
-font-size:48px;
-padding:50px;
-text-shadow:0 0 20px #3b82f6;
-}
-
-nav{
-text-align:center;
-padding:20px;
-}
-
-nav button{
-background:#1e40af;
-border:none;
-padding:10px 18px;
-margin:6px;
-color:white;
-cursor:pointer;
-}
-
-/* sections */
-
-section{
-max-width:1000px;
-margin:auto;
-padding:50px 20px;
-}
-
-h2{
-color:#60a5fa;
-margin-bottom:20px;
-border-bottom:2px solid #1e40af;
-padding-bottom:8px;
-}
-
-/* cards */
-
-.card{
-background:rgba(15,23,42,.8);
-border:1px solid #1e3a8a;
-padding:14px;
-margin:10px 0;
-border-radius:10px;
-cursor:pointer;
-}
-
-.popup{
-display:none;
-background:#020617;
-padding:10px;
-margin-top:8px;
-border:1px solid #1e40af;
-border-radius:8px;
-}
-
-/* game */
-
-#gameCanvas{
-background:black;
-display:block;
-margin:auto;
-border:2px solid #3b82f6;
-}
-
-/* shop popup */
-
-#shopScreen{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:#020617;
-display:none;
-overflow:auto;
-z-index:10;
-}
-
-.shopCard{
-background:#0f172a;
-border:1px solid #1e40af;
-padding:15px;
-margin:10px;
-}
-
-button{
-padding:8px 12px;
-margin-top:6px;
-cursor:pointer;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="stars"></div>
-
-<header>Abyss Market</header>
-
-<nav>
-
-<button onclick="scrollToSection('games')">Products</button> <button onclick="scrollToSection('game')">Mini Game</button> <button onclick="openShop()">Game Shop</button> <button onclick="scrollToSection('terms')">Terms</button> <button onclick="scrollToSection('qa')">Q&A</button>
-
-</nav>
-
-<section id="games">
+</details>
 
 <h2>Anime Spirits</h2>
 
-<div class="card" onclick="toggle('as1')">
-Best Soul/Sword/Spec Carry
-<div id="as1" class="popup">
-Price: 100 Baht
-</div>
-</div>
+<details>
+<summary>Anime Spirits Products</summary>
+
+<p>All Limited In Game, Price Varies</p>
+<p>Trello: https://trello.com/b/yvVlhMK5/anime-spirits-official</p>
+<p>Best Soul, Sword, FS, Spec Carry — 100 Baht</p>
+
+</details>
 
 <h2>Verse Piece</h2>
 
-<div class="card" onclick="toggle('vp1')">
-2X Drop GP
-<div id="vp1" class="popup">
-Price: 230 Baht<br>Stock: 5
-</div>
-</div>
+<details>
+<summary>Verse Piece Products</summary>
 
-<div class="card" onclick="toggle('vp2')">
-Unlimited Bag GP
-<div id="vp2" class="popup">
-Price: 100 Baht<br>Stock: 4
-</div>
-</div>
+<p>2X Drop GP — 230 Baht — Stock: 5</p>
+<p>Unlimited Bag GP — 100 Baht — Stock: 4</p>
+<p>2X Drop Luck — 50 Baht — Stock: 2</p>
+<p>Ainz Sets — 10 Baht — Stock: 80</p>
+<p>Homura Sets — 8 Baht — Stock: 5</p>
+<p>Madoka Sets — 8 Baht — Stock: 2</p>
 
-<div class="card" onclick="toggle('vp3')">
-2X Drop Luck
-<div id="vp3" class="popup">
-Price: 50 Baht<br>Stock: 2
-</div>
-</div>
+</details>
 
-<div class="card" onclick="toggle('vp4')">
-Ainz Sets
-<div id="vp4" class="popup">
-Price: 10 Baht<br>Stock: 80
-</div>
-</div>
+<h2>Case Paradise</h2>
+
+<details>
+<summary>Case Paradise Products</summary>
+
+<p>12K AWP Dragon Lore (Factory New) — 100 Baht — Stock: 1</p>
+<p>11K Specialist Gloves Emerald Web — 90 Baht — Stock: 1</p>
+<p>9.4K AWP Gungnir — 75 Baht — Stock: 1</p>
+<p>Extra Skins — 15 Baht Each</p>
+
+</details>
 
 <h2>Anime Vanguards</h2>
 
-<div class="card" onclick="toggle('av1')">
-Story Stage
-<div id="av1" class="popup">
-Price: 5 Baht
-</div>
-</div>
+<details>
+<summary>Anime Vanguard Products</summary>
 
-<div class="card" onclick="toggle('av2')">
-Raid Stage
-<div id="av2" class="popup">
-Price: 15 Baht
-</div>
-</div>
+<p>1 Story Stage — 5 Baht</p>
+<p>1 Challenge Stage — 10 Baht</p>
+<p>1 Raid Stage — 15 Baht</p>
+<p>30 Minutes Carry — 30 Baht</p>
+<p>1 Hour Carry — 50 Baht</p>
+<p>5 Hour Carry — 200 Baht</p>
+<p>10 Hour Carry — 350 Baht</p>
+<p>24 Hour Carry — 600 Baht</p>
 
-<div class="card" onclick="toggle('av3')">
-Dio
-<div id="av3" class="popup">
-Price: 50 Baht<br>Stock: 6
-</div>
-</div>
+<p><strong>Units</strong></p>
+<p>WoU — 25 Baht — Stock: 10</p>
+<p>Dio — 50 Baht — Stock: 6</p>
+<p>Shiny Dio — 100 Baht — Stock: 5</p>
 
-<div class="card" onclick="toggle('av4')">
-Shiny Dio
-<div id="av4" class="popup">
-Price: 100 Baht<br>Stock: 5
-</div>
-</div>
+<p><strong>Limited Deals</strong></p>
+<p>Winter Gamemode Wave 160 — 40 Baht</p>
+<p>Winter Gamemode Wave 170 — 45 Baht</p>
+
+</details>
+
+<h2>Anime Paradox</h2>
+
+<details>
+<summary>Anime Paradox Products</summary>
+
+<p>1 Story Stage — 5 Baht</p>
+<p>1 Challenge Stage — 10 Baht</p>
+<p>1 Raid Stage — 15 Baht</p>
+<p>30 Minutes Carry — 30 Baht</p>
+<p>1 Hour Carry — 50 Baht</p>
+<p>5 Hour Carry — 200 Baht</p>
+<p>10 Hour Carry — 350 Baht</p>
+<p>24 Hour Carry — 600 Baht</p>
+
+<p>Sukuna Portal Carry — 120 Baht — Stock: 5</p>
+<p>Gojo Portal Carry — 100 Baht — Stock: 3</p>
+
+</details>
 
 <h2>99 Nights In The Forest</h2>
 
-<div class="card" onclick="toggle('nf1')">
-100 Days Carry
-<div id="nf1" class="popup">
-Price: 32 Baht
-</div>
-</div>
+<details>
+<summary>99 Nights Products</summary>
 
-<div class="card" onclick="toggle('nf2')">
-1K Days Carry
-<div id="nf2" class="popup">
-Price: 249 Baht
-</div>
-</div>
+<p>100 Days Carry — 32 Baht</p>
+<p>250 Days Carry — 60 Baht</p>
+<p>500 Days Carry — 100 Baht</p>
+<p>1K Days Carry — 249 Baht</p>
+
+</details>
+
+<h2>Re:Rangers X</h2>
+
+<details>
+<summary>Re:Rangers X Products</summary>
+
+<p>3x Speed GP — 400 Baht — Stock: 1</p>
+<p>Fast Summons — ???</p>
+<p>Auto Trait — ???</p>
+
+</details>
+
+<h2>Flee The Facility</h2>
+
+<details>
+<summary>Flee The Facility Products</summary>
+
+<p>Nuclear Waste — 60 Baht — Stock: 1</p>
+<p>S’mores — 60 Baht — Stock: 1</p>
+<p>Golden — 60 Baht — Stock: 1</p>
+<p>Ancient Trident — 145 Baht — Stock: 1</p>
+<p>Ancient Portal — 135 Baht — Stock: 1</p>
+<p>Lunar Witch Broom — 130 Baht — Stock: 1</p>
+<p>Cursed Circus Tent — 130 Baht — Stock: 1</p>
+<p>Enchanted Circus Tent — 130 Baht — Stock: 1</p>
+<p>Chromatic Phoenix — 130 Baht — Stock: 1</p>
+
+<p><strong>Gemstones</strong></p>
+
+<p>Radiant Shell — 110 Baht — Stock: 1</p>
+<p>Ancient Key — 110 Baht — Stock: 1</p>
+<p>Lunar Witch Hat — 125 Baht — Stock: 1</p>
+<p>Cursed Jester Hat — 120 Baht — Stock: 1</p>
+<p>Enchanted Jester Hat — 120 Baht — Stock: 1</p>
+<p>Chromatic Spark — 120 Baht — Stock: 1</p>
+<p>Sunrise — 40 Baht — Stock: 1</p>
+
+</details>
 
 <h2>Rivals</h2>
 
-<div class="card" onclick="toggle('rv1')">
-Skin Case
-<div id="rv1" class="popup">
-Price: 150 Baht<br>Infinite Stock
-</div>
-</div>
+<details>
+<summary>Rivals Products</summary>
 
-<div class="card" onclick="toggle('rv2')">
-Starter Bundle
-<div id="rv2" class="popup">
-Price: 30 Baht
-</div>
-</div>
+<p>Skin Case 1 — 150 Baht — INF Stock</p>
+<p>Skin Case 2 — 150 Baht — INF Stock</p>
+<p>Skin Case 3 — 150 Baht — INF Stock</p>
+<p>Starter Bundle — 30 Baht — INF Stock</p>
+<p>Medkit Bundle — 165 Baht — INF Stock</p>
+<p>Pixel Bundle — 450 Baht — INF Stock</p>
+<p>Standard Weapons Bundle — 500 Baht — INF Stock</p>
+<p>Classic Bundle — 550 Baht — INF Stock</p>
+<p>Energy Bundle — 650 Baht — INF Stock</p>
+<p>Heavy Duty Bundle — 1000 Baht — INF Stock</p>
 
-</section>
-
-<section id="game">
-
-<h2>Asteroid Dodger</h2>
-
-<p style="text-align:center">
-Coins: <span id="coins">0</span> |
-Highscore: <span id="highscore">0</span>
-</p>
-
-<canvas id="gameCanvas" width="500" height="400"></canvas>
-
-<div style="text-align:center;margin-top:10px">
-<button onclick="startGame()">Start</button>
-</div>
+</details>
 
 </section>
-
-<section id="terms">
-
-<h2>Terms Of Use</h2>
-
-<div class="card">
-You can choose to add me or get an account with the item you purchase.
-</div>
-
-<div class="card">
-Refunds only apply if the service fails.
-</div>
-
-<div class="card">
-Snack purchases are not refundable.
-</div>
-
-</section>
-
-<section id="qa">
-
-<h2>Q&A</h2>
-
-<div class="card">
-Refunds are given if the product fails to complete.
-</div>
-
-<div class="card">
-More products will be added later.
-</div>
-
-<div class="card">
-Add account: Tpbuno
-</div>
-
-<div class="card">
-Account info is sent through Google Chat.
-</div>
-
-</section>
-
-<div id="shopScreen">
-
-<h2 style="text-align:center;padding:30px">Color Shop</h2>
-
-<div class="shopCard">
-Red - 200 Coins
-<button onclick="buyColor('red',200)">Buy</button>
-</div>
-
-<div class="shopCard">
-Green - 200 Coins
-<button onclick="buyColor('green',200)">Buy</button>
-</div>
-
-<div class="shopCard">
-Rainbow - Unlock by buying all colors
-</div>
-
-<div class="shopCard">
-Galaxy Skin - 1,000,000 Coins (DEV ONLY)
-<button onclick="buyColor('galaxy',1000000)">Buy</button>
-</div>
-
-<button onclick="closeShop()">Close</button>
-
-</div>
-
-<script>
-
-function toggle(id){
-let el=document.getElementById(id)
-el.style.display=el.style.display=="block"?"none":"block"
-}
-
-function scrollToSection(id){
-document.getElementById(id).scrollIntoView({behavior:'smooth'})
-}
-
-let coins=parseInt(localStorage.getItem("coins"))||0
-let high=parseInt(localStorage.getItem("highscore"))||0
-
-document.getElementById("coins").innerText=coins
-document.getElementById("highscore").innerText=high
-
-function openShop(){
-document.getElementById("shopScreen").style.display="block"
-}
-
-function closeShop(){
-document.getElementById("shopScreen").style.display="none"
-}
-
-function buyColor(color,price){
-
-if(coins>=price){
-coins-=price
-localStorage.setItem("coins",coins)
-alert("Purchased "+color)
-update()
-}else{
-alert("Not enough coins")
-}
-
-}
-
-function update(){
-document.getElementById("coins").innerText=coins
-}
-
-const canvas=document.getElementById("gameCanvas")
-const ctx=canvas.getContext("2d")
-
-let player={x:240,y:360,w:40,h:20}
-let asteroids=[]
-let score=0
-let playing=false
-
-document.addEventListener("keydown",e=>{
-if(e.key=="ArrowLeft")player.x-=20
-if(e.key=="ArrowRight")player.x+=20
-})
-
-function startGame(){
-playing=true
-score=0
-asteroids=[]
-}
-
-function spawn(){
-asteroids.push({x:Math.random()*480,y:-20,w:20,h:20})
-}
-
-setInterval(spawn,1000)
-
-function updateGame(){
-
-ctx.clearRect(0,0,500,400)
-
-if(playing){
-
-ctx.fillStyle="cyan"
-ctx.fillRect(player.x,player.y,player.w,player.h)
-
-for(let a of asteroids){
-
-a.y+=4
-
-ctx.fillStyle="white"
-ctx.fillRect(a.x,a.y,a.w,a.h)
-
-if(
-a.x<player.x+player.w &&
-a.x+a.w>player.x &&
-a.y<player.y+player.h &&
-a.y+a.h>player.y
-){
-
-playing=false
-coins+=Math.floor(score/5)
-
-if(score>high){
-high=score
-localStorage.setItem("highscore",high)
-}
-
-localStorage.setItem("coins",coins)
-update()
-
-alert("Game Over Score: "+score)
-
-}
-
-if(a.y>400){
-score++
-}
-
-}
-
-ctx.fillText("Score: "+score,10,20)
-
-}
-
-requestAnimationFrame(updateGame)
-
-}
-
-updateGame()
-
-</script>
-
-</body>
-</html>
