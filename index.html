@@ -8,6 +8,117 @@
 
 <link rel="stylesheet" href="style.css">
 
+<style>
+
+/* CENTER SCREEN */
+
+.center{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+animation:fadeIn 2s ease;
+}
+
+/* BIG TITLE */
+
+.logo{
+
+font-size:90px;
+
+letter-spacing:6px;
+
+background:linear-gradient(
+90deg,
+#38bdf8,
+#6366f1,
+#9333ea,
+#38bdf8
+);
+
+background-size:300%;
+
+-webkit-background-clip:text;
+color:transparent;
+
+animation:gradientMove 8s linear infinite;
+
+text-shadow:
+0 0 20px rgba(56,189,248,0.5),
+0 0 40px rgba(99,102,241,0.4);
+
+}
+
+/* SUBTITLE */
+
+.subtitle{
+
+margin-top:10px;
+
+opacity:0.8;
+
+font-size:20px;
+
+letter-spacing:2px;
+
+}
+
+/* ENTER BUTTON */
+
+.enterBtn{
+
+margin-top:50px;
+
+padding:16px 50px;
+
+font-size:18px;
+
+border-radius:12px;
+
+background:#0f172a;
+
+border:1px solid #38bdf8;
+
+color:white;
+
+text-decoration:none;
+
+transition:0.35s;
+
+box-shadow:0 0 10px rgba(56,189,248,0.3);
+
+}
+
+.enterBtn:hover{
+
+transform:scale(1.15);
+
+box-shadow:
+0 0 20px #38bdf8,
+0 0 40px #6366f1;
+
+}
+
+/* FADE IN */
+
+@keyframes fadeIn{
+
+from{
+opacity:0;
+transform:translateY(40px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+</style>
+
 </head>
 
 <body>
@@ -17,18 +128,19 @@
 <div class="center">
 
 <h1 class="logo">
-AETHERFALL MARKET
+AETHERFALL
 </h1>
 
-<p class="subtitle">
-Premium Roblox Services & Items
-</p>
+<div class="subtitle">
+MARKETPLACE
+</div>
 
 <a href="market.html" class="enterBtn">
-ENTER MARKET
+ENTER
 </a>
 
 </div>
 
 </body>
+
 </html>
