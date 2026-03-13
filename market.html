@@ -3,212 +3,70 @@
 <html>
 
 <head>
-<title>Abyssal Market</title>
+
+<title>Aetherfall Market</title>
+
+<link rel="stylesheet" href="style.css">
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial;
-}
-
-body{
-background:#020617;
-color:white;
-overflow-x:hidden;
-}
-
-/* STAR BACKGROUND */
-
-.stars{
-position:fixed;
-width:100%;
-height:200%;
-top:-100%;
-left:0;
-
-background:
-radial-gradient(white 1px, transparent 1px),
-radial-gradient(#60a5fa 1px, transparent 1px),
-radial-gradient(#3b82f6 2px, transparent 2px);
-
-background-size:120px 120px,200px 200px,300px 300px;
-
-animation:starsMove 120s linear infinite;
-
-z-index:-2;
-}
-
-@keyframes starsMove{
-from{transform:translateY(0)}
-to{transform:translateY(2000px)}
-}
-
-/* HEADER */
-
-.header{
-text-align:center;
-padding:50px;
-font-size:56px;
-letter-spacing:6px;
-
-background:linear-gradient(90deg,#38bdf8,#6366f1,#9333ea);
--webkit-background-clip:text;
-color:transparent;
-}
-
-/* GRID */
-
 .grid{
 
-max-width:1100px;
+max-width:1200px;
+
 margin:auto;
 
+padding-top:120px;
+
 display:grid;
+
 grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
 gap:40px;
 
-padding:40px;
-
 }
 
-/* BOXES */
-
-.box{
-
-background:rgba(15,23,42,.85);
-
-border:1px solid #1e3a8a;
-
-border-radius:16px;
-
-padding:40px;
-
-text-align:center;
-
-cursor:pointer;
-
-transition:.25s;
-
-position:relative;
-
-}
-
-.box:hover{
-
-transform:scale(1.07);
-
-border-color:#38bdf8;
-
-box-shadow:
-0 0 20px #2563eb,
-0 0 40px rgba(59,130,246,.4);
-
-}
-
-/* BOX TITLE */
-
-.box h2{
-margin-bottom:10px;
-color:#60a5fa;
-}
-
-/* POPUP */
-
-.popup{
-
-position:fixed;
-
-top:50%;
-left:50%;
-
-transform:translate(-50%,-50%) scale(.8);
+.card{
 
 background:#0f172a;
 
-border:1px solid #2563eb;
+padding:40px;
 
 border-radius:16px;
 
-padding:30px;
-
-width:400px;
+border:1px solid #1e3a8a;
 
 text-align:center;
 
-opacity:0;
-
-pointer-events:none;
-
-transition:.25s;
-
-z-index:1000;
-
-}
-
-.popup.active{
-
-opacity:1;
-
-transform:translate(-50%,-50%) scale(1);
-
-pointer-events:auto;
-
-}
-
-.popup h3{
-margin-bottom:15px;
-color:#38bdf8;
-}
-
-.closeBtn{
-
-margin-top:20px;
-
-padding:10px 20px;
-
-background:#2563eb;
-
-border:none;
-
-border-radius:8px;
-
 cursor:pointer;
 
-color:white;
+transition:0.3s;
 
 }
 
-/* OVERLAY */
+.card:hover{
 
-.overlay{
+transform:scale(1.1);
 
-position:fixed;
+box-shadow:0 0 30px #2563eb;
 
-top:0;
-left:0;
-
-width:100%;
-height:100%;
-
-background:rgba(0,0,0,.6);
-
-opacity:0;
-
-pointer-events:none;
-
-transition:.25s;
-
-z-index:900;
+border-color:#38bdf8;
 
 }
 
-.overlay.active{
+.title{
 
-opacity:1;
-pointer-events:auto;
+text-align:center;
+
+font-size:50px;
+
+margin-top:40px;
+
+background:linear-gradient(90deg,#38bdf8,#9333ea);
+
+-webkit-background-clip:text;
+
+color:transparent;
 
 }
 
@@ -220,87 +78,30 @@ pointer-events:auto;
 
 <div class="stars"></div>
 
-<div class="header">
-ABYSSAL MARKET
-</div>
+<h1 class="title">
+AETHERFALL MARKET
+</h1>
 
 <div class="grid">
 
-<div class="box" onclick="openPopup('services')">
-<h2>Roblox Services</h2>
-<p>Anime games, Verse Piece, carries and more</p>
-</div>
+<a href="services.html" class="card">
+Roblox Services
+</a>
 
-<div class="box" onclick="openPopup('snacks')">
-<h2>Snacks</h2>
-<p>Skittles, Chips and more</p>
-</div>
+<a href="services.html#snacks" class="card">
+Snacks
+</a>
 
-<div class="box" onclick="openPopup('employees')">
-<h2>Employees</h2>
-<p>Meet the team</p>
-</div>
+<a href="reviews.html" class="card">
+Customer Reviews
+</a>
 
-<div class="box" onclick="location.href='reviews.html'">
-<h2>Reviews</h2>
-<p>See customer feedback</p>
-</div>
+<a href="services.html#faq" class="card">
+FAQ & Terms
+</a>
 
 </div>
-
-<div class="overlay" id="overlay" onclick="closePopup()"></div>
-
-<div class="popup" id="services">
-
-<h3>Roblox Services</h3>
-
-<p>Browse all Roblox game services.</p>
-
-<button class="closeBtn" onclick="closePopup()">Close</button>
-
-</div>
-
-<div class="popup" id="snacks">
-
-<h3>Snacks</h3>
-
-<p>Local snack items available.</p>
-
-<button class="closeBtn" onclick="closePopup()">Close</button>
-
-</div>
-
-<div class="popup" id="employees">
-
-<h3>Employees</h3>
-
-<p>Owner: Tpbuno</p>
-<p>More staff coming soon.</p>
-
-<button class="closeBtn" onclick="closePopup()">Close</button>
-
-</div>
-
-<script>
-
-function openPopup(id){
-
-document.getElementById(id).classList.add("active")
-document.getElementById("overlay").classList.add("active")
-
-}
-
-function closePopup(){
-
-document.querySelectorAll(".popup").forEach(p=>{
-p.classList.remove("active")
-})
-
-document.getElementById("overlay").classList.remove("active")
-
-}
-
-</script>
 
 </body>
+
 </html>
