@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 
 <html>
+
 <head>
 <title>Abyss Market</title>
 
 <style>
 
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
 
 body{
 background:#020617;
@@ -14,7 +20,7 @@ color:white;
 overflow-x:hidden;
 }
 
-/* galaxy */
+/* galaxy background */
 
 .stars{
 position:fixed;
@@ -22,13 +28,17 @@ width:100%;
 height:200%;
 top:-100%;
 left:0;
+
 background:
 radial-gradient(white 1px, transparent 1px),
 radial-gradient(#60a5fa 1px, transparent 1px),
 radial-gradient(#3b82f6 2px, transparent 2px);
+
 background-size:120px 120px,200px 200px,300px 300px;
+
 animation:starsMove 120s linear infinite;
-z-index:-1;
+
+z-index:-2;
 }
 
 @keyframes starsMove{
@@ -36,13 +46,32 @@ from{transform:translateY(0)}
 to{transform:translateY(2000px)}
 }
 
-header{
+/* hero banner */
+
+.hero{
 text-align:center;
-font-size:48px;
-padding:50px;
-background:rgba(2,6,23,.7);
-text-shadow:0 0 15px #3b82f6;
+padding:60px 20px;
 }
+
+.hero img{
+width:260px;
+border-radius:12px;
+box-shadow:0 0 40px #2563eb;
+margin-bottom:20px;
+}
+
+.hero h1{
+font-size:60px;
+font-weight:bold;
+letter-spacing:4px;
+color:#60a5fa;
+text-shadow:
+0 0 10px #2563eb,
+0 0 20px #2563eb,
+0 0 40px #1e40af;
+}
+
+/* nav */
 
 nav{
 text-align:center;
@@ -57,6 +86,8 @@ text-decoration:none;
 font-size:18px;
 }
 
+/* sections */
+
 section{
 max-width:950px;
 margin:auto;
@@ -69,6 +100,8 @@ color:#60a5fa;
 border-bottom:2px solid #1e40af;
 padding-bottom:10px;
 }
+
+/* cards */
 
 .card{
 background:rgba(15,23,42,.85);
@@ -85,6 +118,8 @@ transform:scale(1.03);
 border-color:#38bdf8;
 box-shadow:0 0 15px #2563eb;
 }
+
+/* dropdown */
 
 details{
 background:rgba(15,23,42,.8);
@@ -129,65 +164,6 @@ color:white;
 cursor:pointer;
 }
 
-/* settings button */
-
-.settingsBtn{
-position:fixed;
-bottom:20px;
-right:20px;
-font-size:28px;
-background:#020617;
-border:1px solid #2563eb;
-border-radius:12px;
-padding:12px 18px;
-cursor:pointer;
-z-index:999;
-}
-
-/* full settings panel */
-
-.settingsPanel{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:#020617;
-display:none;
-z-index:2000;
-padding:60px;
-overflow:auto;
-}
-
-.settingsPanel h2{
-font-size:34px;
-margin-bottom:40px;
-}
-
-.settingBox{
-background:#0f172a;
-border:1px solid #2563eb;
-padding:25px;
-border-radius:12px;
-margin-bottom:30px;
-max-width:400px;
-}
-
-.settingBox input{
-width:100%;
-margin-top:15px;
-}
-
-.closeSettings{
-margin-top:40px;
-padding:12px 20px;
-background:#2563eb;
-border:none;
-border-radius:8px;
-cursor:pointer;
-color:white;
-}
-
 /* footer */
 
 footer{
@@ -205,26 +181,30 @@ margin-top:50px;
 
 <div class="stars"></div>
 
-<header>Abyss Market</header>
+<div class="hero">
+
+<img src="https://sololeveling-anime.net/assets/img/top/visual2.jpg">
+
+<h1>ABYSSAL MARKET</h1>
+
+</div>
 
 <nav>
-<a href="#snacks">Snacks</a>
-<a href="#games">Roblox Services</a>
-<a href="#terms">Terms</a>
-<a href="#qa">Q&A</a>
-</nav>
 
-<audio id="music" loop>
-<source src="The Blood-Red Commanders March (Anime Vanguards OST).mp3" type="audio/mpeg">
-</audio>
+<a href="#snacks">Snacks</a> <a href="#games">Roblox Services</a> <a href="#terms">Terms</a> <a href="#qa">Q&A</a>
+
+</nav>
 
 <section id="snacks">
 
 <h2>Snacks</h2>
 
 <div class="card" onclick="showItem('Skittles','23 Baht | Stock 3')">Skittles</div>
+
 <div class="card" onclick="showItem('Chips','16 Baht | Stock 10')">Chips</div>
+
 <div class="card" onclick="showItem('Chuppa Lollipop','8 Baht | Stock 10')">Chuppa Lollipop</div>
+
 <div class="card" onclick="showItem('Beng Beng','9 Baht | Stock 10')">Beng Beng</div>
 
 </section>
@@ -235,79 +215,137 @@ margin-top:50px;
 
 <details>
 <summary>Anime Spirits</summary>
-<div class="card" onclick="showItem('All Limited Items','Price varies')">All Limited In Game</div>
+
+<div class="card" onclick="showItem('All Limited In Game','Price Varies')">All Limited In Game</div>
+
 <div class="card" onclick="showItem('Best Soul Sword FS Spec Carry','100 Baht')">Best Carry</div>
+
 </details>
 
 <details>
 <summary>Verse Piece</summary>
+
 <div class="card" onclick="showItem('2X Drop GP','230 Baht | Stock 5')">2X Drop GP</div>
+
 <div class="card" onclick="showItem('Unlimited Bag GP','100 Baht | Stock 4')">Unlimited Bag GP</div>
+
 <div class="card" onclick="showItem('2X Drop Luck GP','50 Baht | Stock 2')">2X Drop Luck GP</div>
+
 <div class="card" onclick="showItem('Ainz Sets','10 Baht | Stock 80')">Ainz Sets</div>
+
 <div class="card" onclick="showItem('Homura Sets','8 Baht | Stock 5')">Homura Sets</div>
+
 <div class="card" onclick="showItem('Madoka Sets','8 Baht | Stock 2')">Madoka Sets</div>
+
 </details>
 
 <details>
 <summary>Case Paradise</summary>
-<div class="card" onclick="showItem('Dragon Lore Factory New','100 Baht | Stock 1')">Dragon Lore</div>
+
+<div class="card" onclick="showItem('Dragon Lore','100 Baht | Stock 1')">Dragon Lore</div>
+
 <div class="card" onclick="showItem('Emerald Web Gloves','90 Baht | Stock 1')">Emerald Web Gloves</div>
+
 <div class="card" onclick="showItem('AWP Gungnir','75 Baht | Stock 1')">AWP Gungnir</div>
+
 <div class="card" onclick="showItem('Extra Skins','15 Baht each')">Extra Skins</div>
+
 </details>
 
 <details>
 <summary>Anime Vanguards</summary>
-<div class="card" onclick="showItem('Story Stage','5 Baht')">Story Stage</div>
-<div class="card" onclick="showItem('Challenge Stage','10 Baht')">Challenge Stage</div>
-<div class="card" onclick="showItem('Raid Stage','15 Baht')">Raid Stage</div>
-<div class="card" onclick="showItem('30 Minute Carry','30 Baht')">30 Minute Carry</div>
-<div class="card" onclick="showItem('1 Hour Carry','50 Baht')">1 Hour Carry</div>
-<div class="card" onclick="showItem('5 Hour Carry','200 Baht')">5 Hour Carry</div>
-<div class="card" onclick="showItem('10 Hour Carry','350 Baht')">10 Hour Carry</div>
-<div class="card" onclick="showItem('24 Hour Carry','600 Baht')">24 Hour Carry</div>
-<div class="card" onclick="showItem('WoU','25 Baht | Stock 10')">WoU</div>
-<div class="card" onclick="showItem('Dio','50 Baht | Stock 6')">Dio</div>
-<div class="card" onclick="showItem('Shiny Dio','100 Baht | Stock 5')">Shiny Dio</div>
+
+<div class="card">Story Stage — 5 Baht</div>
+<div class="card">Challenge Stage — 10 Baht</div>
+<div class="card">Raid Stage — 15 Baht</div>
+<div class="card">30 Minutes Carry — 30 Baht</div>
+<div class="card">1 Hour Carry — 50 Baht</div>
+<div class="card">5 Hour Carry — 200 Baht</div>
+<div class="card">10 Hour Carry — 350 Baht</div>
+<div class="card">24 Hour Carry — 600 Baht</div>
+
+<div class="card">WoU — 25 Baht | Stock 10</div>
+<div class="card">Dio — 50 Baht | Stock 6</div>
+<div class="card">Shiny Dio — 100 Baht | Stock 5</div>
+
+</details>
+
+<details>
+<summary>Anime Paradox</summary>
+
+<div class="card">Story Stage — 5 Baht</div>
+<div class="card">Challenge Stage — 10 Baht</div>
+<div class="card">Raid Stage — 15 Baht</div>
+<div class="card">30 Minutes Carry — 30 Baht</div>
+<div class="card">1 Hour Carry — 50 Baht</div>
+<div class="card">5 Hour Carry — 200 Baht</div>
+<div class="card">10 Hour Carry — 350 Baht</div>
+<div class="card">24 Hour Carry — 600 Baht</div>
+
+<div class="card">Sukuna Portal Carry — 120 Baht | Stock 5</div>
+<div class="card">Gojo Portal Carry — 100 Baht | Stock 3</div>
+
+</details>
+
+<details>
+<summary>99 Nights In The Forest</summary>
+
+<div class="card">100 Days Carry — 32 Baht</div>
+<div class="card">250 Days Carry — 60 Baht</div>
+<div class="card">500 Days Carry — 100 Baht</div>
+<div class="card">1K Days Carry — 249 Baht</div>
+
 </details>
 
 <details>
 <summary>Flee The Facility</summary>
 
-<div class="card" onclick="showItem('Nuclear Waste','60 Baht | Stock 1')">Nuclear Waste</div>
-<div class="card" onclick="showItem('S’mores','60 Baht | Stock 1')">S’mores</div>
-<div class="card" onclick="showItem('Golden','60 Baht | Stock 1')">Golden</div>
-<div class="card" onclick="showItem('Ancient Trident','145 Baht | Stock 1')">Ancient Trident</div>
-<div class="card" onclick="showItem('Ancient Portal','135 Baht | Stock 1')">Ancient Portal</div>
-<div class="card" onclick="showItem('Lunar Witch Broom','130 Baht | Stock 1')">Lunar Witch Broom</div>
-<div class="card" onclick="showItem('Cursed Circus Tent','130 Baht | Stock 1')">Cursed Circus Tent</div>
-<div class="card" onclick="showItem('Enchanted Circus Tent','130 Baht | Stock 1')">Enchanted Circus Tent</div>
-<div class="card" onclick="showItem('Chromatic Phoenix','130 Baht | Stock 1')">Chromatic Phoenix</div>
+<div class="card">Nuclear Waste — 60 Baht | Stock 1</div>
+<div class="card">S’mores — 60 Baht | Stock 1</div>
+<div class="card">Golden — 60 Baht | Stock 1</div>
 
-<div class="card" onclick="showItem('Radiant Shell','110 Baht | Stock 1')">Radiant Shell</div>
-<div class="card" onclick="showItem('Ancient Key','110 Baht | Stock 1')">Ancient Key</div>
-<div class="card" onclick="showItem('Lunar Witch Hat','125 Baht | Stock 1')">Lunar Witch Hat</div>
-<div class="card" onclick="showItem('Cursed Jester Hat','120 Baht | Stock 1')">Cursed Jester Hat</div>
-<div class="card" onclick="showItem('Enchanted Jester Hat','120 Baht | Stock 1')">Enchanted Jester Hat</div>
-<div class="card" onclick="showItem('Chromatic Spark','120 Baht | Stock 1')">Chromatic Spark</div>
-<div class="card" onclick="showItem('Sunrise','40 Baht | Stock 1')">Sunrise</div>
+<div class="card">Ancient Trident — 145 Baht | Stock 1</div>
+<div class="card">Ancient Portal — 135 Baht | Stock 1</div>
+<div class="card">Lunar Witch Broom — 130 Baht | Stock 1</div>
+
+<div class="card">Cursed Circus Tent — 130 Baht | Stock 1</div>
+<div class="card">Enchanted Circus Tent — 130 Baht | Stock 1</div>
+<div class="card">Chromatic Phoenix — 130 Baht | Stock 1</div>
+
+<div class="card">Radiant Shell — 110 Baht | Stock 1</div>
+<div class="card">Ancient Key — 110 Baht | Stock 1</div>
+
+<div class="card">Lunar Witch Hat — 125 Baht | Stock 1</div>
+
+<div class="card">Cursed Jester Hat — 120 Baht | Stock 1</div>
+<div class="card">Enchanted Jester Hat — 120 Baht | Stock 1</div>
+
+<div class="card">Chromatic Spark — 120 Baht | Stock 1</div>
+
+<div class="card">Sunrise — 40 Baht | Stock 1</div>
 
 </details>
 
 <details>
 <summary>Rivals</summary>
 
-<div class="card" onclick="showItem('Skin Case 1','150 Baht | INF Stock')">Skin Case 1</div>
-<div class="card" onclick="showItem('Skin Case 2','150 Baht | INF Stock')">Skin Case 2</div>
-<div class="card" onclick="showItem('Skin Case 3','150 Baht | INF Stock')">Skin Case 3</div>
-<div class="card" onclick="showItem('Starter Bundle','30 Baht | INF Stock')">Starter Bundle</div>
-<div class="card" onclick="showItem('Medkit Bundle','165 Baht | INF Stock')">Medkit Bundle</div>
-<div class="card" onclick="showItem('Pixel Bundle','450 Baht | INF Stock')">Pixel Bundle</div>
-<div class="card" onclick="showItem('Standard Weapons Bundle','500 Baht | INF Stock')">Standard Weapons Bundle</div>
-<div class="card" onclick="showItem('Classic Bundle','550 Baht | INF Stock')">Classic Bundle</div>
-<div class="card" onclick="showItem('Energy Bundle','650 Baht | INF Stock')">Energy Bundle</div>
-<div class="card" onclick="showItem('Heavy Duty Bundle','1000 Baht | INF Stock')">Heavy Duty Bundle</div>
+<div class="card">Skin Case 1 — 150 Baht | INF</div>
+<div class="card">Skin Case 2 — 150 Baht | INF</div>
+<div class="card">Skin Case 3 — 150 Baht | INF</div>
+
+<div class="card">Starter Bundle — 30 Baht</div>
+
+<div class="card">Medkit Bundle — 165 Baht</div>
+
+<div class="card">Pixel Bundle — 450 Baht</div>
+
+<div class="card">Standard Weapons Bundle — 500 Baht</div>
+
+<div class="card">Classic Bundle — 550 Baht</div>
+
+<div class="card">Energy Bundle — 650 Baht</div>
+
+<div class="card">Heavy Duty Bundle — 1000 Baht</div>
 
 </details>
 
@@ -318,7 +356,7 @@ margin-top:50px;
 <h2>Terms Of Use</h2>
 
 <div class="card">
-You can choose to add the seller or receive an account with the item you'd like to purchase.
+You can choose to add me or get an account with the item you’d like to purchase.
 </div>
 
 </section>
@@ -327,75 +365,64 @@ You can choose to add the seller or receive an account with the item you'd like 
 
 <h2>Q&A</h2>
 
-<div class="card"><b>How do we get refunds?</b><br>
-Refunds will be given if the product does not go through. Snacks are not refundable.</div>
+<div class="card">
+How do we get refunds?<br>
+Refunds are given if a service fails. Snacks are not refundable.
+</div>
 
-<div class="card"><b>Will there ever be more stuff?</b><br>
-Yes, there will be more later.</div>
+<div class="card">
+Will there be more stuff?<br>
+Yes, more products will be added later.
+</div>
 
-<div class="card"><b>What account do we add?</b><br>
-Tpbuno</div>
+<div class="card">
+What account do we add?<br>
+Tpbuno
+</div>
 
-<div class="card"><b>How do we know username/password?</b><br>
-Sent through Google Chat.</div>
+<div class="card">
+How do we receive the account?<br>
+The owner or employee will message you through Google Chat.
+</div>
 
 </section>
 
-<footer>Abyss Market © 2026</footer>
+<footer>
+
+Abyssal Market © 2026
+
+</footer>
 
 <div class="popup" id="popup">
+
 <h3 id="itemName"></h3>
+
 <p id="itemInfo"></p>
+
 <button onclick="closePopup()">Close</button>
-</div>
-
-<div class="settingsBtn" onclick="openSettings()">⚙</div>
-
-<div class="settingsPanel" id="settings">
-
-<h2>Settings</h2>
-
-<div class="settingBox">
-Music Volume
-<input type="range" min="0" max="100" value="50" id="vol">
-</div>
-
-<button class="closeSettings" onclick="closeSettings()">Close Settings</button>
 
 </div>
 
 <script>
 
-const music=document.getElementById("music")
-
-document.addEventListener("click",function(){
-music.volume=0.5
-music.play()
-},{once:true})
-
-document.getElementById("vol").addEventListener("input",function(){
-music.volume=this.value/100
-})
-
-function openSettings(){
-document.getElementById("settings").style.display="block"
-}
-
-function closeSettings(){
-document.getElementById("settings").style.display="none"
-}
-
 function showItem(name,info){
+
 document.getElementById("itemName").innerText=name
+
 document.getElementById("itemInfo").innerText=info
+
 document.getElementById("popup").style.display="block"
+
 }
 
 function closePopup(){
+
 document.getElementById("popup").style.display="none"
+
 }
 
 </script>
 
 </body>
+
 </html>
