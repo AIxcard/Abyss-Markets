@@ -1,6 +1,8 @@
 <script>
 
-/* ---------- ELEMENTS ---------- */
+/* ========= SAFE ELEMENT LOADING ========= */
+
+window.addEventListener("DOMContentLoaded", function(){
 
 const music = document.getElementById("music")
 const volumeSlider = document.getElementById("vol")
@@ -9,9 +11,36 @@ const title = document.querySelector(".hero h1")
 const bgName = document.getElementById("bgName")
 const settingsPanel = document.getElementById("settings")
 
-/* ---------- BACKGROUND DATA ---------- */
+/* ========= SETTINGS PANEL ========= */
 
-const backgrounds = ["stellar","nebula","singularity","abyss","grid"]
+window.openSettings = function(){
+settingsPanel.style.display = "block"
+}
+
+window.closeSettings = function(){
+settingsPanel.style.display = "none"
+}
+
+/* ========= MUSIC SYSTEM ========= */
+
+document.addEventListener("click", function(){
+music.volume = volumeSlider.value / 100
+music.play()
+},{once:true})
+
+volumeSlider.addEventListener("input", function(){
+music.volume = this.value / 100
+})
+
+/* ========= BACKGROUND DATA ========= */
+
+const backgrounds = [
+"stellar",
+"nebula",
+"singularity",
+"abyss",
+"grid"
+]
 
 const backgroundNames = {
 stellar:"Stellar",
@@ -31,13 +60,18 @@ grid:"linear-gradient(90deg,#22d3ee,#06b6d4,#0891b2)"
 
 let currentBG = 0
 
-/* ---------- APPLY BACKGROUND ---------- */
+/* ========= APPLY BACKGROUND ========= */
 
-function applyBG(){
+function applyBackground(){
 
 let bg = backgrounds[currentBG]
 
-document.body.classList.remove("nebula","singularity","abyss","grid")
+document.body.classList.remove(
+"nebula",
+"singularity",
+"abyss",
+"grid"
+)
 
 if(bg === "stellar"){
 stars.style.display = "block"
@@ -46,19 +80,19 @@ stars.style.display = "none"
 document.body.classList.add(bg)
 }
 
-bgName.textContent = backgroundNames[bg]
+bgName.innerText = backgroundNames[bg]
 
 title.style.background = titleThemes[bg]
 title.style.webkitBackgroundClip = "text"
 title.style.color = "transparent"
 
-localStorage.setItem("abyss_bg", currentBG)
+localStorage.setItem("abyss_background", currentBG)
 
 }
 
-/* ---------- CHANGE BACKGROUND ---------- */
+/* ========= SWITCH BACKGROUND ========= */
 
-function nextBG(){
+window.nextBG = function(){
 
 currentBG++
 
@@ -66,11 +100,11 @@ if(currentBG >= backgrounds.length){
 currentBG = 0
 }
 
-applyBG()
+applyBackground()
 
 }
 
-function prevBG(){
+window.prevBG = function(){
 
 currentBG--
 
@@ -78,41 +112,20 @@ if(currentBG < 0){
 currentBG = backgrounds.length - 1
 }
 
-applyBG()
+applyBackground()
 
 }
 
-/* ---------- SETTINGS ---------- */
+/* ========= LOAD SAVED SETTINGS ========= */
 
-function openSettings(){
-settingsPanel.style.display = "block"
+let savedBG = localStorage.getItem("abyss_background")
+
+if(savedBG !== null){
+currentBG = parseInt(savedBG)
 }
 
-function closeSettings(){
-settingsPanel.style.display = "none"
-}
+applyBackground()
 
-/* ---------- MUSIC ---------- */
-
-document.addEventListener("click", function(){
-
-music.volume = volumeSlider.value / 100
-music.play()
-
-},{ once:true })
-
-volumeSlider.addEventListener("input", function(){
-music.volume = this.value / 100
 })
-
-/* ---------- LOAD SAVED BACKGROUND ---------- */
-
-let saved = localStorage.getItem("abyss_bg")
-
-if(saved !== null){
-currentBG = parseInt(saved)
-}
-
-applyBG()
 
 </script>
