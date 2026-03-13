@@ -51,7 +51,7 @@ to{transform:translateY(2000px)}
 .hero{
 position:relative;
 width:100%;
-height:600px;
+height:650px;
 overflow:hidden;
 display:flex;
 align-items:center;
@@ -63,7 +63,7 @@ position:absolute;
 width:100%;
 height:100%;
 object-fit:cover;
-filter:brightness(.55) contrast(1.1);
+filter:brightness(.55) contrast(1.2);
 }
 
 .hero h1{
@@ -78,7 +78,7 @@ text-shadow:
 0 0 10px #2563eb,
 0 0 25px #2563eb,
 0 0 60px #1e40af,
-0 0 100px #1e40af;
+0 0 120px #1e40af;
 }
 
 /* NAVBAR */
@@ -222,7 +222,7 @@ margin-top:50px;
 
 <div class="hero">
 
-<img src="tuff sjw.webp">
+<img src="https://wallpapercave.com/wp/wp13044936.jpg">
 
 <h1>ABYSSAL MARKET</h1>
 
@@ -234,7 +234,7 @@ margin-top:50px;
 
 </nav>
 
-<audio id="music" autoplay loop>
+<audio id="music" loop autoplay>
 <source src="The Blood-Red Commanders March (Anime Vanguards OST).mp3" type="audio/mpeg">
 </audio>
 
@@ -292,119 +292,22 @@ margin-top:50px;
 <div class="card">Shiny Dio — 100 Baht | Stock 5</div>
 </details>
 
-<details>
-<summary>Anime Paradox</summary>
-<div class="card">Story Stage — 5 Baht</div>
-<div class="card">Challenge Stage — 10 Baht</div>
-<div class="card">Raid Stage — 15 Baht</div>
-<div class="card">30 Minutes Carry — 30 Baht</div>
-<div class="card">1 Hour Carry — 50 Baht</div>
-<div class="card">5 Hour Carry — 200 Baht</div>
-<div class="card">10 Hour Carry — 350 Baht</div>
-<div class="card">24 Hour Carry — 600 Baht</div>
-<div class="card">Sukuna Portal Carry — 120 Baht | Stock 5</div>
-<div class="card">Gojo Portal Carry — 100 Baht | Stock 3</div>
-</details>
-
-<details>
-<summary>99 Nights In The Forest</summary>
-<div class="card">100 Days Carry — 32 Baht</div>
-<div class="card">250 Days Carry — 60 Baht</div>
-<div class="card">500 Days Carry — 100 Baht</div>
-<div class="card">1K Days Carry — 249 Baht</div>
-</details>
-
-<details>
-<summary>Flee The Facility</summary>
-<div class="card">Nuclear Waste — 60 Baht | Stock 1</div>
-<div class="card">S’mores — 60 Baht | Stock 1</div>
-<div class="card">Golden — 60 Baht | Stock 1</div>
-<div class="card">Ancient Trident — 145 Baht | Stock 1</div>
-<div class="card">Ancient Portal — 135 Baht | Stock 1</div>
-<div class="card">Lunar Witch Broom — 130 Baht | Stock 1</div>
-<div class="card">Cursed Circus Tent — 130 Baht | Stock 1</div>
-<div class="card">Enchanted Circus Tent — 130 Baht | Stock 1</div>
-<div class="card">Chromatic Phoenix — 130 Baht | Stock 1</div>
-<div class="card">Radiant Shell — 110 Baht | Stock 1</div>
-<div class="card">Ancient Key — 110 Baht | Stock 1</div>
-<div class="card">Lunar Witch Hat — 125 Baht | Stock 1</div>
-<div class="card">Cursed Jester Hat — 120 Baht | Stock 1</div>
-<div class="card">Enchanted Jester Hat — 120 Baht | Stock 1</div>
-<div class="card">Chromatic Spark — 120 Baht | Stock 1</div>
-<div class="card">Sunrise — 40 Baht | Stock 1</div>
-</details>
-
 </section>
-
-<section id="terms">
-<h2>Terms Of Use</h2>
-<div class="card">
-You can choose to add me or get an account with the item you'd like to purchase.
-</div>
-</section>
-
-<section id="qa">
-<h2>Q&A</h2>
-
-<div class="card">
-How do we get refunds?<br>
-Refunds given if service fails. Snacks not refundable.
-</div>
-
-<div class="card">
-Will there be more stuff?<br>
-Yes, more products later.
-</div>
-
-<div class="card">
-What account do we add?<br>
-Tpbuno
-</div>
-
-<div class="card">
-How do we receive the account?<br>
-Sent through Google Chat.
-</div>
-
-</section>
-
-<footer>
-Abyssal Market © 2026
-</footer>
-
-<div class="settingsBtn" onclick="openSettings()">⚙</div>
-
-<div class="settingsPanel" id="settings">
-
-<h2>Settings</h2>
-
-<div class="settingBox">
-Music Volume
-<input type="range" min="0" max="100" value="50" id="vol">
-</div>
-
-<button class="closeSettings" onclick="closeSettings()">Close</button>
-
-</div>
 
 <script>
 
-const music=document.getElementById("music")
+const music = document.getElementById("music")
 
-music.volume=0.5
+music.volume = 0
 music.play()
 
-document.getElementById("vol").addEventListener("input",function(){
-music.volume=this.value/100
+setTimeout(()=>{
+music.volume = 0.5
+},1000)
+
+document.getElementById("vol")?.addEventListener("input",function(){
+music.volume = this.value/100
 })
-
-function openSettings(){
-document.getElementById("settings").style.display="block"
-}
-
-function closeSettings(){
-document.getElementById("settings").style.display="none"
-}
 
 </script>
 
