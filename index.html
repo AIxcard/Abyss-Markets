@@ -46,40 +46,34 @@ from{transform:translateY(0)}
 to{transform:translateY(2000px)}
 }
 
-/* HERO VIDEO */
+/* HERO GRADIENT BAR */
 
 .hero{
-position:relative;
 width:100%;
-height:420px;
-overflow:hidden;
+height:180px;
+
 display:flex;
 align-items:center;
 justify-content:center;
-}
 
-.hero video{
-position:absolute;
-width:100%;
-height:100%;
-object-fit:cover;
-filter:brightness(.6);
+background:linear-gradient(90deg,#000000,#3b0764,#000000);
+
+box-shadow:
+0 0 40px rgba(168,85,247,.5),
+inset 0 0 40px rgba(168,85,247,.3);
 }
 
 .hero h1{
-position:relative;
 font-size:64px;
 font-weight:bold;
 letter-spacing:6px;
-color:#60a5fa;
+color:#c084fc;
 
 text-shadow:
-0 0 10px #2563eb,
-0 0 20px #2563eb,
-0 0 40px #1e40af,
-0 0 80px #1e40af;
-
-z-index:2;
+0 0 10px #9333ea,
+0 0 20px #9333ea,
+0 0 40px #7e22ce,
+0 0 80px #6b21a8;
 }
 
 /* NAVBAR */
@@ -222,13 +216,7 @@ margin-top:50px;
 <div class="stars"></div>
 
 <div class="hero">
-
-<video autoplay muted loop>
-<source src="sjw-animation.mp4" type="video/mp4">
-</video>
-
 <h1>ABYSSAL MARKET</h1>
-
 </div>
 
 <nav>
