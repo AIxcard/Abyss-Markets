@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html>
 
+<html>
 <head>
 
 <title>Abyss Market</title>
@@ -20,7 +20,7 @@ color:white;
 overflow-x:hidden;
 }
 
-/* STARFIELD */
+/* GALAXY BACKGROUND */
 
 .stars{
 position:fixed;
@@ -42,41 +42,23 @@ from{transform:translateY(0);}
 to{transform:translateY(2000px);}
 }
 
-/* NEBULA */
+/* SHOOTING STARS */
 
-.nebula{
-position:fixed;
-width:100%;
-height:100%;
-top:0;
-left:0;
-
-background:
-radial-gradient(circle at 20% 30%, rgba(59,130,246,0.3), transparent 40%),
-radial-gradient(circle at 80% 60%, rgba(96,165,250,0.25), transparent 40%),
-radial-gradient(circle at 50% 80%, rgba(37,99,235,0.25), transparent 40%);
-
-filter:blur(120px);
-z-index:-4;
-}
-
-/* SHOOTING STAR */
-
-.shooting-star{
+.shooting{
 position:fixed;
 width:3px;
-height:120px;
+height:100px;
 background:linear-gradient(white,transparent);
-top:-150px;
+top:-100px;
 left:50%;
-animation:shoot 6s linear infinite;
 opacity:.7;
+animation:shoot 8s linear infinite;
 z-index:-2;
 }
 
 @keyframes shoot{
 0%{transform:translate(0,0) rotate(45deg);}
-100%{transform:translate(-1000px,1000px) rotate(45deg);}
+100%{transform:translate(-1200px,1200px) rotate(45deg);}
 }
 
 /* HEADER */
@@ -86,11 +68,7 @@ text-align:center;
 font-size:48px;
 padding:50px;
 background:rgba(2,6,23,.7);
-backdrop-filter:blur(10px);
-
-text-shadow:
-0 0 10px #3b82f6,
-0 0 30px #2563eb;
+text-shadow:0 0 15px #3b82f6;
 }
 
 /* NAV */
@@ -106,12 +84,6 @@ margin:20px;
 color:#38bdf8;
 text-decoration:none;
 font-size:18px;
-transition:.3s;
-}
-
-nav a:hover{
-color:white;
-text-shadow:0 0 10px #60a5fa;
 }
 
 /* SECTIONS */
@@ -119,7 +91,7 @@ text-shadow:0 0 10px #60a5fa;
 section{
 max-width:900px;
 margin:auto;
-padding:70px 30px;
+padding:60px 20px;
 }
 
 h2{
@@ -132,33 +104,26 @@ padding-bottom:10px;
 /* CARDS */
 
 .card{
-background:rgba(15,23,42,.7);
-backdrop-filter:blur(12px);
+background:rgba(15,23,42,.8);
 border:1px solid #1e3a8a;
 border-radius:12px;
-
 padding:15px;
 margin:12px 0;
-
 transition:.3s;
 }
 
 .card:hover{
 transform:scale(1.03);
 border-color:#38bdf8;
-
-box-shadow:
-0 0 10px #2563eb,
-0 0 30px #1d4ed8;
+box-shadow:0 0 15px #2563eb;
 }
 
-/* DROPDOWN GAMES */
+/* DROPDOWNS */
 
 details{
-background:rgba(15,23,42,.7);
+background:rgba(15,23,42,.8);
 border:1px solid #1e3a8a;
 border-radius:12px;
-
 margin:15px 0;
 padding:18px;
 }
@@ -170,7 +135,15 @@ color:#38bdf8;
 font-weight:bold;
 }
 
-/* FOOTER */
+/* MINI GAME */
+
+#gameCanvas{
+background:black;
+border:2px solid #3b82f6;
+display:block;
+margin:auto;
+margin-top:20px;
+}
 
 footer{
 text-align:center;
@@ -179,105 +152,83 @@ background:rgba(2,6,23,.8);
 margin-top:50px;
 }
 
-/* SCROLLBAR */
-
-::-webkit-scrollbar{
-width:8px;
-}
-
-::-webkit-scrollbar-thumb{
-background:#2563eb;
-}
-
 </style>
 
 </head>
 
 <body>
 
-<div class="nebula"></div>
 <div class="stars"></div>
-<div class="shooting-star"></div>
+<div class="shooting"></div>
 
 <header>
 Abyss Market
 </header>
 
 <nav>
-
 <a href="#snacks">Snacks</a>
 <a href="#games">Games</a>
+<a href="#game">Mini Game</a>
 <a href="#terms">Terms</a>
 <a href="#qa">Q&A</a>
-
 </nav>
-
 
 <section id="snacks">
 
 <h2>Snacks</h2>
 
-<div class="card">Skittles — 23 Baht</div>
-<div class="card">Chips — 16 Baht</div>
-<div class="card">Chuppa Lollipop — 8 Baht</div>
-<div class="card">Beng Beng — 9 Baht</div>
+<div class="card">Skittles — 23 Baht — Stock: 0</div>
+<div class="card">Chips — 16 Baht — Stock: 0</div>
+<div class="card">Chuppa Lollipop — 8 Baht — Stock: 0</div>
+<div class="card">Beng Beng — 9 Baht — Restock Monday</div>
 
 </section>
-
 
 <section id="games">
 
 <h2>Games</h2>
 
 <details>
-<summary>Anime Spirits</summary>
-<div class="card">All Limited Items — Price Varies</div>
-<div class="card">Best Soul / Sword Carry — 100 Baht</div>
+<summary>Anime Vanguards</summary>
+<div class="card">Story Stage — 5 Baht</div>
+<div class="card">Challenge Stage — 10 Baht</div>
+<div class="card">Raid Stage — 15 Baht</div>
+<div class="card">1 Hour Carry — 50 Baht</div>
+<div class="card">24 Hour Carry — 600 Baht</div>
+<div class="card">WoU — 25 Baht — Stock: 10</div>
+<div class="card">Dio — 50 Baht — Stock: 6</div>
+<div class="card">Shiny Dio — 100 Baht — Stock: 5</div>
 </details>
 
 <details>
 <summary>Verse Piece</summary>
-<div class="card">2X Drop GP — 230 Baht</div>
-<div class="card">Unlimited Bag GP — 100 Baht</div>
-<div class="card">2X Drop Luck GP — 50 Baht</div>
-</details>
-
-<details>
-<summary>Anime Vanguards</summary>
-<div class="card">Story Stage — 5 Baht</div>
-<div class="card">Raid Stage — 15 Baht</div>
-<div class="card">1 Hour Carry — 50 Baht</div>
-<div class="card">24 Hour Carry — 600 Baht</div>
-</details>
-
-<details>
-<summary>Anime Paradox</summary>
-<div class="card">Story Stage — 5 Baht</div>
-<div class="card">Challenge Stage — 10 Baht</div>
-<div class="card">Sukuna Portal Carry — 120 Baht</div>
+<div class="card">2X Drop GP — 230 Baht — Stock: 5</div>
+<div class="card">Unlimited Bag GP — 100 Baht — Stock: 4</div>
+<div class="card">2X Drop Luck GP — 50 Baht — Stock: 2</div>
+<div class="card">Ainz Sets — 10 Baht — Stock: 80</div>
+<div class="card">Homura Sets — 8 Baht — Stock: 5</div>
+<div class="card">Madoka Sets — 8 Baht — Stock: 2</div>
 </details>
 
 <details>
 <summary>99 Nights In The Forest</summary>
 <div class="card">100 Days Carry — 32 Baht</div>
+<div class="card">250 Days Carry — 60 Baht</div>
+<div class="card">500 Days Carry — 100 Baht</div>
 <div class="card">1K Days Carry — 249 Baht</div>
-</details>
-
-<details>
-<summary>Flee The Facility</summary>
-<div class="card">Nuclear Waste — 60 Baht</div>
-<div class="card">Ancient Trident — 145 Baht</div>
-</details>
-
-<details>
-<summary>Rivals</summary>
-<div class="card">Skin Case 1 — 150 Baht</div>
-<div class="card">Starter Bundle — 30 Baht</div>
-<div class="card">Heavy Duty Bundle — 1000 Baht</div>
 </details>
 
 </section>
 
+<section id="game">
+
+<h2>Mini Game: Asteroid Dodger</h2>
+
+<p style="text-align:center">Use LEFT and RIGHT arrows to dodge asteroids.</p>
+
+<canvas id="gameCanvas" width="500" height="400"></canvas>
+
+</section>
 
 <section id="terms">
 
@@ -285,22 +236,15 @@ Abyss Market
 
 <div class="card">You may add the seller or receive an account with the purchased item.</div>
 <div class="card">Refunds only apply if the service fails.</div>
-<div class="card">Snack purchases are not refundable.</div>
 
 </section>
-
 
 <section id="qa">
 
 <h2>Q&A</h2>
 
-<div class="card"><b>Refunds?</b><br>Given if the service fails.</div>
-
-<div class="card"><b>More products?</b><br>Yes, more will be added.</div>
-
+<div class="card"><b>Refunds?</b><br>Refunds are given if the service fails.</div>
 <div class="card"><b>Account to add?</b><br>Tpbuno</div>
-
-<div class="card"><b>How do we get account info?</b><br>Sent through Google Chat.</div>
 
 </section>
 
@@ -309,6 +253,77 @@ Abyss Market
 Abyss Market © 2026
 
 </footer>
+
+<script>
+
+const canvas=document.getElementById("gameCanvas");
+const ctx=canvas.getContext("2d");
+
+let player={x:230,y:360,w:40,h:20};
+let asteroids=[];
+let score=0;
+
+function spawnAsteroid(){
+asteroids.push({
+x:Math.random()*480,
+y:-20,
+w:20,
+h:20,
+speed:3+Math.random()*2
+});
+}
+
+setInterval(spawnAsteroid,1000);
+
+document.addEventListener("keydown",e=>{
+if(e.key==="ArrowLeft")player.x-=20;
+if(e.key==="ArrowRight")player.x+=20;
+});
+
+function update(){
+
+ctx.clearRect(0,0,500,400);
+
+ctx.fillStyle="cyan";
+ctx.fillRect(player.x,player.y,player.w,player.h);
+
+ctx.fillStyle="white";
+
+for(let i=0;i<asteroids.length;i++){
+
+let a=asteroids[i];
+
+a.y+=a.speed;
+
+ctx.fillRect(a.x,a.y,a.w,a.h);
+
+if(
+a.x<player.x+player.w &&
+a.x+a.w>player.x &&
+a.y<player.y+player.h &&
+a.y+a.h>player.y
+){
+alert("Game Over! Score: "+score);
+asteroids=[];
+score=0;
+}
+
+if(a.y>400){
+asteroids.splice(i,1);
+score++;
+}
+
+}
+
+ctx.fillText("Score: "+score,10,20);
+
+requestAnimationFrame(update);
+
+}
+
+update();
+
+</script>
 
 </body>
 </html>
