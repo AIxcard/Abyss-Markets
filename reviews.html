@@ -189,6 +189,9 @@ ABYSSAL MARKET REVIEWS
 <textarea id="review" placeholder="Write your review"></textarea>
 
 <button onclick="postReview()">Submit Review</button>
+  <button onclick="clearReviews()" style="background:#dc2626;margin-left:10px;">
+Clear All Reviews
+</button>
 
 </div>
 
@@ -264,6 +267,17 @@ displayReviews()
 }
 
 displayReviews()
+  function clearReviews(){
+
+localStorage.removeItem("abyssReviews")
+
+reviews=[]
+
+displayReviews()
+
+alert("All reviews cleared")
+
+}
 
 </script>
 
