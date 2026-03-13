@@ -1,8 +1,206 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+<title>Abyssal Market Reviews</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:#020617;
+color:white;
+overflow-x:hidden;
+}
+
+/* GALAXY BACKGROUND */
+
+.stars{
+position:fixed;
+width:100%;
+height:200%;
+top:-100%;
+left:0;
+
+background:
+radial-gradient(white 1px, transparent 1px),
+radial-gradient(#60a5fa 1px, transparent 1px),
+radial-gradient(#3b82f6 2px, transparent 2px);
+
+background-size:120px 120px,200px 200px,300px 300px;
+
+animation:starsMove 120s linear infinite;
+
+z-index:-2;
+}
+
+@keyframes starsMove{
+from{transform:translateY(0)}
+to{transform:translateY(2000px)}
+}
+
+/* HEADER */
+
+.header{
+background:linear-gradient(90deg,#000000,#4c1d95);
+text-align:center;
+padding:35px;
+font-size:42px;
+font-weight:bold;
+letter-spacing:4px;
+}
+
+/* CONTAINER */
+
+.container{
+max-width:900px;
+margin:auto;
+padding:40px 20px;
+}
+
+/* REVIEW FORM */
+
+.formBox{
+background:rgba(15,23,42,.85);
+border:1px solid #1e3a8a;
+border-radius:12px;
+padding:25px;
+margin-bottom:40px;
+}
+
+.formBox h2{
+margin-bottom:15px;
+color:#60a5fa;
+}
+
+input,textarea,select{
+
+width:100%;
+padding:10px;
+margin-top:10px;
+margin-bottom:15px;
+
+border:none;
+border-radius:6px;
+
+background:#020617;
+color:white;
+
+}
+
+button{
+
+padding:10px 18px;
+
+background:#2563eb;
+border:none;
+border-radius:8px;
+cursor:pointer;
+
+color:white;
+
+}
+
+/* REVIEW BOX */
+
+.review{
+
+background:rgba(15,23,42,.85);
+
+border:1px solid #1e3a8a;
+
+border-radius:12px;
+
+padding:20px;
+
+margin-bottom:20px;
+
+}
+
+.reviewName{
+
+color:#38bdf8;
+
+font-weight:bold;
+
+margin-bottom:5px;
+
+}
+
+.reviewStars{
+
+color:#facc15;
+
+margin-bottom:8px;
+
+}
+
+/* BACK BUTTON */
+
+.back{
+
+margin-top:30px;
+
+display:inline-block;
+
+color:#38bdf8;
+
+text-decoration:none;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="stars"></div>
+
+<div class="header">
+ABYSSAL MARKET REVIEWS
+</div>
+
+<div class="container">
+
+<div class="formBox">
+
+<h2>Leave a Review</h2>
+
+<input id="name" placeholder="Your Name">
+
+<select id="stars">
+
+<option>★★★★★</option>
+<option>★★★★</option>
+<option>★★★</option>
+<option>★★</option>
+<option>★</option>
+
+</select>
+
+<textarea id="review" placeholder="Write your review"></textarea>
+
+<button onclick="postReview()">Submit Review</button>
+
+</div>
+
+<div id="reviews"></div>
+
+<a class="back" href="index.html">← Back to Market</a>
+
+</div>
+
 <script>
 
 let reviews = JSON.parse(localStorage.getItem("abyssReviews")) || []
-
-let adminMode = localStorage.getItem("abyssAdmin") === "true"
 
 function displayReviews(){
 
@@ -10,21 +208,17 @@ let container=document.getElementById("reviews")
 
 container.innerHTML=""
 
-reviews.slice().reverse().forEach((r,index)=>{
+reviews.slice().reverse().forEach(r=>{
 
-container.innerHTML += `
+container.innerHTML+=`
 
-<div class="reviewBox">
+<div class="review">
 
 <div class="reviewName">${r.name}</div>
 
 <div class="reviewStars">${r.stars}</div>
 
-<div class="reviewText">${r.text}</div>
-
-${adminMode ? `<button onclick="deleteReview(${reviews.length-1-index})">Delete</button>` : ""}
-
-${adminMode ? `<button onclick="editReview(${reviews.length-1-index})">Edit</button>` : ""}
+<div>${r.text}</div>
 
 </div>
 
@@ -37,23 +231,28 @@ ${adminMode ? `<button onclick="editReview(${reviews.length-1-index})">Edit</but
 function postReview(){
 
 let name=document.getElementById("name").value
+
 let stars=document.getElementById("stars").value
+
 let text=document.getElementById("review").value
 
 if(name=="" || text==""){
-alert("Fill everything")
+
+alert("Please fill everything")
+
 return
-}
-
-if(text.includes("#ABYSSADMIN")){
-
-adminMode=true
-localStorage.setItem("abyssAdmin","true")
-alert("Admin mode activated")
 
 }
 
-reviews.push({name,stars,text})
+reviews.push({
+
+name:name,
+
+stars:stars,
+
+text:text
+
+})
 
 localStorage.setItem("abyssReviews",JSON.stringify(reviews))
 
@@ -64,32 +263,10 @@ displayReviews()
 
 }
 
-function deleteReview(i){
-
-reviews.splice(i,1)
-
-localStorage.setItem("abyssReviews",JSON.stringify(reviews))
-
-displayReviews()
-
-}
-
-function editReview(i){
-
-let newText = prompt("Edit review:", reviews[i].text)
-
-if(newText){
-
-reviews[i].text = newText
-
-localStorage.setItem("abyssReviews",JSON.stringify(reviews))
-
-displayReviews()
-
-}
-
-}
-
 displayReviews()
 
 </script>
+
+</body>
+
+</html>
