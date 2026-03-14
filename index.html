@@ -1,42 +1,61 @@
 ```html
 <!DOCTYPE html>
-
 <html>
 
 <head>
-
 <title>Aetherfall Market</title>
-
-<link rel="stylesheet" href="style.css">
 
 <style>
 
-/* CENTER SCREEN */
+/* PAGE */
 
-.center{
+body{
+margin:0;
 height:100vh;
 display:flex;
-flex-direction:column;
 justify-content:center;
 align-items:center;
-text-align:center;
-animation:fadeIn 2s ease;
+flex-direction:column;
+font-family:Arial;
+color:white;
+
+/* purple + white animated gradient */
+
+background:linear-gradient(
+-45deg,
+#6d28d9,
+#9333ea,
+#ffffff,
+#7c3aed
+);
+
+background-size:400% 400%;
+animation:bgMove 12s ease infinite;
 }
 
-/* BIG TITLE */
+/* background animation */
+
+@keyframes bgMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+/* TITLE */
 
 .logo{
 
-font-size:90px;
-
+font-size:95px;
 letter-spacing:6px;
+
+/* purple + white gradient text */
 
 background:linear-gradient(
 90deg,
-#38bdf8,
-#6366f1,
-#9333ea,
-#38bdf8
+#ffffff,
+#c084fc,
+#7c3aed,
+#ffffff
 );
 
 background-size:300%;
@@ -44,51 +63,42 @@ background-size:300%;
 -webkit-background-clip:text;
 color:transparent;
 
-animation:gradientMove 8s linear infinite;
+animation:textMove 6s linear infinite;
 
 text-shadow:
-0 0 20px rgba(56,189,248,0.5),
-0 0 40px rgba(99,102,241,0.4);
+0 0 20px rgba(255,255,255,0.6),
+0 0 40px rgba(168,85,247,0.6);
 
 }
 
-/* SUBTITLE */
+/* text gradient animation */
 
-.subtitle{
-
-margin-top:10px;
-
-opacity:0.8;
-
-font-size:20px;
-
-letter-spacing:2px;
-
+@keyframes textMove{
+0%{background-position:0%;}
+100%{background-position:300%;}
 }
 
 /* ENTER BUTTON */
 
 .enterBtn{
 
-margin-top:50px;
+margin-top:60px;
 
-padding:16px 50px;
+padding:16px 60px;
 
 font-size:18px;
 
 border-radius:12px;
 
-background:#0f172a;
+background:#111;
 
-border:1px solid #38bdf8;
+border:2px solid white;
 
 color:white;
 
 text-decoration:none;
 
-transition:0.35s;
-
-box-shadow:0 0 10px rgba(56,189,248,0.3);
+transition:0.3s;
 
 }
 
@@ -97,24 +107,8 @@ box-shadow:0 0 10px rgba(56,189,248,0.3);
 transform:scale(1.15);
 
 box-shadow:
-0 0 20px #38bdf8,
-0 0 40px #6366f1;
-
-}
-
-/* FADE IN */
-
-@keyframes fadeIn{
-
-from{
-opacity:0;
-transform:translateY(40px);
-}
-
-to{
-opacity:1;
-transform:translateY(0);
-}
+0 0 20px white,
+0 0 40px #9333ea;
 
 }
 
@@ -124,23 +118,9 @@ transform:translateY(0);
 
 <body>
 
-<div class="stars"></div>
+<h1 class="logo">AETHERFALL MARKET</h1>
 
-<div class="center">
-
-<h1 class="logo">
-AETHERFALL
-</h1>
-
-<div class="subtitle">
-MARKETPLACE
-</div>
-
-<a href="market.html" class="enterBtn">
-ENTER
-</a>
-
-</div>
+<a href="market.html" class="enterBtn">ENTER</a>
 
 </body>
 
