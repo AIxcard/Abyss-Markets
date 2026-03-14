@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 
 <title>Aetherfall Click Game</title>
@@ -9,18 +8,23 @@
 
 <style>
 
+*{
+cursor:none!important;
+box-sizing:border-box;
+}
+
 body{
 margin:0;
+font-family:Arial;
 background:#070b1f;
 color:white;
-font-family:Arial;
-cursor:none;
 overflow:hidden;
+transition:background 0.4s;
 }
 
 header{
 text-align:center;
-font-size:42px;
+font-size:40px;
 padding:15px;
 font-family:'Orbitron';
 background:linear-gradient(90deg,#38bdf8,#9333ea);
@@ -28,25 +32,24 @@ background:linear-gradient(90deg,#38bdf8,#9333ea);
 -webkit-text-fill-color:transparent;
 }
 
-#statsBar{
+#stats{
 display:flex;
 justify-content:center;
 gap:25px;
-padding:12px;
+padding:10px;
 }
 
 .stat{
 background:#0f172a;
-padding:12px 18px;
+padding:10px 18px;
 border-radius:10px;
 border:1px solid #1e3a8a;
-font-weight:bold;
 }
 
 #layout{
 display:grid;
-grid-template-columns:320px 1fr 320px;
-height:calc(100vh - 120px);
+grid-template-columns:300px 1fr 300px;
+height:calc(100vh - 110px);
 }
 
 .panel{
@@ -59,33 +62,34 @@ display:flex;
 flex-direction:column;
 align-items:center;
 justify-content:center;
+height:100%;
 }
 
 #sword{
 width:260px;
-cursor:pointer;
 transition:.15s;
 }
 
 #sword:hover{
-transform:scale(1.05);
-filter:drop-shadow(0 0 20px #9333ea);
+transform:scale(1.06);
+filter:drop-shadow(0 0 15px #9333ea);
 }
 
-.questCard{
+.card{
 background:#0f172a;
 border-radius:12px;
-padding:15px;
 border:1px solid #1e3a8a;
-margin-bottom:12px;
+padding:15px;
+margin-bottom:15px;
 }
 
 .bar{
-height:14px;
+height:16px;
 background:#1e293b;
 border-radius:6px;
 position:relative;
 overflow:hidden;
+margin-top:8px;
 }
 
 .fill{
@@ -98,6 +102,7 @@ width:0%;
 position:absolute;
 width:100%;
 text-align:center;
+line-height:16px;
 font-size:12px;
 }
 
@@ -107,12 +112,22 @@ border:none;
 padding:8px 14px;
 border-radius:6px;
 color:white;
-cursor:pointer;
 margin-top:8px;
 }
 
 button:hover{
 background:#a855f7;
+}
+
+.iconBtn{
+display:flex;
+align-items:center;
+gap:10px;
+background:#0f172a;
+border:1px solid #1e3a8a;
+border-radius:10px;
+padding:10px;
+margin-bottom:10px;
 }
 
 .modal{
@@ -121,9 +136,9 @@ top:50%;
 left:50%;
 transform:translate(-50%,-50%);
 background:#0f172a;
+border:1px solid #1e3a8a;
 padding:25px;
 border-radius:12px;
-border:1px solid #1e3a8a;
 width:420px;
 display:none;
 z-index:1000;
@@ -131,9 +146,8 @@ z-index:1000;
 
 .close{
 position:absolute;
+right:10px;
 top:10px;
-right:12px;
-cursor:pointer;
 }
 
 .float{
@@ -164,7 +178,7 @@ filter:drop-shadow(0 0 6px #9333ea);
 
 <header>AETHERFALL CLICK GAME</header>
 
-<div id="statsBar">
+<div id="stats">
 
 <div class="stat">Clicks: <span id="clicks">0</span></div>
 <div class="stat">Coins: <span id="coins">0</span></div>
@@ -177,52 +191,63 @@ filter:drop-shadow(0 0 6px #9333ea);
 
 <div class="panel">
 
-<div class="questCard">
+<div class="card">
 
-<b>✦ Storyline 1</b>
+<b>★ Storyline</b>
 
 <div class="bar">
-<div class="fill" id="questFill"></div>
-<div class="percent" id="questPercent">0%</div>
+<div class="fill" id="storyFill"></div>
+<div class="percent" id="storyPercent">0%</div>
 </div>
 
-<button id="claimBtn" onclick="claimQuest()" disabled>Claim Reward</button>
+<button onclick="claimStory()" id="storyClaim" disabled>Claim Reward</button>
 
 </div>
 
-<div class="questCard">
+<div class="card">
 
 <b>◆ Daily Challenge</b>
-
-Click 2000 times
 
 <div class="bar">
 <div class="fill" id="dailyFill"></div>
 <div class="percent" id="dailyPercent">0%</div>
 </div>
 
-<button onclick="claimDaily()">Claim</button>
+<button onclick="claimDaily()" id="dailyClaim">Claim</button>
 
 </div>
 
-<button onclick="openGuide()">How the Game Works</button>
-<button onclick="openSettings()">Settings</button>
+<div class="iconBtn" onclick="openStory()">📘 Story</div>
+<div class="iconBtn" onclick="openGuide()">❓ Guide</div>
+<div class="iconBtn" onclick="openSettings()">⚙ Settings</div>
 
 </div>
 
 <div id="center">
 
-<img id="sword" src="Final_game_icon.png">
+<img src="Final_game_icon.png" id="sword">
 
 </div>
 
 <div class="panel">
 
-<h3>Coupon Shop</h3>
+<div class="card">
 
-<button onclick="buyCoupon(300,5)">5 Baht Coupon</button>
-<button onclick="buyCoupon(700,10)">10 Baht Coupon</button>
-<button onclick="buyCoupon(1800,20)">20 Baht Coupon</button>
+<b>5 Baht Coupon</b><br>
+Cost: 300 Coins
+
+<button onclick="buyCoupon(300,5)">Buy</button>
+
+</div>
+
+<div class="card">
+
+<b>10 Baht Coupon</b><br>
+Cost: 700 Coins
+
+<button onclick="buyCoupon(700,10)">Buy</button>
+
+</div>
 
 </div>
 
@@ -230,36 +255,75 @@ Click 2000 times
 
 <div class="modal" id="guide">
 
-<div class="close" onclick="closeGuide()">X</div>
+<button class="close" onclick="closeGuide()">X</button>
 
 <h3>How the Game Works</h3>
 
-Click the sword to gain clicks.
+Click the blade to gain clicks.
 
 Clicks give coins and fragments.
 
-Coins buy coupons for the store.
+Coins can be exchanged for coupons on the market page.
 
-Fragments unlock upgrades.
+Fragments unlock upgrades later.
 
 Daily challenges give extra rewards.
 
 </div>
 
+<div class="modal" id="story">
+
+<button class="close" onclick="closeStory()">X</button>
+
+<h3>Aetherfall Archive</h3>
+
+<p>
+The Aetherfall blade was discovered in a research facility.
+
+Repeated strikes cause the blade to release energy.
+
+That energy can be converted into fragments and coins.
+
+The collected resources can be exchanged for rewards in the market.
+</p>
+
+</div>
+
 <div class="modal" id="settings">
 
-<div class="close" onclick="closeSettings()">X</div>
+<button class="close" onclick="closeSettings()">X</button>
 
 <h3>Settings</h3>
 
 <label>
 <input type="checkbox" id="effectsToggle" checked>
-Enable Click Effects
+Click Effects
 </label>
+
+<br><br>
+
+<label>
+<input type="checkbox" id="musicToggle">
+Music
+</label>
+
+<br><br>
+
+<select id="bgSelect">
+
+<option value="#070b1f">Dark</option>
+<option value="#020617">Deep Night</option>
+<option value="#111827">Gray</option>
+
+</select>
 
 </div>
 
 <div id="aetherCursor"></div>
+
+<audio id="music" loop>
+<source src="music.mp3">
+</audio>
 
 <script>
 
@@ -268,10 +332,9 @@ let coins=0
 let fragments=0
 let combo=0
 
-let questGoal=100
-let questReward=10
+let storyGoal=100
+let dailyGoal=500
 
-let dailyGoal=2000
 let dailyClaimed=false
 
 let effects=true
@@ -284,7 +347,6 @@ clicks++
 combo++
 
 if(Math.random()<0.02)fragments++
-
 if(Math.random()<0.05)coins++
 
 if(effects)spawnText(e,"+1","#38bdf8")
@@ -316,37 +378,40 @@ document.getElementById("coins").innerText=coins
 document.getElementById("fragments").innerText=fragments
 document.getElementById("combo").innerText=combo
 
-let qPercent=Math.min(100,(clicks/questGoal)*100)
+let sp=Math.min(100,(clicks/storyGoal)*100)
 
-document.getElementById("questFill").style.width=qPercent+"%"
-document.getElementById("questPercent").innerText=Math.floor(qPercent)+"%"
+document.getElementById("storyFill").style.width=sp+"%"
+document.getElementById("storyPercent").innerText=Math.floor(sp)+"%"
 
-if(clicks>=questGoal){
-document.getElementById("claimBtn").disabled=false
-}
+if(clicks>=storyGoal)
+document.getElementById("storyClaim").disabled=false
 
-let dPercent=Math.min(100,(clicks/dailyGoal)*100)
+let dp=Math.min(100,(clicks/dailyGoal)*100)
 
-document.getElementById("dailyFill").style.width=dPercent+"%"
-document.getElementById("dailyPercent").innerText=Math.floor(dPercent)+"%"
+document.getElementById("dailyFill").style.width=dp+"%"
+document.getElementById("dailyPercent").innerText=Math.floor(dp)+"%"
 
 save()
 
 }
 
-function claimQuest(){
+function claimStory(){
 
-coins+=questReward
+if(clicks<storyGoal)return
 
-questGoal*=2
+coins+=20
 
-document.getElementById("claimBtn").disabled=true
+storyGoal*=2
+
+document.getElementById("storyClaim").disabled=true
+
+update()
 
 }
 
 function claimDaily(){
 
-if(clicks>=dailyGoal && !dailyClaimed){
+if(clicks>=dailyGoal&&!dailyClaimed){
 
 coins+=40
 dailyClaimed=true
@@ -375,24 +440,27 @@ alert("Coupon: "+code)
 
 }
 
-function openGuide(){
-document.getElementById("guide").style.display="block"
-}
+function openGuide(){document.getElementById("guide").style.display="block"}
+function closeGuide(){document.getElementById("guide").style.display="none"}
 
-function closeGuide(){
-document.getElementById("guide").style.display="none"
-}
+function openStory(){document.getElementById("story").style.display="block"}
+function closeStory(){document.getElementById("story").style.display="none"}
 
-function openSettings(){
-document.getElementById("settings").style.display="block"
-}
-
-function closeSettings(){
-document.getElementById("settings").style.display="none"
-}
+function openSettings(){document.getElementById("settings").style.display="block"}
+function closeSettings(){document.getElementById("settings").style.display="none"}
 
 document.getElementById("effectsToggle").onchange=e=>{
 effects=e.target.checked
+}
+
+document.getElementById("musicToggle").onchange=e=>{
+let m=document.getElementById("music")
+if(e.target.checked)m.play()
+else m.pause()
+}
+
+document.getElementById("bgSelect").onchange=e=>{
+document.body.style.background=e.target.value
 }
 
 function save(){
