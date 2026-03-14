@@ -1,40 +1,45 @@
-// Fix blank page when returning with back button
+// Fix back-button blank page
 window.addEventListener("pageshow", () => {
 document.body.style.opacity = "1"
 })
 
-// Hide default cursor everywhere
+// Hide default cursor
 const style = document.createElement("style")
 style.innerHTML = `
 *{cursor:none!important;}
 
 #aetherCursor{
 position:fixed;
-width:46px;
-height:46px;
+width:36px;
+height:36px;
 pointer-events:none;
 z-index:9999;
-transform:translate(-8px,-6px) rotate(14deg);
+transform:translate(-4px,-2px);
 }
 
 #aetherCursor .arrow{
-position:absolute;
 width:100%;
 height:100%;
 
+/* standard cursor shape */
 clip-path:polygon(
-0 0,
-100% 48%,
-60% 58%,
-68% 100%,
-0 0
+0% 0%,
+0% 100%,
+30% 75%,
+45% 100%,
+60% 92%,
+45% 68%,
+100% 68%
 );
 
 background:linear-gradient(135deg,#38bdf8,#9333ea);
 
 box-shadow:
-0 0 10px #38bdf8,
-0 0 22px #9333ea;
+0 0 6px #38bdf8,
+0 0 12px #9333ea;
+
+border:2px solid rgba(255,255,255,0.8);
+border-radius:2px;
 }
 `
 document.head.appendChild(style)
@@ -49,7 +54,7 @@ arrow.className = "arrow"
 cursor.appendChild(arrow)
 document.body.appendChild(cursor)
 
-// Cursor movement
+// Move cursor
 document.addEventListener("mousemove", e => {
 
 cursor.style.left = e.clientX + "px"
