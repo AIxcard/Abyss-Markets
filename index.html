@@ -7,11 +7,13 @@
 
 <style>
 
-/* GLOBAL */
+/* REMOVE DEFAULT CURSOR */
 
 *{
 cursor:none !important;
 }
+
+/* BODY */
 
 body{
 margin:0;
@@ -30,8 +32,6 @@ background:linear-gradient(
 background-size:400% 400%;
 animation:skyShift 20s ease infinite;
 }
-
-/* SKY ANIMATION */
 
 @keyframes skyShift{
 0%{background-position:0% 50%;}
@@ -65,7 +65,7 @@ from{transform:translateY(0);}
 to{transform:translateY(-1000px);}
 }
 
-/* CENTER CONTENT */
+/* CENTER */
 
 .center{
 height:100vh;
@@ -74,9 +74,8 @@ flex-direction:column;
 justify-content:center;
 align-items:center;
 text-align:center;
-animation:fadeIn 2s ease;
-position:relative;
 z-index:2;
+position:relative;
 }
 
 /* LOGO */
@@ -156,48 +155,89 @@ box-shadow:
 
 }
 
-/* FADE */
-
-@keyframes fadeIn{
-from{
-opacity:0;
-transform:translateY(40px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-/* CUSTOM CURSOR */
+/* CUSTOM ANIME STYLE CURSOR */
 
 .cursor{
 
 position:fixed;
-width:28px;
-height:28px;
+width:42px;
+height:42px;
 
 pointer-events:none;
 
+transform:translate(-50%,-50%);
+
 z-index:9999;
 
-background-repeat:no-repeat;
-background-size:contain;
+}
 
-transform:translate(-3px,-3px);
+/* center dot */
 
-background-image:url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'>\
-<defs>\
-<linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'>\
-<stop offset='0%' stop-color='%2338bdf8'/>\
-<stop offset='50%' stop-color='%236366f1'/>\
-<stop offset='100%' stop-color='%239333ea'/>\
-</linearGradient>\
-</defs>\
-<path fill='url(%23g)' d='M4 2 L4 24 L10 18 L14 30 L18 28 L14 16 L22 16 Z'/>\
-</svg>");
+.cursor::before{
 
+content:"";
+position:absolute;
+
+left:50%;
+top:50%;
+
+width:6px;
+height:6px;
+
+transform:translate(-50%,-50%);
+
+border-radius:50%;
+
+background:linear-gradient(
+45deg,
+#38bdf8,
+#6366f1,
+#9333ea
+);
+
+box-shadow:
+0 0 8px #38bdf8,
+0 0 14px #9333ea;
+
+}
+
+/* outer ring */
+
+.cursor::after{
+
+content:"";
+position:absolute;
+
+left:50%;
+top:50%;
+
+width:34px;
+height:34px;
+
+transform:translate(-50%,-50%);
+
+border-radius:50%;
+
+border:2px solid transparent;
+
+background:linear-gradient(#020617,#020617) padding-box,
+linear-gradient(45deg,#38bdf8,#6366f1,#9333ea) border-box;
+
+box-shadow:
+0 0 10px #38bdf8,
+0 0 20px #9333ea;
+
+}
+
+/* rotate animation */
+
+.cursor{
+animation:cursorSpin 4s linear infinite;
+}
+
+@keyframes cursorSpin{
+from{transform:translate(-50%,-50%) rotate(0deg);}
+to{transform:translate(-50%,-50%) rotate(360deg);}
 }
 
 </style>
@@ -242,6 +282,5 @@ cursor.style.top = e.clientY + "px";
 </script>
 
 </body>
-
 </html>
 ```
