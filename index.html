@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html>
 
@@ -6,28 +7,26 @@
 
 <style>
 
-/* BODY */
+/* BASE */
 
 body{
 margin:0;
 font-family:Arial;
 color:white;
 overflow:hidden;
+cursor:none;
 
 background:linear-gradient(
 -45deg,
 #020617,
 #0f172a,
 #1e1b4b,
-#3b0764,
-#1e1b4b
+#3b0764
 );
 
 background-size:400% 400%;
 animation:skyShift 20s ease infinite;
 }
-
-/* SKY SHIFT */
 
 @keyframes skyShift{
 0%{background-position:0% 50%;}
@@ -47,30 +46,19 @@ left:0;
 background-image:
 radial-gradient(white 1px, transparent 1px),
 radial-gradient(#38bdf8 1px, transparent 1px),
-radial-gradient(#a855f7 1px, transparent 1px);
+radial-gradient(#9333ea 1px, transparent 1px);
 
 background-size:120px 120px, 200px 200px, 260px 260px;
 
 opacity:0.35;
 
 animation:starMove 100s linear infinite;
+z-index:0;
 }
 
 @keyframes starMove{
 from{transform:translateY(0);}
 to{transform:translateY(-1000px);}
-}
-
-/* PARTICLES */
-
-.particle{
-position:fixed;
-width:4px;
-height:4px;
-background:#38bdf8;
-border-radius:50%;
-opacity:0.7;
-pointer-events:none;
 }
 
 /* CENTER */
@@ -82,13 +70,14 @@ flex-direction:column;
 justify-content:center;
 align-items:center;
 text-align:center;
+z-index:2;
+position:relative;
 animation:fadeIn 2s ease;
 }
 
 /* LOGO */
 
 .logo{
-
 font-size:95px;
 letter-spacing:6px;
 
@@ -110,10 +99,7 @@ animation:logoGradient 8s linear infinite;
 text-shadow:
 0 0 25px rgba(56,189,248,0.5),
 0 0 50px rgba(147,51,234,0.4);
-
 }
-
-/* LOGO GRADIENT */
 
 @keyframes logoGradient{
 0%{background-position:0%;}
@@ -129,12 +115,11 @@ font-size:20px;
 letter-spacing:3px;
 }
 
-/* BUTTON */
+/* ENTER BUTTON */
 
 .enterBtn{
 
 margin-top:50px;
-
 padding:16px 60px;
 
 font-size:18px;
@@ -153,6 +138,9 @@ transition:0.35s;
 
 box-shadow:0 0 15px rgba(56,189,248,0.35);
 
+position:relative;
+z-index:3;
+
 }
 
 .enterBtn:hover{
@@ -163,6 +151,55 @@ box-shadow:
 0 0 25px #38bdf8,
 0 0 50px #6366f1;
 
+}
+
+/* CROSSHAIR */
+
+.crosshair{
+
+position:fixed;
+
+width:28px;
+height:28px;
+
+pointer-events:none;
+
+transform:translate(-50%,-50%);
+
+z-index:9999;
+
+}
+
+.crosshair::before,
+.crosshair::after{
+
+content:"";
+position:absolute;
+
+background:linear-gradient(
+90deg,
+#38bdf8,
+#9333ea
+);
+
+box-shadow:
+0 0 10px #38bdf8,
+0 0 15px #9333ea;
+
+}
+
+.crosshair::before{
+width:2px;
+height:28px;
+left:50%;
+transform:translateX(-50%);
+}
+
+.crosshair::after{
+height:2px;
+width:28px;
+top:50%;
+transform:translateY(-50%);
 }
 
 /* FADE */
@@ -202,65 +239,24 @@ ENTER
 
 </div>
 
+<div class="crosshair" id="crosshair"></div>
+
 <script>
 
-/* MAGIC PARTICLES */
+/* CROSSHAIR FOLLOW */
 
-function createParticle(){
+const crosshair = document.getElementById("crosshair");
 
-let p = document.createElement("div");
-p.className="particle";
+document.addEventListener("mousemove", e => {
 
-p.style.left=Math.random()*window.innerWidth+"px";
-p.style.top=window.innerHeight+"px";
+crosshair.style.left = e.clientX + "px";
+crosshair.style.top = e.clientY + "px";
 
-document.body.appendChild(p);
-
-let speed=1+Math.random()*2;
-
-function animate(){
-
-let y=parseFloat(p.style.top);
-
-p.style.top=(y-speed)+"px";
-
-if(y<-10){
-p.remove();
-return;
-}
-
-requestAnimationFrame(animate);
-}
-
-animate();
-}
-
-/* spawn particles */
-
-setInterval(createParticle,120);
-
-
-/* mouse glow */
-
-let glow=document.createElement("div");
-
-glow.style.position="fixed";
-glow.style.width="300px";
-glow.style.height="300px";
-glow.style.borderRadius="50%";
-glow.style.pointerEvents="none";
-glow.style.background="radial-gradient(circle, rgba(56,189,248,0.15), transparent 70%)";
-glow.style.transform="translate(-50%,-50%)";
-
-document.body.appendChild(glow);
-
-document.addEventListener("mousemove",e=>{
-glow.style.left=e.clientX+"px";
-glow.style.top=e.clientY+"px";
 });
 
 </script>
 
 </body>
-
 </html>
+```
+
