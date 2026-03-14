@@ -24,7 +24,7 @@ const cursor = document.createElement("div")
 cursor.id = "aetherCursor"
 
 cursor.innerHTML = `
-<svg viewBox="0 0 32 32" width="40" height="40">
+<svg viewBox="0 0 32 32" width="20" height="20">
 <defs>
 <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
 <stop offset="0%" stop-color="#38bdf8"/>
