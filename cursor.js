@@ -10,8 +10,8 @@ style.innerHTML = `
 
 #aetherCursor{
 position:fixed;
-width:40px;
-height:40px;
+width:20px;
+height:20px;
 pointer-events:none;
 z-index:9999;
 transform:translate(-4px,-3px);
