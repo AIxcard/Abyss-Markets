@@ -1,27 +1,28 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
-
 <title>Aetherfall Click Game</title>
 
 <style>
 
 body{
 margin:0;
-font-family:Arial;
-background:#070b1f;
+font-family:Segoe UI;
+background:#060b20;
 color:white;
 overflow:hidden;
 }
 
-/* HEADER */
+/* TITLE */
 
 header{
 text-align:center;
 font-size:32px;
 padding:16px;
-color:#a855f7;
+color:#8b5cf6;
 letter-spacing:3px;
+font-weight:700;
 }
 
 /* STATS */
@@ -35,14 +36,14 @@ margin-bottom:10px;
 
 .statBox{
 background:#0f172a;
-padding:10px 18px;
+padding:10px 20px;
 border-radius:10px;
 border:1px solid #1e3a8a;
 text-align:center;
-min-width:90px;
+min-width:100px;
 }
 
-/* LAYOUT */
+/* GRID LAYOUT */
 
 #layout{
 display:grid;
@@ -57,18 +58,86 @@ padding:20px;
 overflow:auto;
 }
 
-/* STORY */
+/* CENTER */
+
+#center{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+}
+
+#sword{
+width:300px;
+cursor:pointer;
+transition:.1s;
+}
+
+#sword:hover{
+transform:scale(1.05);
+filter:drop-shadow(0 0 20px #8b5cf6);
+}
+
+/* FLOAT TEXT */
+
+.float{
+position:absolute;
+pointer-events:none;
+font-weight:bold;
+animation:floatUp 1s forwards;
+}
+
+@keyframes floatUp{
+0%{opacity:1;transform:translateY(0)}
+100%{opacity:0;transform:translateY(-70px)}
+}
+
+/* BUTTON GRID */
+
+#menuIcons{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+.menuBtn{
+width:110px;
+height:110px;
+background:#0f172a;
+border:1px solid #1e3a8a;
+border-radius:12px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}
+
+.menuBtn:hover{
+background:#1e293b;
+}
+
+.menuIcon{
+font-size:28px;
+}
+
+.menuText{
+margin-top:6px;
+font-size:13px;
+}
+
+/* STORY / MISSIONS */
 
 .mission{
 background:#0f172a;
 border-radius:10px;
 padding:12px;
-margin-bottom:14px;
+margin-bottom:16px;
 border:1px solid #1e3a8a;
 }
 
 .bar{
-height:16px;
+height:18px;
 background:#1e293b;
 border-radius:6px;
 overflow:hidden;
@@ -89,77 +158,17 @@ top:0;
 font-size:12px;
 }
 
-/* CENTER */
-
-#center{
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-}
-
-/* SWORD */
-
-#sword{
-width:280px;
-cursor:pointer;
-transition:.12s;
-}
-
-#sword:hover{
-transform:scale(1.05);
-filter:drop-shadow(0 0 20px #9333ea);
-}
-
-/* FLOAT TEXT */
-
-.float{
-position:absolute;
-pointer-events:none;
-font-weight:bold;
-animation:floatUp 1s forwards;
-}
-
-@keyframes floatUp{
-0%{opacity:1;transform:translateY(0)}
-100%{opacity:0;transform:translateY(-70px)}
-}
-
-/* MENU BUTTONS */
-
-#menuIcons{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
-}
-
-.menuBtn{
-width:100px;
-height:100px;
-background:#0f172a;
-border:1px solid #1e3a8a;
-border-radius:12px;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
+.claimBtn{
+margin-top:8px;
+background:#22c55e;
+border:none;
+padding:6px 12px;
+border-radius:6px;
+color:white;
 cursor:pointer;
 }
 
-.menuBtn:hover{
-background:#1e293b;
-}
-
-.menuIcon{
-font-size:26px;
-}
-
-.menuText{
-margin-top:6px;
-font-size:13px;
-}
-
-/* POPUPS */
+/* MODALS */
 
 .modal{
 display:none;
@@ -171,7 +180,7 @@ background:#020617;
 border:1px solid #2563eb;
 border-radius:12px;
 padding:25px;
-width:380px;
+width:420px;
 }
 
 .bigModal{
@@ -207,26 +216,16 @@ gap:30px;
 .shopItem{
 background:#0f172a;
 border-radius:10px;
-padding:10px;
-margin-bottom:10px;
+padding:12px;
+margin-bottom:12px;
 border:1px solid #1e3a8a;
 }
 
 .shopItem button{
 margin-top:6px;
-background:#9333ea;
+background:#8b5cf6;
 border:none;
-padding:6px 10px;
-border-radius:6px;
-color:white;
-cursor:pointer;
-}
-
-.claimBtn{
-margin-top:8px;
-background:#22c55e;
-border:none;
-padding:6px 10px;
+padding:6px 12px;
 border-radius:6px;
 color:white;
 cursor:pointer;
@@ -240,17 +239,15 @@ cursor:pointer;
 <header>AETHERFALL CLICK GAME</header>
 
 <div id="statsBar">
-
 <div class="statBox">Clicks<div id="clicks">0</div></div>
 <div class="statBox">Coins<div id="coins">0</div></div>
 <div class="statBox">Fragments<div id="fragments">0</div></div>
 <div class="statBox">Combo<div id="combo">0</div></div>
-
 </div>
 
 <div id="layout">
 
-<!-- LEFT BUTTON PANEL -->
+<!-- LEFT MENU -->
 
 <div class="panel">
 
@@ -280,61 +277,30 @@ cursor:pointer;
 
 </div>
 
-
-<!-- CENTER SWORD -->
+<!-- CENTER -->
 
 <div id="center">
-
 <img id="sword" src="Final_game_icon.png">
-
 </div>
 
-
-<!-- RIGHT STORY PANEL -->
+<!-- RIGHT STORY -->
 
 <div class="panel">
 
 <h3>Storyline</h3>
 
 <div class="mission">
-★ Storyline 1  
-Goal: 5000 Clicks  
-Reward: 50 Coins
+
+<div id="storyTitle"></div>
+Goal: <span id="storyGoal"></span> Clicks  
+Reward: <span id="storyReward"></span> Coins
 
 <div class="bar">
-<div id="story1" class="fill"></div>
-<span id="p1" class="percent">0%</span>
+<div id="storyFill" class="fill"></div>
+<span id="storyPercent" class="percent">0%</span>
 </div>
 
-<button class="claimBtn" onclick="claimStory(1)">Claim</button>
-
-</div>
-
-<div class="mission">
-★ Storyline 2  
-Goal: 25000 Clicks  
-Reward: 200 Coins
-
-<div class="bar">
-<div id="story2" class="fill"></div>
-<span id="p2" class="percent">0%</span>
-</div>
-
-<button class="claimBtn" onclick="claimStory(2)">Claim</button>
-
-</div>
-
-<div class="mission">
-★ Storyline 3  
-Goal: 100000 Clicks  
-Reward: 900 Coins
-
-<div class="bar">
-<div id="story3" class="fill"></div>
-<span id="p3" class="percent">0%</span>
-</div>
-
-<button class="claimBtn" onclick="claimStory(3)">Claim</button>
+<button class="claimBtn" onclick="claimStory()">Claim</button>
 
 </div>
 
@@ -342,12 +308,12 @@ Reward: 900 Coins
 
 <div class="mission">
 
-★ 2000 Clicks  
+Goal: 2000 Clicks  
 Reward: 60 Coins
 
 <div class="bar">
-<div id="daily" class="fill"></div>
-<span id="pd" class="percent">0%</span>
+<div id="dailyFill" class="fill"></div>
+<span id="dailyPercent" class="percent">0%</span>
 </div>
 
 <button class="claimBtn" onclick="claimDaily()">Claim</button>
@@ -358,27 +324,67 @@ Reward: 60 Coins
 
 </div>
 
-<!-- POPUPS -->
+<!-- LORE -->
 
 <div id="lore" class="modal">
 <div class="close" onclick="closeLore()">X</div>
-<h3>Lore</h3>
-The Aetherfall blade contains unstable energy fragments.
-Repeated strikes extract this power.
+
+<h2>Aetherfall Lore</h2>
+
+<p>
+The blade known as Aetherfall is an ancient artifact discovered
+inside fractured ruins beneath the old city.
+</p>
+
+<p>
+Repeated strikes awaken dormant energy fragments trapped
+inside the blade’s core.
+</p>
+
+<p>
+Those fragments can be reforged into upgrades,
+allowing the wielder to extract even more power.
+</p>
+
 </div>
+
+<!-- GUIDE -->
 
 <div id="guide" class="modal">
 <div class="close" onclick="closeGuide()">X</div>
-<h3>Guide</h3>
-Click the blade to gain energy and coins.  
-Fragments unlock rare upgrades.
+
+<h2>How The Game Works</h2>
+
+<p>Click the blade to gain clicks.</p>
+<p>Clicks unlock storyline progress.</p>
+<p>Storylines reward coins.</p>
+<p>Coins buy upgrades.</p>
+<p>Fragments unlock stronger bonuses.</p>
+
 </div>
+
+<!-- SETTINGS -->
 
 <div id="settings" class="modal">
 <div class="close" onclick="closeSettings()">X</div>
-<h3>Settings</h3>
-Settings placeholder.
+
+<h2>Settings</h2>
+
+Music  
+<br><br>
+
+<button onclick="toggleMusic()">Toggle Music</button>
+
+<br><br>
+
+Effects  
+<br>
+
+<button onclick="toggleEffects()">Toggle Effects</button>
+
 </div>
+
+<!-- SHOP -->
 
 <div id="shopPopup" class="bigModal">
 
@@ -394,14 +400,14 @@ Settings placeholder.
 
 <div class="shopItem">
 Sharper Blade (+1 click power)<br>
-Cost: 120 coins<br>
-<button onclick="upgrade(120,1)">Buy</button>
+Cost: 120 coins
+<button onclick="buyUpgrade(120,1)">Buy</button>
 </div>
 
 <div class="shopItem">
 Aether Core (+3 click power)<br>
-Cost: 400 coins<br>
-<button onclick="upgrade(400,3)">Buy</button>
+Cost: 400 coins
+<button onclick="buyUpgrade(400,3)">Buy</button>
 </div>
 
 </div>
@@ -411,9 +417,9 @@ Cost: 400 coins<br>
 <h3>Fragment Shop</h3>
 
 <div class="shopItem">
-Fragment Booster<br>
-Cost: 20 Fragments<br>
-<button onclick="fragmentUpgrade(20)">Buy</button>
+Critical Boost<br>
+Cost: 20 fragments
+<button onclick="buyFragment()">Buy</button>
 </div>
 
 </div>
@@ -424,8 +430,8 @@ Cost: 20 Fragments<br>
 
 <div class="shopItem">
 5 Baht Discount<br>
-Cost: 250 coins<br>
-<button onclick="coupon(250,5)">Buy</button>
+Cost: 250 coins
+<button onclick="buyCoupon()">Buy</button>
 </div>
 
 </div>
@@ -433,6 +439,10 @@ Cost: 250 coins<br>
 </div>
 
 </div>
+
+<audio id="music" loop>
+<source src="placeholder.mp3">
+</audio>
 
 <script>
 
@@ -441,47 +451,63 @@ let coins=0
 let fragments=0
 let combo=0
 let clickPower=1
-let critChance=0.05
-let lastClick=0
+
+let storyIndex=0
+
+const storyGoals=[
+100,500,1000,3000,5000,10000,20000,50000,80000,120000,
+200000,350000,500000,750000,1000000]
+
+const storyRewards=[
+10,20,40,60,80,120,160,200,260,320,400,500,650,800,1000]
+
+let dailyClaimed=false
+
+function save(){
+localStorage.setItem("aetherfall_save",
+JSON.stringify({
+clicks,coins,fragments,storyIndex,dailyClaimed
+}))
+}
+
+function load(){
+
+let data=localStorage.getItem("aetherfall_save")
+
+if(data){
+let s=JSON.parse(data)
+clicks=s.clicks
+coins=s.coins
+fragments=s.fragments
+storyIndex=s.storyIndex
+dailyClaimed=s.dailyClaimed
+}
+
+}
+
+load()
 
 const sword=document.getElementById("sword")
 
-setInterval(()=>{
-if(Date.now()-lastClick>3000){
-combo=0
-update()
-}
-},500)
-
 sword.onclick=(e)=>{
 
-lastClick=Date.now()
-
 combo++
-
-let comboBonus=Math.floor(combo/25)
-
-let gain=clickPower+comboBonus
-
-if(Math.random()<critChance){
-gain*=5
-spawnText(e,"CRITICAL +" + gain,"#facc15")
-}else{
-spawnText(e,"+"+gain,"#38bdf8")
-}
+let gain=clickPower+Math.floor(combo/25)
 
 clicks+=gain
 
+spawnText(e,"+"+gain)
+
 update()
+save()
 
 }
 
-function spawnText(e,text,color){
+function spawnText(e,text){
 
 let t=document.createElement("div")
 t.className="float"
 t.innerText=text
-t.style.color=color
 t.style.left=e.pageX+"px"
 t.style.top=e.pageY+"px"
 
@@ -498,63 +524,115 @@ document.getElementById("coins").innerText=coins
 document.getElementById("fragments").innerText=fragments
 document.getElementById("combo").innerText=combo
 
-updateBar("story1","p1",5000)
-updateBar("story2","p2",25000)
-updateBar("story3","p3",100000)
-updateBar("daily","pd",2000)
+updateStory()
+updateDaily()
 
 }
 
-function updateBar(id,pid,goal){
+function updateStory(){
+
+let goal=storyGoals[storyIndex]
+let reward=storyRewards[storyIndex]
+
+document.getElementById("storyTitle").innerText=
+"★ Storyline "+(storyIndex+1)
+
+document.getElementById("storyGoal").innerText=goal
+document.getElementById("storyReward").innerText=reward
 
 let percent=Math.min(100,(clicks/goal)*100)
 
-document.getElementById(id).style.width=percent+"%"
-document.getElementById(pid).innerText=Math.floor(percent)+"%"
+document.getElementById("storyFill").style.width=percent+"%"
+document.getElementById("storyPercent").innerText=Math.floor(percent)+"%"
 
 }
 
-function claimStory(num){
+function claimStory(){
 
-let goals=[5000,25000,100000]
-let rewards=[50,200,900]
+let goal=storyGoals[storyIndex]
 
-if(clicks>=goals[num-1]){
-coins+=rewards[num-1]
+if(clicks<goal){
+alert("Goal not completed yet")
+return
+}
+
+coins+=storyRewards[storyIndex]
+storyIndex++
+
+if(storyIndex>=storyGoals.length){
+alert("All storylines completed")
+storyIndex=storyGoals.length-1
+}
+
 update()
+save()
+
 }
+
+function updateDaily(){
+
+let percent=Math.min(100,(clicks/2000)*100)
+
+document.getElementById("dailyFill").style.width=percent+"%"
+document.getElementById("dailyPercent").innerText=Math.floor(percent)+"%"
 
 }
 
 function claimDaily(){
-if(clicks>=2000){
-coins+=60
-update()
-}
+
+if(dailyClaimed){
+alert("Daily already claimed")
+return
 }
 
-function upgrade(cost,power){
+if(clicks<2000){
+alert("Not enough progress")
+return
+}
+
+coins+=60
+dailyClaimed=true
+
+update()
+save()
+
+}
+
+function buyUpgrade(cost,power){
+
 if(coins<cost)return
+
 coins-=cost
 clickPower+=power
+
 update()
+save()
+
 }
 
-function fragmentUpgrade(cost){
-if(fragments<cost)return
-fragments-=cost
-critChance+=0.02
+function buyFragment(){
+
+if(fragments<20)return
+
+fragments-=20
+
 update()
+save()
+
 }
 
-function coupon(cost,val){
-if(coins<cost)return
-coins-=cost
-alert("Coupon: AETHER-"+Math.floor(Math.random()*9000)+" ("+val+" Baht)")
-}
+function buyCoupon(){
 
-function openShop(){document.getElementById("shopPopup").style.display="block"}
-function closeShop(){document.getElementById("shopPopup").style.display="none"}
+if(coins<250)return
+
+coins-=250
+
+alert("Coupon generated")
+
+update()
+save()
+
+}
 
 function openLore(){document.getElementById("lore").style.display="block"}
 function closeLore(){document.getElementById("lore").style.display="none"}
@@ -565,7 +643,13 @@ function closeGuide(){document.getElementById("guide").style.display="none"}
 function openSettings(){document.getElementById("settings").style.display="block"}
 function closeSettings(){document.getElementById("settings").style.display="none"}
 
+function openShop(){document.getElementById("shopPopup").style.display="block"}
+function closeShop(){document.getElementById("shopPopup").style.display="none"}
+
+update()
+
 </script>
 
 </body>
 </html>
+```
