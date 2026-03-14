@@ -8,6 +8,8 @@
 
 <style>
 
+/* PAGE */
+
 body{
 margin:0;
 font-family:Arial;
@@ -26,11 +28,15 @@ background-size:400% 400%;
 animation:skyShift 18s ease infinite;
 }
 
+/* BACKGROUND GRADIENT */
+
 @keyframes skyShift{
 0%{background-position:0% 50%;}
 50%{background-position:100% 50%;}
 100%{background-position:0% 50%;}
 }
+
+/* STARS */
 
 .stars{
 position:fixed;
@@ -47,14 +53,9 @@ radial-gradient(#9333ea 1px, transparent 1px);
 background-size:120px 120px,200px 200px,260px 260px;
 
 opacity:0.35;
-
-animation:starMove 90s linear infinite;
 }
 
-@keyframes starMove{
-from{transform:translateY(0);}
-to{transform:translateY(-1000px);}
-}
+/* CENTER */
 
 .center{
 height:100vh;
@@ -65,7 +66,10 @@ align-items:center;
 text-align:center;
 }
 
+/* LOGO */
+
 .logo{
+
 font-size:90px;
 letter-spacing:6px;
 
@@ -73,22 +77,73 @@ background:linear-gradient(
 90deg,
 #38bdf8,
 #6366f1,
-#9333ea
+#9333ea,
+#38bdf8
 );
+
+background-size:300%;
 
 -webkit-background-clip:text;
 color:transparent;
+
+animation:logoGradient 8s linear infinite;
+
+text-shadow:
+0 0 20px rgba(56,189,248,0.5),
+0 0 40px rgba(99,102,241,0.4);
+
 }
 
+/* LOGO GRADIENT ANIMATION */
+
+@keyframes logoGradient{
+0%{background-position:0%;}
+100%{background-position:300%;}
+}
+
+/* SUBTITLE */
+
+.subtitle{
+margin-top:10px;
+opacity:0.8;
+font-size:20px;
+letter-spacing:2px;
+}
+
+/* ENTER BUTTON */
+
 .enterBtn{
+
 margin-top:50px;
-padding:16px 60px;
+
+padding:16px 50px;
+
 font-size:18px;
+
 border-radius:12px;
+
 background:#0f172a;
+
 border:1px solid #38bdf8;
+
 color:white;
+
 text-decoration:none;
+
+transition:0.35s;
+
+box-shadow:0 0 10px rgba(56,189,248,0.3);
+
+}
+
+.enterBtn:hover{
+
+transform:scale(1.15);
+
+box-shadow:
+0 0 20px #38bdf8,
+0 0 40px #6366f1;
+
 }
 
 </style>
@@ -101,13 +156,19 @@ text-decoration:none;
 
 <div class="center">
 
-<h1 class="logo">AETHERFALL</h1>
+<h1 class="logo">
+AETHERFALL
+</h1>
 
-<a href="market.html" class="enterBtn">ENTER</a>
-
+<div class="subtitle">
+MARKETPLACE
 </div>
 
-<script src="cursor.js"></script>
+<a href="market.html" class="enterBtn">
+ENTER
+</a>
+
+</div>
 
 </body>
 
