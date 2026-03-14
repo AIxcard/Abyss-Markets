@@ -1,61 +1,17 @@
 ```html
 <!DOCTYPE html>
+
 <html>
 
 <head>
 
 <title>Aetherfall Market</title>
 
+<link rel="stylesheet" href="style.css">
+
 <style>
 
-/* PAGE */
-
-body{
-margin:0;
-font-family:Arial;
-color:white;
-overflow:hidden;
-
-background:linear-gradient(
--45deg,
-#020617,
-#0f172a,
-#1e1b4b,
-#3b0764
-);
-
-background-size:400% 400%;
-animation:skyShift 18s ease infinite;
-}
-
-/* BACKGROUND GRADIENT */
-
-@keyframes skyShift{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
-}
-
-/* STARS */
-
-.stars{
-position:fixed;
-width:100%;
-height:100%;
-top:0;
-left:0;
-
-background-image:
-radial-gradient(white 1px, transparent 1px),
-radial-gradient(#38bdf8 1px, transparent 1px),
-radial-gradient(#9333ea 1px, transparent 1px);
-
-background-size:120px 120px,200px 200px,260px 260px;
-
-opacity:0.35;
-}
-
-/* CENTER */
+/* CENTER SCREEN */
 
 .center{
 height:100vh;
@@ -64,13 +20,15 @@ flex-direction:column;
 justify-content:center;
 align-items:center;
 text-align:center;
+animation:fadeIn 2s ease;
 }
 
-/* LOGO */
+/* BIG TITLE */
 
 .logo{
 
 font-size:90px;
+
 letter-spacing:6px;
 
 background:linear-gradient(
@@ -86,7 +44,7 @@ background-size:300%;
 -webkit-background-clip:text;
 color:transparent;
 
-animation:logoGradient 8s linear infinite;
+animation:gradientMove 8s linear infinite;
 
 text-shadow:
 0 0 20px rgba(56,189,248,0.5),
@@ -94,20 +52,18 @@ text-shadow:
 
 }
 
-/* LOGO GRADIENT ANIMATION */
-
-@keyframes logoGradient{
-0%{background-position:0%;}
-100%{background-position:300%;}
-}
-
 /* SUBTITLE */
 
 .subtitle{
+
 margin-top:10px;
+
 opacity:0.8;
+
 font-size:20px;
+
 letter-spacing:2px;
+
 }
 
 /* ENTER BUTTON */
@@ -143,6 +99,22 @@ transform:scale(1.15);
 box-shadow:
 0 0 20px #38bdf8,
 0 0 40px #6366f1;
+
+}
+
+/* FADE IN */
+
+@keyframes fadeIn{
+
+from{
+opacity:0;
+transform:translateY(40px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
 
 }
 
