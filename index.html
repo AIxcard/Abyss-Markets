@@ -3,11 +3,12 @@
 <html>
 
 <head>
+
 <title>Aetherfall Market</title>
 
 <style>
 
-/* hide default cursor */
+/* remove system cursor */
 
 *{
 cursor:none !important;
@@ -30,12 +31,12 @@ background:linear-gradient(
 );
 
 background-size:400% 400%;
-animation:skyShift 20s ease infinite;
+animation:skyMove 20s ease infinite;
 }
 
 /* background animation */
 
-@keyframes skyShift{
+@keyframes skyMove{
 0%{background-position:0% 50%;}
 50%{background-position:100% 50%;}
 100%{background-position:0% 50%;}
@@ -59,15 +60,15 @@ background-size:120px 120px,200px 200px,260px 260px;
 
 opacity:0.35;
 
-animation:starScroll 90s linear infinite;
+animation:starMove 100s linear infinite;
 }
 
-@keyframes starScroll{
+@keyframes starMove{
 from{transform:translateY(0);}
 to{transform:translateY(-1000px);}
 }
 
-/* center content */
+/* center */
 
 .center{
 height:100vh;
@@ -76,15 +77,13 @@ flex-direction:column;
 justify-content:center;
 align-items:center;
 text-align:center;
-position:relative;
-z-index:2;
 }
 
-/* title */
+/* logo */
 
 .logo{
 
-font-size:95px;
+font-size:100px;
 letter-spacing:6px;
 
 background:linear-gradient(
@@ -100,33 +99,34 @@ background-size:300%;
 -webkit-background-clip:text;
 color:transparent;
 
-animation:titleGradient 8s linear infinite;
+animation:logoFlow 8s linear infinite;
 
 text-shadow:
-0 0 25px rgba(56,189,248,0.5),
-0 0 50px rgba(147,51,234,0.4);
+0 0 25px rgba(56,189,248,0.6),
+0 0 40px rgba(147,51,234,0.4);
 
 }
 
-@keyframes titleGradient{
-0%{background-position:0%;}
-100%{background-position:300%;}
+@keyframes logoFlow{
+0%{background-position:0%}
+100%{background-position:300%}
 }
 
 /* subtitle */
 
 .subtitle{
-margin-top:10px;
-opacity:0.85;
+margin-top:12px;
 font-size:20px;
 letter-spacing:3px;
+opacity:0.8;
 }
 
-/* button */
+/* enter button */
 
 .enterBtn{
 
 margin-top:50px;
+
 padding:16px 60px;
 
 font-size:18px;
@@ -143,7 +143,7 @@ text-decoration:none;
 
 transition:0.35s;
 
-box-shadow:0 0 15px rgba(56,189,248,0.35);
+box-shadow:0 0 10px rgba(56,189,248,0.3);
 
 }
 
@@ -152,8 +152,8 @@ box-shadow:0 0 15px rgba(56,189,248,0.35);
 transform:scale(1.15);
 
 box-shadow:
-0 0 25px #38bdf8,
-0 0 50px #6366f1;
+0 0 20px #38bdf8,
+0 0 40px #6366f1;
 
 }
 
@@ -162,8 +162,8 @@ box-shadow:
 .cursor{
 
 position:fixed;
-width:32px;
-height:32px;
+width:28px;
+height:28px;
 
 pointer-events:none;
 z-index:9999;
@@ -183,33 +183,9 @@ background-image:url("data:image/svg+xml;utf8,\
 background-size:contain;
 background-repeat:no-repeat;
 
-}
-
-/* aura around cursor tip */
-
-.cursor::after{
-
-content:"";
-
-position:absolute;
-
-left:2px;
-top:2px;
-
-width:12px;
-height:12px;
-
-border-radius:50%;
-
-border:2px solid transparent;
-
-background:
-linear-gradient(#020617,#020617) padding-box,
-linear-gradient(45deg,#38bdf8,#6366f1,#9333ea) border-box;
-
-box-shadow:
-0 0 8px #38bdf8,
-0 0 12px #9333ea;
+filter:
+drop-shadow(0 0 4px #38bdf8)
+drop-shadow(0 0 6px #9333ea);
 
 }
 
@@ -255,5 +231,6 @@ cursor.style.top = e.clientY + "px";
 </script>
 
 </body>
+
 </html>
 ```
