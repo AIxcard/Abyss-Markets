@@ -8,18 +8,12 @@
 
 <style>
 
-*{
-cursor:none!important;
-box-sizing:border-box;
-}
-
 body{
 margin:0;
-font-family:Arial;
 background:#070b1f;
+font-family:Arial;
 color:white;
 overflow:hidden;
-transition:background 0.4s;
 }
 
 header{
@@ -36,7 +30,6 @@ background:linear-gradient(90deg,#38bdf8,#9333ea);
 display:flex;
 justify-content:center;
 gap:25px;
-padding:10px;
 }
 
 .stat{
@@ -46,23 +39,12 @@ border-radius:10px;
 border:1px solid #1e3a8a;
 }
 
-#layout{
-display:grid;
-grid-template-columns:300px 1fr 300px;
-height:calc(100vh - 110px);
-}
-
-.panel{
-padding:20px;
-overflow:auto;
-}
-
 #center{
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-height:100%;
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+text-align:center;
 }
 
 #sword{
@@ -71,16 +53,23 @@ transition:.15s;
 }
 
 #sword:hover{
-transform:scale(1.06);
-filter:drop-shadow(0 0 15px #9333ea);
+transform:scale(1.05);
+filter:drop-shadow(0 0 20px #9333ea);
+}
+
+.panel{
+position:absolute;
+left:20px;
+top:150px;
+width:260px;
 }
 
 .card{
 background:#0f172a;
-border-radius:12px;
 border:1px solid #1e3a8a;
-padding:15px;
-margin-bottom:15px;
+border-radius:12px;
+padding:14px;
+margin-bottom:14px;
 }
 
 .bar{
@@ -89,7 +78,6 @@ background:#1e293b;
 border-radius:6px;
 position:relative;
 overflow:hidden;
-margin-top:8px;
 }
 
 .fill{
@@ -102,52 +90,28 @@ width:0%;
 position:absolute;
 width:100%;
 text-align:center;
-line-height:16px;
+top:0;
 font-size:12px;
+}
+
+.shop{
+position:absolute;
+right:20px;
+top:150px;
+width:260px;
 }
 
 button{
 background:#9333ea;
 border:none;
-padding:8px 14px;
+padding:8px 12px;
 border-radius:6px;
 color:white;
-margin-top:8px;
+margin-top:6px;
 }
 
 button:hover{
 background:#a855f7;
-}
-
-.iconBtn{
-display:flex;
-align-items:center;
-gap:10px;
-background:#0f172a;
-border:1px solid #1e3a8a;
-border-radius:10px;
-padding:10px;
-margin-bottom:10px;
-}
-
-.modal{
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-background:#0f172a;
-border:1px solid #1e3a8a;
-padding:25px;
-border-radius:12px;
-width:420px;
-display:none;
-z-index:1000;
-}
-
-.close{
-position:absolute;
-right:10px;
-top:10px;
 }
 
 .float{
@@ -162,16 +126,8 @@ animation:floatUp 1s forwards;
 100%{opacity:0;transform:translateY(-60px)}
 }
 
-#aetherCursor{
-position:fixed;
-width:24px;
-height:24px;
-pointer-events:none;
-z-index:9999;
-filter:drop-shadow(0 0 6px #9333ea);
-}
-
 </style>
+
 </head>
 
 <body>
@@ -187,49 +143,32 @@ filter:drop-shadow(0 0 6px #9333ea);
 
 </div>
 
-<div id="layout">
+<div id="center">
+<img src="Final_game_icon.png" id="sword">
+</div>
 
 <div class="panel">
 
 <div class="card">
 
-<b>★ Storyline</b>
+<b id="storyTitle">★ Storyline 1</b>
+
+<div id="storyInfo"></div>
 
 <div class="bar">
 <div class="fill" id="storyFill"></div>
 <div class="percent" id="storyPercent">0%</div>
 </div>
 
-<button onclick="claimStory()" id="storyClaim" disabled>Claim Reward</button>
+<button id="claimBtn" onclick="claimStory()" disabled>
+Claim Reward
+</button>
 
 </div>
 
-<div class="card">
-
-<b>◆ Daily Challenge</b>
-
-<div class="bar">
-<div class="fill" id="dailyFill"></div>
-<div class="percent" id="dailyPercent">0%</div>
 </div>
 
-<button onclick="claimDaily()" id="dailyClaim">Claim</button>
-
-</div>
-
-<div class="iconBtn" onclick="openStory()">📘 Story</div>
-<div class="iconBtn" onclick="openGuide()">❓ Guide</div>
-<div class="iconBtn" onclick="openSettings()">⚙ Settings</div>
-
-</div>
-
-<div id="center">
-
-<img src="Final_game_icon.png" id="sword">
-
-</div>
-
-<div class="panel">
+<div class="shop">
 
 <div class="card">
 
@@ -249,80 +188,19 @@ Cost: 700 Coins
 
 </div>
 
-</div>
+<div class="card">
+
+<b>20 Baht Coupon</b><br>
+Cost: 1800 Coins
+
+<button onclick="buyCoupon(1800,20)">Buy</button>
 
 </div>
 
-<div class="modal" id="guide">
-
-<button class="close" onclick="closeGuide()">X</button>
-
-<h3>How the Game Works</h3>
-
-Click the blade to gain clicks.
-
-Clicks give coins and fragments.
-
-Coins can be exchanged for coupons on the market page.
-
-Fragments unlock upgrades later.
-
-Daily challenges give extra rewards.
-
 </div>
-
-<div class="modal" id="story">
-
-<button class="close" onclick="closeStory()">X</button>
-
-<h3>Aetherfall Archive</h3>
-
-<p>
-The Aetherfall blade was discovered in a research facility.
-
-Repeated strikes cause the blade to release energy.
-
-That energy can be converted into fragments and coins.
-
-The collected resources can be exchanged for rewards in the market.
-</p>
-
-</div>
-
-<div class="modal" id="settings">
-
-<button class="close" onclick="closeSettings()">X</button>
-
-<h3>Settings</h3>
-
-<label>
-<input type="checkbox" id="effectsToggle" checked>
-Click Effects
-</label>
-
-<br><br>
-
-<label>
-<input type="checkbox" id="musicToggle">
-Music
-</label>
-
-<br><br>
-
-<select id="bgSelect">
-
-<option value="#070b1f">Dark</option>
-<option value="#020617">Deep Night</option>
-<option value="#111827">Gray</option>
-
-</select>
-
-</div>
-
-<div id="aetherCursor"></div>
 
 <audio id="music" loop>
-<source src="music.mp3">
+<source src="placeholder.mp3">
 </audio>
 
 <script>
@@ -331,37 +209,53 @@ let clicks=0
 let coins=0
 let fragments=0
 let combo=0
+let lastClick=0
 
-let storyGoal=100
-let dailyGoal=500
+let storyIndex=0
 
-let dailyClaimed=false
-
-let effects=true
+const stories=[
+{goal:100,reward:10},
+{goal:500,reward:25},
+{goal:2000,reward:80},
+{goal:8000,reward:200}
+]
 
 const sword=document.getElementById("sword")
 
 sword.onclick=e=>{
 
-clicks++
+let now=Date.now()
+
+if(now-lastClick>2000)combo=0
 combo++
 
-if(Math.random()<0.02)fragments++
-if(Math.random()<0.05)coins++
+lastClick=now
 
-if(effects)spawnText(e,"+1","#38bdf8")
+clicks++
+
+if(Math.random()<0.05)coins++
+if(Math.random()<0.02)fragments++
+
+spawnText(e)
 
 update()
 
 }
 
-function spawnText(e,text,color){
+function spawnText(e){
 
 let t=document.createElement("div")
-
 t.className="float"
-t.innerText=text
-t.style.color=color
+
+if(Math.random()<0.1){
+t.innerText="CRITICAL"
+t.style.color="#facc15"
+coins+=2
+}else{
+t.innerText="+1"
+t.style.color="#38bdf8"
+}
+
 t.style.left=e.pageX+"px"
 t.style.top=e.pageY+"px"
 
@@ -378,18 +272,22 @@ document.getElementById("coins").innerText=coins
 document.getElementById("fragments").innerText=fragments
 document.getElementById("combo").innerText=combo
 
-let sp=Math.min(100,(clicks/storyGoal)*100)
+let s=stories[storyIndex]
 
-document.getElementById("storyFill").style.width=sp+"%"
-document.getElementById("storyPercent").innerText=Math.floor(sp)+"%"
+document.getElementById("storyTitle").innerText=
+"★ Storyline "+(storyIndex+1)
 
-if(clicks>=storyGoal)
-document.getElementById("storyClaim").disabled=false
+document.getElementById("storyInfo").innerText=
+"Goal: "+s.goal+" clicks | Reward: "+s.reward+" coins"
 
-let dp=Math.min(100,(clicks/dailyGoal)*100)
+let percent=Math.min(100,(clicks/s.goal)*100)
 
-document.getElementById("dailyFill").style.width=dp+"%"
-document.getElementById("dailyPercent").innerText=Math.floor(dp)+"%"
+document.getElementById("storyFill").style.width=percent+"%"
+document.getElementById("storyPercent").innerText=Math.floor(percent)+"%"
+
+if(clicks>=s.goal){
+document.getElementById("claimBtn").disabled=false
+}
 
 save()
 
@@ -397,28 +295,17 @@ save()
 
 function claimStory(){
 
-if(clicks<storyGoal)return
+let s=stories[storyIndex]
 
-coins+=20
+if(clicks<s.goal)return
 
-storyGoal*=2
+coins+=s.reward
 
-document.getElementById("storyClaim").disabled=true
+storyIndex++
+
+document.getElementById("claimBtn").disabled=true
 
 update()
-
-}
-
-function claimDaily(){
-
-if(clicks>=dailyGoal&&!dailyClaimed){
-
-coins+=40
-dailyClaimed=true
-
-alert("Daily reward claimed")
-
-}
 
 }
 
@@ -440,34 +327,12 @@ alert("Coupon: "+code)
 
 }
 
-function openGuide(){document.getElementById("guide").style.display="block"}
-function closeGuide(){document.getElementById("guide").style.display="none"}
-
-function openStory(){document.getElementById("story").style.display="block"}
-function closeStory(){document.getElementById("story").style.display="none"}
-
-function openSettings(){document.getElementById("settings").style.display="block"}
-function closeSettings(){document.getElementById("settings").style.display="none"}
-
-document.getElementById("effectsToggle").onchange=e=>{
-effects=e.target.checked
-}
-
-document.getElementById("musicToggle").onchange=e=>{
-let m=document.getElementById("music")
-if(e.target.checked)m.play()
-else m.pause()
-}
-
-document.getElementById("bgSelect").onchange=e=>{
-document.body.style.background=e.target.value
-}
-
 function save(){
 
 localStorage.setItem("af_clicks",clicks)
 localStorage.setItem("af_coins",coins)
 localStorage.setItem("af_frag",fragments)
+localStorage.setItem("af_story",storyIndex)
 
 }
 
@@ -476,34 +341,13 @@ function load(){
 clicks=parseInt(localStorage.getItem("af_clicks"))||0
 coins=parseInt(localStorage.getItem("af_coins"))||0
 fragments=parseInt(localStorage.getItem("af_frag"))||0
+storyIndex=parseInt(localStorage.getItem("af_story"))||0
 
 update()
 
 }
 
 load()
-
-const cursor=document.getElementById("aetherCursor")
-
-cursor.innerHTML=`
-<svg viewBox="0 0 32 32" width="24" height="24">
-<defs>
-<linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-<stop offset="0%" stop-color="#38bdf8"/>
-<stop offset="100%" stop-color="#9333ea"/>
-</linearGradient>
-</defs>
-<path d="M2 2 L2 28 L10 20 L14 30 L18 28 L14 18 L26 18 Z"
-fill="url(#grad)"
-stroke="#a855f7"
-stroke-width="2"/>
-</svg>
-`
-
-document.addEventListener("mousemove",e=>{
-cursor.style.left=e.clientX+"px"
-cursor.style.top=e.clientY+"px"
-})
 
 </script>
 
