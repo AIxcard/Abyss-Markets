@@ -2,68 +2,124 @@
 <html>
 
 <head>
-
-<title>Abyssal Market Coin Game</title>
+<title>Abyssal Market Click Game</title>
 
 <style>
 
 body{
 margin:0;
 font-family:Arial;
-background:#020617;
+background:radial-gradient(circle at top,#0a0f2e,#020617);
 color:white;
+overflow:hidden;
 }
 
-/* HEADER */
+/* TOP BAR */
 
 header{
-text-align:center;
-font-size:42px;
-padding:25px;
+height:80px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:36px;
 color:#a855f7;
-box-shadow:0 0 25px #9333ea;
+letter-spacing:3px;
+box-shadow:0 0 20px #9333ea;
 }
 
-/* MAIN LAYOUT */
+/* MAIN GRID */
 
 #layout{
 display:grid;
-grid-template-columns:1fr 1fr 1fr;
-height:calc(100vh - 100px);
+grid-template-columns:350px 1fr 350px;
+height:calc(100vh - 80px);
 }
 
-/* PANELS */
+/* LEFT PANEL */
 
 .panel{
-padding:30px;
+padding:25px;
+overflow:auto;
 }
 
-/* CENTER CLICK AREA */
+.panel h2{
+margin-top:0;
+color:#38bdf8;
+}
+
+/* MISSIONS */
+
+.mission{
+background:#0f172a;
+border-radius:12px;
+padding:16px;
+margin-bottom:15px;
+border:1px solid #1e3a8a;
+}
+
+.missionTitle{
+font-size:16px;
+margin-bottom:6px;
+}
+
+.bar{
+height:10px;
+background:#1e293b;
+border-radius:6px;
+overflow:hidden;
+}
+
+.fill{
+height:100%;
+background:#22c55e;
+width:0%;
+}
+
+/* CENTER AREA */
 
 #center{
 display:flex;
 flex-direction:column;
-justify-content:center;
 align-items:center;
+justify-content:center;
+position:relative;
 }
 
 #sword{
-width:340px;
+width:260px;
 cursor:pointer;
-transition:.12s;
+transition:0.15s;
 }
 
 #sword:hover{
-filter:drop-shadow(0 0 15px #9333ea);
+transform:scale(1.05);
+filter:drop-shadow(0 0 20px #9333ea);
 }
 
 #sword:active{
-transform:scale(.92);
+transform:scale(0.92);
 }
 
+/* FLOATING CLICK TEXT */
+
+.float{
+position:absolute;
+color:#38bdf8;
+font-weight:bold;
+pointer-events:none;
+animation:floatUp 1s ease-out forwards;
+}
+
+@keyframes floatUp{
+0%{opacity:1;transform:translateY(0)}
+100%{opacity:0;transform:translateY(-60px)}
+}
+
+/* STATS */
+
 #stats{
-font-size:22px;
 margin-top:20px;
+font-size:20px;
 text-align:center;
 }
 
@@ -72,118 +128,42 @@ width:420px;
 height:14px;
 background:#1e293b;
 border-radius:8px;
-margin-top:12px;
 overflow:hidden;
+margin-top:10px;
 }
 
-.fill{
+.progressFill{
 height:100%;
 background:#38bdf8;
 width:0%;
 }
 
-/* BUTTONS */
-
-.bigBtn{
-display:block;
-width:100%;
-padding:14px;
-margin-top:14px;
-border:none;
-border-radius:10px;
-background:#2563eb;
-color:white;
-font-size:18px;
-cursor:pointer;
-}
-
-/* MISSIONS */
-
-.mission{
-background:#0f172a;
-border:1px solid #1e3a8a;
-border-radius:12px;
-padding:18px;
-margin-bottom:16px;
-}
-
-.missionTitle{
-font-size:18px;
-color:#38bdf8;
-}
-
-.missionBar{
-height:12px;
-background:#1e293b;
-border-radius:6px;
-margin-top:8px;
-overflow:hidden;
-}
-
-.missionFill{
-height:100%;
-background:#22c55e;
-width:0%;
-}
-
-/* SHOP ITEMS */
+/* SHOP */
 
 .shopItem{
 background:#0f172a;
 border:1px solid #1e3a8a;
 border-radius:12px;
 padding:16px;
-margin-bottom:14px;
+margin-bottom:15px;
 }
 
 .shopItem button{
 margin-top:8px;
-padding:8px 12px;
 background:#9333ea;
 border:none;
-border-radius:6px;
+padding:7px 12px;
 color:white;
+border-radius:6px;
 cursor:pointer;
-}
-
-/* MODALS */
-
-.modal{
-display:none;
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-width:500px;
-background:#020617;
-border:1px solid #2563eb;
-border-radius:12px;
-padding:25px;
-z-index:1000;
-}
-
-.close{
-position:absolute;
-right:15px;
-top:10px;
-cursor:pointer;
-font-size:20px;
-}
-
-/* COUPON LIST */
-
-#couponList{
-font-size:14px;
-line-height:1.6;
 }
 
 </style>
-
 </head>
 
 <body>
 
-<header>ABYSSAL MARKET COIN GAME</header>
+<header>ABYSSAL MARKET GAME</header>
 
 <div id="layout">
 
@@ -192,39 +172,18 @@ line-height:1.6;
 <h2>Missions</h2>
 
 <div class="mission">
-<div class="missionTitle">5,000 Clicks</div>
-Reward: 40 coins
-
-<div class="missionBar">
-<div id="m1" class="missionFill"></div>
-</div>
-
-<div id="m1text">0%</div>
-
+<div class="missionTitle">5,000 Clicks — 40 Coins</div>
+<div class="bar"><div id="m1" class="fill"></div></div>
 </div>
 
 <div class="mission">
-<div class="missionTitle">25,000 Clicks</div>
-Reward: 120 coins
-
-<div class="missionBar">
-<div id="m2" class="missionFill"></div>
-</div>
-
-<div id="m2text">0%</div>
-
+<div class="missionTitle">25,000 Clicks — 120 Coins</div>
+<div class="bar"><div id="m2" class="fill"></div></div>
 </div>
 
 <div class="mission">
-<div class="missionTitle">100,000 Clicks</div>
-Reward: 450 coins
-
-<div class="missionBar">
-<div id="m3" class="missionFill"></div>
-</div>
-
-<div id="m3text">0%</div>
-
+<div class="missionTitle">100,000 Clicks — 450 Coins</div>
+<div class="bar"><div id="m3" class="fill"></div></div>
 </div>
 
 </div>
@@ -232,28 +191,23 @@ Reward: 450 coins
 
 <div id="center">
 
-<img src="Final_Game_Icon.png" id="sword">
+<img
+id="sword"
+src="Final_Game_Icon.png"
+onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg'"
+>
 
 <div id="stats">
-
 Clicks: <span id="clicks">0</span><br>
 Coins: <span id="coins">0</span>
 
 <div class="progress">
-<div id="bar" class="fill"></div>
+<div id="bar" class="progressFill"></div>
 </div>
 
 1000 clicks → 10 coins
 
 </div>
-
-<button class="bigBtn" onclick="openModal('shop')">
-Open Coupon Shop
-</button>
-
-<button class="bigBtn" onclick="openModal('coupons')">
-View Coupons
-</button>
 
 </div>
 
@@ -264,37 +218,28 @@ View Coupons
 
 <div class="shopItem">
 5 Baht Discount<br>
-Cost: 180 coins
+Cost: 180 coins<br>
 <button onclick="buyCoupon(180,5)">Buy</button>
 </div>
 
 <div class="shopItem">
 10 Baht Discount<br>
-Cost: 380 coins
+Cost: 380 coins<br>
 <button onclick="buyCoupon(380,10)">Buy</button>
 </div>
 
 <div class="shopItem">
 20 Baht Discount<br>
-Cost: 780 coins
+Cost: 780 coins<br>
 <button onclick="buyCoupon(780,20)">Buy</button>
 </div>
 
-</div>
-
-</div>
-
-
-<div id="coupons" class="modal">
-
-<div class="close" onclick="closeModal('coupons')">X</div>
-
 <h2>Your Coupons</h2>
-
 <div id="couponList"></div>
 
 </div>
 
+</div>
 
 <script>
 
@@ -303,68 +248,69 @@ let coins=0
 let coupons=[]
 let lastClick=0
 
-const clickText=document.getElementById("clicks")
-const coinText=document.getElementById("coins")
-const bar=document.getElementById("bar")
+const sword=document.getElementById("sword")
 
-document.getElementById("sword").onclick=function(){
+sword.onclick=(e)=>{
 
 let now=Date.now()
-
 if(now-lastClick<70)return
-
 lastClick=now
 
 clicks++
+
+spawnText(e)
 
 if(clicks%1000===0){
 coins+=10
 }
 
-updateUI()
+update()
 
 }
 
-function updateUI(){
+function spawnText(e){
 
-clickText.innerText=clicks
-coinText.innerText=coins
+let t=document.createElement("div")
+t.className="float"
+t.innerText="+1"
 
-let progress=(clicks%1000)/10
-bar.style.width=progress+"%"
+t.style.left=e.pageX+"px"
+t.style.top=e.pageY+"px"
 
-updateMissions()
+document.body.appendChild(t)
+
+setTimeout(()=>t.remove(),1000)
+
+}
+
+function update(){
+
+document.getElementById("clicks").innerText=clicks
+document.getElementById("coins").innerText=coins
+
+let p=(clicks%1000)/10
+document.getElementById("bar").style.width=p+"%"
+
+updateMission("m1",5000)
+updateMission("m2",25000)
+updateMission("m3",100000)
 
 let list=""
-
-coupons.forEach(c=>{
-list+=c+"<br>"
-})
-
+coupons.forEach(c=>list+=c+"<br>")
 document.getElementById("couponList").innerHTML=list
 
-saveGame()
+save()
 
 }
 
-function updateMissions(){
-
-updateMission("m1","m1text",5000)
-updateMission("m2","m2text",25000)
-updateMission("m3","m3text",100000)
-
-}
-
-function updateMission(barID,textID,goal){
+function updateMission(id,goal){
 
 let percent=Math.min(100,(clicks/goal)*100)
-
-document.getElementById(barID).style.width=percent+"%"
-document.getElementById(textID).innerText=Math.floor(percent)+"%"
+document.getElementById(id).style.width=percent+"%"
 
 }
 
-function buyCoupon(cost,value){
+function buyCoupon(cost,val){
 
 if(coins<cost){
 alert("Not enough coins")
@@ -374,44 +320,35 @@ return
 coins-=cost
 
 let code="ABYSS-"+Math.floor(Math.random()*9000+1000)
+coupons.push(code+" ("+val+" Baht Discount)")
 
-coupons.push(code+" ("+value+" Baht Discount)")
-
-updateUI()
-
-}
-
-function openModal(id){
-document.getElementById(id).style.display="block"
-}
-
-function closeModal(id){
-document.getElementById(id).style.display="none"
-}
-
-function saveGame(){
-
-localStorage.setItem("clicks",clicks)
-localStorage.setItem("coins",coins)
-localStorage.setItem("coupons",JSON.stringify(coupons))
+update()
 
 }
 
-function loadGame(){
+function save(){
 
-let c=localStorage.getItem("clicks")
-let co=localStorage.getItem("coins")
-let cp=localStorage.getItem("coupons")
+localStorage.setItem("c",clicks)
+localStorage.setItem("co",coins)
+localStorage.setItem("cp",JSON.stringify(coupons))
+
+}
+
+function load(){
+
+let c=localStorage.getItem("c")
+let co=localStorage.getItem("co")
+let cp=localStorage.getItem("cp")
 
 if(c)clicks=parseInt(c)
 if(co)coins=parseInt(co)
 if(cp)coupons=JSON.parse(cp)
 
-updateUI()
+update()
 
 }
 
-loadGame()
+load()
 
 </script>
 
