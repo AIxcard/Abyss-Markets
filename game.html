@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Aetherfall</title>
+    <title>Aetherfall | Nexus</title>
     <style>
         :root {
             --bg: #03050a;
-            --panel: rgba(13, 17, 23, 0.98);
+            --panel: rgba(10, 14, 20, 0.98);
             --border: #1e3a8a;
             --accent: #a78bfa;
             --gold: #facc15;
@@ -15,101 +15,103 @@
             --text: #ffffff;
         }
 
-        body {
-            margin: 0; height: 100vh; overflow: hidden;
+        body, html {
+            margin: 0; height: 100%; overflow: hidden;
             background: #05070a; font-family: 'Segoe UI', sans-serif; color: var(--text);
         }
 
-        /* FULL HEIGHT LAYOUT */
-        #layout {
-            display: grid;
-            grid-template-columns: 260px 1fr 320px;
-            height: 100vh;
-        }
+        #layout { display: grid; grid-template-columns: 260px 1fr 320px; height: 100vh; }
 
         .side-panel {
-            background: var(--panel);
-            border-right: 1px solid var(--border);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
+            background: var(--panel); border-right: 1px solid var(--border);
+            padding: 25px 20px; display: flex; flex-direction: column; z-index: 10;
         }
         .right-panel { border-right: none; border-left: 1px solid var(--border); }
 
         #center-area {
-            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-            padding-top: 20px; position: relative;
+            display: flex; flex-direction: column; align-items: center; padding-top: 30px;
+            background: radial-gradient(circle at center, #0a1128 0%, #03050a 100%);
         }
 
         header {
-            font-size: 42px; font-weight: 900; letter-spacing: 5px;
+            font-size: 52px; font-weight: 900; letter-spacing: 8px;
             background: linear-gradient(to bottom, #fff, var(--accent));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
-        /* LEVEL BAR */
-        #levelWrap { width: 500px; margin-bottom: 20px; }
+        /* PROGRESS BARS */
+        #levelWrap { width: 550px; margin-bottom: 30px; }
         .bar-outer {
-            background: #000; height: 32px; border-radius: 6px;
+            background: #000; height: 36px; border-radius: 8px;
             border: 1px solid var(--border); position: relative; overflow: hidden;
         }
         .fill { height: 100%; background: linear-gradient(90deg, #4c1d95, #8b5cf6); width: 0%; transition: width 0.3s; }
-        .bar-line {
-            position: absolute; left: 50%; top: 0; width: 2px; height: 100%;
-            background: rgba(255,255,255,0.3); z-index: 2;
-        }
+        .bar-line { position: absolute; left: 50%; top: 0; width: 2px; height: 100%; background: rgba(255,255,255,0.4); z-index: 5; }
         .bar-content {
-            position: absolute; width: 100%; height: 100%; top:0; z-index: 3;
+            position: absolute; width: 100%; height: 100%; top:0; z-index: 6;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 0 15px; box-sizing: border-box; font-size: 12px; font-weight: bold;
+            padding: 0 20px; box-sizing: border-box; font-size: 14px; font-weight: bold;
         }
 
-        /* STATS GRID */
-        #stats { display: flex; gap: 10px; margin-bottom: 40px; }
+        /* STATS */
+        #stats { display: flex; gap: 15px; margin-bottom: 20px; }
         .stat-box {
             background: #0d1117; border: 1px solid var(--border);
-            padding: 10px 20px; border-radius: 8px; text-align: center; min-width: 80px;
+            padding: 12px 25px; border-radius: 10px; text-align: center; min-width: 90px;
         }
-        .stat-box small { display: block; font-size: 10px; text-transform: uppercase; margin-bottom: 4px; }
-        .c-white { color: #fff; } .c-gold { color: var(--gold); } .c-frag { color: var(--frag); } .c-combo { color: var(--combo); }
+        .stat-box small { display: block; font-size: 11px; text-transform: uppercase; margin-bottom: 5px; opacity: 0.7; }
+        .c-white { color: #fff; font-size: 1.3em; font-weight: bold; }
+        .c-gold { color: var(--gold); font-size: 1.3em; font-weight: bold; }
+        .c-frag { color: var(--frag); font-size: 1.3em; font-weight: bold; }
+        .c-combo { color: var(--combo); font-size: 1.3em; font-weight: bold; }
 
-        #sword { width: 320px; cursor: pointer; transition: transform 0.05s; margin-top: 50px;}
-        #sword:active { transform: scale(0.94); }
+        #sword { width: 340px; cursor: pointer; transition: transform 0.05s; margin-top: 40px; }
+        #sword:active { transform: scale(0.92); }
 
         /* BUTTONS */
         .menuBtn {
-            background: #161b22; border: 1px solid var(--border);
-            padding: 14px; margin-bottom: 12px; border-radius: 8px;
-            cursor: pointer; display: flex; align-items: center; gap: 10px;
+            background: #111827; border: 1px solid #1f2937;
+            padding: 16px; margin-bottom: 12px; border-radius: 12px;
+            cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.2s;
         }
-        .menuBtn:hover { border-color: var(--accent); background: #1c2128; }
+        .menuBtn:hover { border-color: var(--accent); background: #1f2937; }
+
+        .btn-claim {
+            background: linear-gradient(180deg, #8b5cf6, #6d28d9);
+            border: 1px solid #a78bfa; color: white; padding: 12px;
+            border-radius: 8px; width: 100%; font-weight: 800; cursor: pointer; text-transform: uppercase;
+        }
+        .btn-claim:disabled { background: #1a1a1a; border: 1px solid #333; color: #555; cursor: not-allowed; }
+
+        .btn-reset-ui {
+            background: transparent; border: none; color: #666; font-size: 12px;
+            text-decoration: underline; cursor: pointer; margin-top: 30px; transition: 0.2s;
+        }
+        .btn-reset-ui:hover { color: #ef4444; }
 
         /* QUESTS */
-        .q-box { background: #0d1117; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #30363d; }
-        .q-progress { background: #000; height: 12px; border-radius: 10px; overflow: hidden; position: relative; margin: 10px 0; }
-        .q-per { position: absolute; width: 100%; text-align: center; font-size: 9px; line-height: 12px; font-weight: bold; }
+        .q-box { background: #0d1117; padding: 18px; border-radius: 14px; margin-bottom: 25px; border: 1px solid #30363d; }
+        .q-progress { background: #000; height: 18px; border-radius: 20px; overflow: hidden; position: relative; margin: 12px 0; border: 1px solid #21262d; }
+        .q-per { position: absolute; width: 100%; text-align: center; font-size: 11px; line-height: 18px; font-weight: 900; color: #fff; z-index: 5; }
+        .timer-txt { font-size: 10px; color: #666; font-family: monospace; }
 
         /* MODALS */
         .modal {
             display: none; position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%); background: #0d1117;
-            border: 2px solid var(--accent); border-radius: 15px;
-            width: 700px; height: 500px; padding: 30px; z-index: 1000;
+            border: 2px solid var(--accent); border-radius: 20px;
+            width: 750px; height: 550px; padding: 35px; z-index: 1000;
         }
-        .close { float: right; cursor: pointer; color: #ff4d4d; font-size: 28px; }
+        .close { float: right; cursor: pointer; color: #ff4d4d; font-size: 32px; font-weight: bold; }
 
-        /* ALERTS */
         #center-alert {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            background: rgba(239, 68, 68, 0.9); color: white; padding: 12px 30px;
-            border-radius: 8px; font-weight: bold; display: none; z-index: 2000;
+            position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+            background: rgba(239, 68, 68, 0.95); color: white; padding: 15px 40px;
+            border-radius: 12px; font-weight: 900; display: none; z-index: 2000;
         }
-
-        .lore-footer {
-            position: absolute; bottom: 30px; left: 0; width: 100%;
-            display: flex; justify-content: center; align-items: center; gap: 20px;
-        }
+        
+        .m-item { background: #161b22; padding: 15px; margin-bottom: 10px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #30363d; }
     </style>
 </head>
 <body>
@@ -118,19 +120,17 @@
 
 <div id="layout">
     <div class="side-panel">
-        <h3 style="color: var(--accent); margin-bottom: 25px;">Nexus</h3>
+        <h2 style="color: var(--accent); margin-bottom: 30px;">NEXUS</h2>
         <div class="menuBtn" onclick="openModal('lore-m')">📘 Lore Archive</div>
-        <div class="menuBtn" onclick="openModal('guide-m')">📖 Aether Guide</div>
+        <div class="menuBtn" onclick="openModal('mile-m')">🏆 Milestones</div>
         <div class="menuBtn" onclick="openModal('shop-m')">💎 Fragment Shop</div>
         <div class="menuBtn" onclick="openModal('arts-m')">✨ Artifacts</div>
-        <div class="menuBtn" onclick="openModal('mile-m')">🏆 Milestones</div>
         <div class="menuBtn" onclick="openModal('coupon-m')">🎟️ Coupon Market</div>
         <div style="margin-top: auto;" class="menuBtn" onclick="openModal('set-m')">⚙️ Settings</div>
     </div>
 
     <div id="center-area">
         <header>AETHERFALL</header>
-        
         <div id="levelWrap">
             <div class="bar-outer">
                 <div class="bar-line"></div>
@@ -141,140 +141,121 @@
                 </div>
             </div>
         </div>
-
         <div id="stats">
             <div class="stat-box"><small>Clicks</small><span id="stat-clicks" class="c-white">0</span></div>
             <div class="stat-box"><small>Gold</small><span id="stat-gold" class="c-gold">0</span></div>
             <div class="stat-box"><small>Frags</small><span id="stat-frags" class="c-frag">0</span></div>
             <div class="stat-box"><small>Combo</small><span id="stat-combo" class="c-combo">0</span></div>
         </div>
-
         <img id="sword" src="Final_game_icon.png" alt="Sword">
     </div>
 
     <div class="side-panel right-panel">
-        <h3 style="color: var(--accent);">Storyline</h3>
+        <h2 style="color: var(--accent); margin-bottom: 30px;">QUESTS</h2>
+        
         <div class="q-box">
-            <p id="st-title" style="margin:0; font-weight: bold;">Chapter 1</p>
-            <p id="st-goal" style="font-size: 12px; color: #94a3b8;">Goal: 100 Clicks</p>
+            <p id="st-title" style="margin:0; font-size: 18px; font-weight: bold;">Chapter 1</p>
+            <p id="st-goal" style="font-size: 13px; color: #94a3b8; margin: 5px 0;">Goal: 100 Clicks</p>
             <div class="q-progress">
                 <div id="st-fill" class="fill"></div>
                 <div id="st-per" class="q-per">0%</div>
             </div>
-            <p id="st-rew" style="font-size: 10px; color: var(--gold); margin-bottom: 10px;">Reward: 50 Gold</p>
-            <button style="width:100%" onclick="claimStory()">Claim Reward</button>
+            <p id="st-rew" style="font-size: 11px; color: var(--gold); margin-bottom: 12px; font-weight: bold;">Reward: 50 Gold</p>
+            <button class="btn-claim" id="st-btn" onclick="claimStory()">Claim Reward</button>
         </div>
 
-        <h3 style="color: var(--accent);">Daily Quest</h3>
         <div class="q-box">
-            <p style="margin:0; font-weight: bold;">Daily Power</p>
-            <p style="font-size: 12px; color: #94a3b8;">Target: 2,000</p>
+            <p style="margin:0; font-size: 18px; font-weight: bold;">Daily Quest</p>
+            <p id="daily-timer" class="timer-txt">Resets in: 00:00:00:00</p>
             <div class="q-progress">
                 <div id="dailyFill" class="fill"></div>
                 <div id="dailyPer" class="q-per">0%</div>
             </div>
-            <button style="width:100%" onclick="claimDaily()">Claim Daily</button>
+            <p style="font-size: 11px; color: var(--frag); margin-bottom: 12px; font-weight: bold;">Reward: 100 Gold | 1 Frag</p>
+            <button class="btn-claim" id="daily-btn" onclick="claimDaily()">Claim Daily</button>
         </div>
     </div>
 </div>
 
 <div id="lore-m" class="modal">
     <span class="close" onclick="closeModal('lore-m')">&times;</span>
-    <h2 style="color:var(--accent)">Chronicles of the Fall</h2>
-    <div id="loreContent" style="font-style: italic; line-height: 1.8; color: #cbd5e1; height: 320px;"></div>
-    <div class="lore-footer">
-        <button onclick="changePage(-1)">Previous</button>
-        <span id="pageTxt">1/5</span>
+    <h2 style="color:var(--accent)">Chronicles of Aetherfall</h2>
+    <div id="loreContent" style="font-style: italic; line-height: 2; color: #cbd5e1; height: 320px; font-size: 18px;"></div>
+    <div style="text-align: center; margin-top: 30px;">
+        <button onclick="changePage(-1)">Prev</button>
+        <span id="pageTxt" style="margin: 0 20px;">1/5</span>
         <button onclick="changePage(1)">Next</button>
-    </div>
-</div>
-
-<div id="set-m" class="modal">
-    <span class="close" onclick="closeModal('set-m')">&times;</span>
-    <h2>⚙️ Settings & Stats</h2>
-    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px;">
-        <h3>📊 All-Time Records</h3>
-        <p>Highest Combo: <span id="record-combo" class="c-combo">0</span></p>
-        <p>Total Gold Earned: <span id="record-gold" class="c-gold">0</span></p>
-        <p>Total Fragments: <span id="record-frags" class="c-frag">0</span></p>
-    </div>
-    <button style="margin-top: 20px; background: #ef4444;" onclick="hardReset()">HARD RESET GAME</button>
-</div>
-
-<div id="coupon-m" class="modal">
-    <span class="close" onclick="closeModal('coupon-m')">&times;</span>
-    <h2>🎟️ Coupon Market</h2>
-    <div style="display:flex; flex-direction:column; gap:10px;">
-        <div class="q-box" style="display:flex; justify-content:space-between; align-items:center;">
-            <div><b>Bronze Coupon</b><br><small>[20฿ Discount]</small></div>
-            <button onclick="buyCoupon(1, 1500)">1,500 Gold</button>
-        </div>
-        <div class="q-box" style="display:flex; justify-content:space-between; align-items:center;">
-            <div><b>Silver Coupon</b><br><small>[50฿ Discount]</small></div>
-            <button onclick="buyCoupon(2, 4000)">4,000 Gold</button>
-        </div>
-        <div class="q-box" style="display:flex; justify-content:space-between; align-items:center;">
-            <div><b>Gold Coupon</b><br><small>[100฿ Discount]</small></div>
-            <button onclick="buyCoupon(3, 10000)">10,000 Gold</button>
-        </div>
     </div>
 </div>
 
 <div id="mile-m" class="modal">
     <span class="close" onclick="closeModal('mile-m')">&times;</span>
-    <h2>🏆 Milestones</h2>
-    <p>Reach Level milestones to earn Fragments.</p>
-    <div id="mileList"></div>
+    <h2 style="color:var(--accent)">🏆 Level Milestones</h2>
+    <div id="mileList" style="overflow-y: auto; height: 380px;"></div>
+</div>
+
+<div id="coupon-m" class="modal">
+    <span class="close" onclick="closeModal('coupon-m')">&times;</span>
+    <h2 style="color:var(--accent)">🎟️ Coupon Market</h2>
+    <p id="coupon-timer" class="timer-txt">Restock in: 0d 0h 0m 0s</p>
+    <div class="m-item">
+        <div><b>Bronze Coupon</b><br><small>[20฿ Discount]</small></div>
+        <button class="btn-claim" style="width:120px;" onclick="buyCoupon(1500)">1,500 Gold</button>
+    </div>
+</div>
+
+<div id="set-m" class="modal">
+    <span class="close" onclick="closeModal('set-m')">&times;</span>
+    <h2>⚙️ Game Settings</h2>
+    <div style="background:rgba(255,255,255,0.05); padding:20px; border-radius:12px;">
+        <p>Highest Combo: <span id="record-combo" class="c-combo">0</span></p>
+        <p>Total Clicks: <span id="record-clicks">0</span></p>
+    </div>
+    <button class="btn-reset-ui" onclick="hardReset()">RESET GAME PROGRESS</button>
 </div>
 
 <script>
-/* DATA */
 let clicks=0, gold=0, frags=0, combo=0, power=1;
 let level=1, exp=0, storyStage=0, dailyPower=0;
-let hCombo=0, totalGold=0, totalFrags=0;
-let lastClick=Date.now();
+let hCombo=0, tClicks=0, lastClick=Date.now();
+let lastDailyClaimed = 0; // Timestamp
+let claimedMiles = [];
 
 const LORE = [
-    "Year 0: The Aetherfall. A shard of the celestial plane collided with our world. It didn't destroy us; it merged with us. Now, everything vibrates with a violet hum.",
-    "The First Blade: Legend says the first Resonance Blade was forged from the impact site. It was the only tool that could 'harvest' the energy without killing the wielder.",
-    "The Gold Standard: In this new world, gold isn't just money. It's a stabilizer. By coating our equipment in it, we prevent the Aether from corrupting our souls.",
-    "The Coupons: Survivors formed the Trade Union. They issued 'Coupons'—ancient paper backed by pre-fall assets—to help new hunters get established.",
-    "The Final Level: Few have reached the peak of resonance. They say at Level 100, the wielder becomes one with the Aether, transcending the need for a blade at all."
+    "The Aetherfall changed everything. The sky bled violet, and the earth hummed with a power that could build or destroy.",
+    "The Blade isn't just a weapon; it's a tuning fork. It vibrates at the frequency of the Void.",
+    "Gold coating protects the wielder. Without it, the Aether's resonance would shatter the human soul in minutes.",
+    "The Trade Union issued coupons as a promise of future safety in a world that has none.",
+    "Level 100. The point of no return. You don't just use the Aether; you become the Aether."
 ];
 let pageIdx = 0;
 
-/* ENGINE */
-document.getElementById('sword').onclick = (e) => {
-    clicks++;
+/* CLICKS */
+document.getElementById('sword').onclick = () => {
+    clicks++; tClicks++;
     lastClick = Date.now();
     
-    let gain = power + Math.floor(combo/25);
-    gold += gain;
-    totalGold += gain;
-    dailyPower += gain;
+    // 0.5% Gold Proc, 0.1% Frag Proc
+    if(Math.random() < 0.005) { gold += 10; showAlert("Proc! +10 Gold"); }
+    if(Math.random() < 0.001) { frags += 1; showAlert("Proc! +1 Frag"); }
+    
+    dailyPower += (power + Math.floor(combo/25));
     combo++;
     if(combo > hCombo) hCombo = combo;
-
     exp += 0.05;
     checkLevel();
     updateUI();
 };
 
-// Auto-decay combo
+/* SYSTEM */
 setInterval(() => {
-    if(Date.now() - lastClick > 3000 && combo > 0) {
-        combo = 0;
-        updateUI();
-    }
+    if(Date.now() - lastClick > 3000 && combo > 0) { combo = 0; updateUI(); }
+    updateTimers();
 }, 100);
 
 function checkLevel() {
     let req = 200 + (level * 50);
-    while(exp >= req && level < 100) {
-        exp -= req;
-        level++;
-        req = 200 + (level * 50);
-    }
+    while(exp >= req && level < 100) { exp -= req; level++; req = 200 + (level * 50); }
 }
 
 function updateUI() {
@@ -288,82 +269,120 @@ function updateUI() {
     document.getElementById('expDisplay').innerText = Math.floor(exp) + " / " + req + " EXP";
     document.getElementById('levelFill').style.width = (exp/req*100) + "%";
 
-    // Quest Calcs
-    const storyGoals = [100, 1000, 5000, 20000];
+    // Storyline
+    const storyGoals = [100, 1000, 5000, 20000, 100000];
+    const storyGold = [50, 150, 400, 1000, 3000];
     if(storyStage < storyGoals.length) {
-        let per = Math.floor((clicks / storyGoals[storyStage]) * 100);
+        let per = Math.floor((clicks/storyGoals[storyStage])*100);
+        document.getElementById('st-title').innerText = "Chapter " + (storyStage+1);
+        document.getElementById('st-goal').innerText = "Goal: " + storyGoals[storyStage].toLocaleString() + " Clicks";
         document.getElementById('st-fill').style.width = Math.min(100, per) + "%";
         document.getElementById('st-per').innerText = Math.min(100, per) + "%";
-        document.getElementById('st-goal').innerText = "Goal: " + storyGoals[storyStage] + " Clicks";
+        document.getElementById('st-rew').innerText = "Reward: " + storyGold[storyStage] + " Gold";
     }
 
+    // Daily UI
     let dPer = Math.floor((dailyPower/2000)*100);
     document.getElementById('dailyFill').style.width = Math.min(100, dPer) + "%";
     document.getElementById('dailyPer').innerText = Math.min(100, dPer) + "%";
+    
+    let isToday = new Date(lastDailyClaimed).toDateString() === new Date().toDateString();
+    let btn = document.getElementById('daily-btn');
+    if(isToday) {
+        btn.innerText = "CLAIMED"; btn.disabled = true;
+    } else {
+        btn.innerText = "CLAIM DAILY"; btn.disabled = (dailyPower < 2000);
+    }
 
-    // Stats Modal
     document.getElementById('record-combo').innerText = hCombo;
-    document.getElementById('record-gold').innerText = Math.floor(totalGold).toLocaleString();
-    document.getElementById('record-frags').innerText = totalFrags;
+    document.getElementById('record-clicks').innerText = tClicks.toLocaleString();
+    renderMilestones();
 }
 
-/* ALERTS */
-function showAlert(msg) {
-    let a = document.getElementById('center-alert');
-    a.innerText = msg;
-    a.style.display = 'block';
-    setTimeout(() => { a.style.display = 'none'; }, 5000);
+function updateTimers() {
+    // Daily Reset Timer
+    let now = new Date();
+    let reset = new Date();
+    reset.setHours(24,0,0,0);
+    let diff = reset - now;
+    document.getElementById('daily-timer').innerText = "Resets in: " + formatTime(diff);
+
+    // Coupon Weekly Timer (Simulated)
+    let weekReset = 604800000 - (Date.now() % 604800000);
+    document.getElementById('coupon-timer').innerText = "Restock in: " + formatTime(weekReset);
+}
+
+function formatTime(ms) {
+    let s = Math.floor(ms/1000);
+    let m = Math.floor(s/60);
+    let h = Math.floor(m/60);
+    let d = Math.floor(h/24);
+    return `${d}d ${h%24}h ${m%60}m ${s%60}s`;
 }
 
 function claimStory() {
-    const storyGoals = [100, 1000, 5000, 20000];
-    if(clicks >= storyGoals[storyStage]) {
-        gold += 50 * (storyStage + 1);
-        storyStage++;
-        updateUI();
-    } else {
-        showAlert("Goal Not Reached! Keep Clicking.");
+    const goals = [100, 1000, 5000, 20000, 100000];
+    const rews = [50, 150, 400, 1000, 3000];
+    if(clicks >= goals[storyStage]) {
+        gold += rews[storyStage]; storyStage++; updateUI();
+    } else { showAlert("Goal Not Reached!"); }
+}
+
+function claimDaily() {
+    let isToday = new Date(lastDailyClaimed).toDateString() === new Date().toDateString();
+    if(!isToday && dailyPower >= 2000) {
+        gold += 100; frags += 1; lastDailyClaimed = Date.now(); dailyPower = 0; updateUI();
     }
 }
 
-/* MODAL CONTROL */
-function openModal(id) { 
-    document.getElementById(id).style.display = 'block'; 
-    if(id==='lore-m') changePage(0);
+function renderMilestones() {
+    const miles = [5, 10, 25, 50, 100];
+    const rews = [2, 5, 12, 30, 100];
+    let h = "";
+    miles.forEach((m, i) => {
+        let done = claimedMiles.includes(m);
+        h += `<div class="m-item">
+            <div><b>Lv ${m} Milestone</b><br><small>+${rews[i]} Frags</small></div>
+            <button class="btn-claim" style="width:100px; font-size:10px" 
+            ${(level >= m && !done) ? "" : "disabled"} onclick="claimMile(${m},${rews[i]})">
+            ${done ? "Claimed" : "Claim"}</button></div>`;
+    });
+    document.getElementById('mileList').innerHTML = h;
 }
-function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
+function claimMile(l, a) { frags += a; claimedMiles.push(l); updateUI(); }
+
+function openModal(id) { document.getElementById(id).style.display = 'block'; if(id==='lore-m') changePage(0); }
+function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 function changePage(n) {
     pageIdx = Math.max(0, Math.min(LORE.length-1, pageIdx + n));
     document.getElementById('loreContent').innerText = LORE[pageIdx];
     document.getElementById('pageTxt').innerText = (pageIdx+1) + "/" + LORE.length;
 }
 
-function hardReset() {
-    if(confirm("Erase everything?")) {
-        localStorage.clear();
-        location.reload();
-    }
+function showAlert(m) {
+    let a = document.getElementById('center-alert'); a.innerText = m; a.style.display = 'block';
+    setTimeout(() => a.style.display = 'none', 4000);
 }
+
+function hardReset() { if(confirm("Erase all data forever?")) { localStorage.clear(); location.reload(); } }
 
 function save() {
-    let data = {clicks, gold, frags, level, exp, storyStage, dailyPower, hCombo, totalGold, totalFrags};
-    localStorage.setItem("aether_save_v4", JSON.stringify(data));
+    let d = {clicks, gold, frags, level, exp, storyStage, dailyPower, hCombo, tClicks, lastDailyClaimed, claimedMiles};
+    localStorage.setItem("aether_final_v1", JSON.stringify(d));
 }
-
 function load() {
-    let s = localStorage.getItem("aether_save_v4");
+    let s = localStorage.getItem("aether_final_v1");
     if(s) {
         let d = JSON.parse(s);
         clicks=d.clicks||0; gold=d.gold||0; frags=d.frags||0; level=d.level||1;
         exp=d.exp||0; storyStage=d.storyStage||0; dailyPower=d.dailyPower||0;
-        hCombo=d.hCombo||0; totalGold=d.totalGold||0; totalFrags=d.totalFrags||0;
+        hCombo=d.hCombo||0; tClicks=d.tClicks||0; lastDailyClaimed=d.lastDailyClaimed||0;
+        claimedMiles=d.claimedMiles||[];
     }
     updateUI();
 }
-
-load();
-setInterval(save, 5000);
+load(); setInterval(save, 5000);
 </script>
 </body>
 </html>
