@@ -5,101 +5,93 @@
     <title>Aetherfall</title>
     <style>
         :root {
-            --bg: #050816;
-            --panel: #0f172a;
+            --bg: #03050a;
+            --panel: rgba(13, 17, 23, 0.95);
             --border: #1e3a8a;
             --accent: #a78bfa;
             --gold: #facc15;
             --text: #ffffff;
+            --font-main: 'Segoe UI', Tahoma, sans-serif;
         }
 
-        html, body {
-            margin: 0; height: 100%; overflow: hidden;
-            background: var(--bg); font-family: 'Segoe UI', Arial; color: var(--text);
+        body {
+            margin: 0; height: 100vh; overflow: hidden;
+            background: radial-gradient(circle at center, #0a0f1e 0%, #03050a 100%);
+            font-family: var(--font-main); color: var(--text);
         }
 
         header {
-            text-align: center; font-size: 38px; padding: 18px;
-            color: var(--accent); font-weight: bold;
-            text-shadow: 0 0 10px rgba(167, 139, 250, 0.3);
+            text-align: center; font-size: 48px; padding: 20px;
+            background: linear-gradient(to right, #fff, var(--accent), #fff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-weight: 900; letter-spacing: 4px;
         }
 
-        /* LEVEL BAR UI */
-        #levelWrap { width: 520px; margin: auto; text-align: center; }
+        /* LEVEL BAR (Split Design) */
+        #levelWrap { width: 550px; margin: auto; }
         .bar-outer {
-            background: #1e293b; height: 26px; border-radius: 8px;
-            overflow: hidden; position: relative; border: 1px solid var(--border);
+            background: #000; height: 30px; border-radius: 4px;
+            border: 1px solid var(--border); position: relative; overflow: hidden;
         }
-        .fill { height: 100%; background: #8b5cf6; width: 0%; transition: width 0.3s; }
+        .fill { height: 100%; background: linear-gradient(90deg, #4c1d95, #8b5cf6); width: 0%; transition: width 0.3s; }
         .bar-content {
-            position: absolute; width: 100%; top: 50%; transform: translateY(-50%);
-            display: flex; justify-content: space-between; padding: 0 15px;
-            box-sizing: border-box; font-size: 12px; font-weight: bold; pointer-events: none;
+            position: absolute; width: 100%; top: 0; height: 100%;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 15px; box-sizing: border-box; font-size: 13px; font-weight: bold;
         }
 
-        #stats { display: flex; justify-content: center; gap: 20px; margin-top: 15px; }
+        #stats { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
         .stat {
             background: var(--panel); border: 1px solid var(--border);
-            padding: 10px 18px; border-radius: 8px; text-align: center; min-width: 80px;
+            padding: 10px 25px; border-radius: 8px; text-align: center;
         }
+        .stat span { color: var(--gold); font-weight: bold; font-size: 1.1em; }
 
-        #layout { display: grid; grid-template-columns: 250px 1fr 300px; height: calc(100vh - 170px); }
-        .panel { padding: 20px; overflow-y: auto; }
+        #layout { display: grid; grid-template-columns: 260px 1fr 320px; height: calc(100vh - 200px); padding: 20px; gap: 20px; }
+        .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px; overflow-y: auto; }
 
-        #center { display: flex; align-items: center; justify-content: center; }
-        #sword { width: 280px; cursor: pointer; transition: transform 0.05s; }
-        #sword:active { transform: scale(0.95); }
+        #center { display: flex; align-items: center; justify-content: center; position: relative; }
+        #sword { width: 300px; cursor: pointer; transition: transform 0.05s; }
+        #sword:active { transform: scale(0.92); }
 
         .menuBtn {
-            background: var(--panel); border: 1px solid var(--border);
-            padding: 18px; margin-bottom: 14px; border-radius: 10px;
-            text-align: center; cursor: pointer; transition: 0.2s;
+            background: #0d1117; border: 1px solid var(--border);
+            padding: 15px; margin-bottom: 10px; border-radius: 8px;
+            cursor: pointer; text-align: left; font-weight: 600;
         }
-        .menuBtn:hover { background: #1e293b; border-color: var(--accent); }
-
-        .missionBox {
-            background: #020617; border: 1px solid #2563eb;
-            padding: 14px; border-radius: 10px; margin-bottom: 15px;
-        }
+        .menuBtn:hover { border-color: var(--accent); background: #161b22; }
 
         /* MODALS */
         .modal {
             display: none; position: fixed; top: 50%; left: 50%;
-            transform: translate(-50%, -50%); background: #020617;
-            border: 1px solid #2563eb; border-radius: 10px;
-            width: 800px; height: 550px; padding: 25px; overflow: hidden; z-index: 1000;
+            transform: translate(-50%, -50%); background: #0d1117;
+            border: 2px solid var(--accent); border-radius: 15px;
+            width: 700px; height: 500px; padding: 30px; z-index: 1000;
         }
-        .close { position: absolute; top: 10px; right: 14px; cursor: pointer; color: #ef4444; font-weight: bold; }
+        .close { float: right; cursor: pointer; color: #ff4d4d; font-size: 24px; }
 
-        .lore-page {
-            background: #0f172a; border: 1px solid #334155; height: 350px;
-            padding: 30px; border-radius: 5px; margin-bottom: 20px; line-height: 1.6;
-            font-family: 'Georgia', serif; font-size: 18px; position: relative;
+        .item {
+            background: rgba(255,255,255,0.05); padding: 15px;
+            border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
         }
-        .page-num { position: absolute; bottom: 10px; right: 20px; font-size: 12px; color: #64748b; }
 
-        /* SHOP ITEMS */
-        .shopItem {
-            background: var(--panel); border: 1px solid var(--border);
-            padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex;
-            justify-content: space-between; align-items: center;
-        }
         button {
-            padding: 8px 14px; background: #8b5cf6; border: none;
-            color: white; border-radius: 6px; cursor: pointer; font-weight: bold;
+            background: linear-gradient(180deg, var(--accent), #6d28d9);
+            border: none; color: white; padding: 10px 18px; border-radius: 5px; cursor: pointer; font-weight: bold;
         }
-        button:hover { filter: brightness(1.2); }
+        button:disabled { filter: grayscale(1); opacity: 0.5; }
 
-        .float { position: absolute; pointer-events: none; font-weight: bold; animation: floatUp 1s forwards; }
-        @keyframes floatUp { 0%{opacity:1;transform:translateY(0)} 100%{opacity:0;transform:translateY(-80px)} }
-
-        /* MILESTONES */
-        .milestone-wrap { display: flex; align-items: center; justify-content: center; gap: 20px; }
-        .card {
-            width: 140px; height: 160px; background: #0f172a; border: 2px solid #1e3a8a;
-            border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px;
+        .float {
+            position: absolute; pointer-events: none; font-weight: 900;
+            animation: floatMove 0.8s ease-out forwards;
         }
-        .card.active { border-color: var(--gold); box-shadow: 0 0 10px var(--gold); }
+        @keyframes floatMove { 
+            0% { opacity: 1; transform: translateY(0) scale(1); } 
+            100% { opacity: 0; transform: translateY(-100px) scale(1.5); } 
+        }
+
+        /* PAGINATION */
+        .page-text { height: 300px; font-style: italic; line-height: 1.8; font-size: 18px; color: #cbd5e1; }
     </style>
 </head>
 <body>
@@ -110,27 +102,26 @@
     <div class="bar-outer">
         <div id="levelFill" class="fill"></div>
         <div class="bar-content">
-            <span id="levelDisplay">Level 1</span>
+            <span id="lvDisplay" style="color:var(--accent)">Level 1</span>
             <span id="expDisplay">0 / 200 EXP</span>
         </div>
     </div>
 </div>
 
 <div id="stats">
-    <div class="stat">Clicks<br><span id="clicks">0</span></div>
-    <div class="stat">Coins<br><span id="coins">0</span></div>
-    <div class="stat">Frags<br><span id="fragments">0</span></div>
-    <div class="stat">Combo<br><span id="combo">0</span></div>
+    <div class="stat">Gold<br><span id="goldDisp">0</span></div>
+    <div class="stat">Frags<br><span id="fragDisp">0</span></div>
+    <div class="stat">Combo<br><span id="comboDisp">0</span></div>
 </div>
 
 <div id="layout">
     <div class="panel">
-        <div class="menuBtn" onclick="openModal('lore')">📘 Lore Book</div>
-        <div class="menuBtn" onclick="openModal('guide')">❓ Survival Guide</div>
-        <div class="menuBtn" onclick="openModal('shop')">🛒 Fragment Shop</div>
-        <div class="menuBtn" onclick="openModal('upgrades')">⚡ Artifacts</div>
-        <div class="menuBtn" onclick="openModal('milestones')">🏆 Milestones</div>
-        <div class="menuBtn" onclick="openModal('coupons')">🎟️ Coupon Market</div>
+        <div class="menuBtn" onclick="openModal('lore-m')">📘 Lore Archive</div>
+        <div class="menuBtn" onclick="openModal('guide-m')">📖 Aether Guide</div>
+        <div class="menuBtn" onclick="openModal('shop-m')">💎 Fragment Shop</div>
+        <div class="menuBtn" onclick="openModal('arts-m')">✨ Artifacts</div>
+        <div class="menuBtn" onclick="openModal('mile-m')">🏆 Milestones</div>
+        <div class="menuBtn" onclick="openModal('coupon-m')">🎟️ Coupon Market</div>
     </div>
 
     <div id="center">
@@ -138,327 +129,305 @@
     </div>
 
     <div class="panel">
-        <div class="missionBox">
-            <h3>Storyline</h3>
-            <div id="storyText" style="font-size: 13px; margin-bottom: 8px;">Reach 100 clicks</div>
-            <div class="bar-outer" style="height: 12px;"><div id="storyFill" class="fill"></div></div>
-            <button id="storyBtn" style="width:100%; margin-top:10px;" onclick="claimStory()">Claim Reward</button>
+        <h3 style="color:var(--accent); margin-top:0;">Storyline</h3>
+        <div id="storyBox" class="item" style="flex-direction:column; align-items:flex-start;">
+            <p id="storyGoal" style="margin:0 0 10px 0; font-size:14px;">Goal: 100 Clicks</p>
+            <p id="storyRewards" style="margin:0 0 10px 0; font-size:11px; color:var(--gold)">Reward: 50 Gold | 10 EXP</p>
+            <button style="width:100%" id="storyBtn" onclick="claimStory()">Claim Reward</button>
         </div>
 
-        <div class="missionBox">
-            <h3>Daily Focus</h3>
-            <div id="dailyText" style="font-size: 13px;">Goal: 2000 clicks</div>
-            <div class="bar-outer" style="height: 12px;"><div id="dailyFill" class="fill"></div></div>
-            <div id="dailyTimer" style="font-size: 11px; margin-top: 5px;">Ready</div>
-            <button id="dailyBtn" style="width:100%; margin-top:10px;" onclick="claimDaily()">Claim Daily</button>
+        <h3 style="color:var(--accent);">Daily Quest</h3>
+        <div class="item" style="flex-direction:column; align-items:flex-start;">
+            <p style="margin:0 0 10px 0; font-size:14px;">Daily: 2,000 Power</p>
+            <div class="bar-outer" style="height:10px; width:100%; margin-bottom:10px;"><div id="dailyFill" class="fill"></div></div>
+            <button style="width:100%" id="dailyBtn" onclick="claimDaily()">Claim Daily</button>
         </div>
     </div>
 </div>
 
-<div id="lore" class="modal">
-    <div class="close" onclick="closeModal('lore')">X</div>
-    <h2>Aetherfall Chronicle</h2>
-    <div class="lore-page" id="lorePage"></div>
-    <div style="text-align: center;">
-        <button onclick="changeLore(-1)">← Prev Page</button>
-        <button onclick="changeLore(1)">Next Page →</button>
+<div id="lore-m" class="modal">
+    <span class="close" onclick="closeModal('lore-m')">&times;</span>
+    <h2 style="color:var(--accent)">Lore Archive</h2>
+    <div id="loreText" class="page-text"></div>
+    <div style="text-align:center; margin-top:20px;">
+        <button onclick="changePage(-1)">Previous</button>
+        <span id="pageCounter" style="margin:0 20px;">1/5</span>
+        <button onclick="changePage(1)">Next</button>
     </div>
 </div>
 
-<div id="guide" class="modal" style="overflow-y: auto;">
-    <div class="close" onclick="closeModal('guide')">X</div>
-    <h2>Survival Guide</h2>
-    <h3>The Combo Engine</h3>
-    <p>Every click adds to your combo. If you stop for more than 3 seconds, your combo resets. High combos are the only way to effectively farm fragments.</p>
-    <h3>Aether Fragments</h3>
-    <p>These rare drops occur randomly but scale with your combo. Use them in the Fragment Shop for permanent power increases.</p>
-    <h3>Market Coupons</h3>
-    <p>Coupons are limited stock items that reset every week. They allow you to purchase high-tier items at the Abyssal Market for a fraction of the cost.</p>
+<div id="guide-m" class="modal">
+    <span class="close" onclick="closeModal('guide-m')">&times;</span>
+    <h2 style="color:var(--accent)">Aether Guide</h2>
+    <p><b>Combo System:</b> Manual clicks build combo. If you stop for 3 seconds, it resets to 0 instantly. Autoclickers do NOT build combo.</p>
+    <p><b>Criticals:</b> Every click has a 5% chance to "Crit," doubling power and EXP for that strike.</p>
+    <p><b>Coupon Gating:</b> You must be <b>Level 15</b> to trade in the Coupon Market. Coupons are limited stock and reset weekly.</p>
 </div>
 
-<div id="shop" class="modal">
-    <div class="close" onclick="closeModal('shop')">X</div>
+<div id="shop-m" class="modal">
+    <span class="close" onclick="closeModal('shop-m')">&times;</span>
     <h2>Fragment Shop</h2>
-    <div class="shopItem">
-        <div>Power Core (+2 power)</div>
-        <button id="buyPowerBtn" onclick="buyShop('power', 40)">40 Frags</button>
+    <div class="item">
+        <div><b>Aether Shard</b><br><small>+2 Base Power</small></div>
+        <button onclick="buyFragShop('shard', 40)">40 Frags</button>
     </div>
-    <div class="shopItem">
-        <div>Resonance Ring (+4 power)</div>
-        <button id="buyRingBtn" onclick="buyShop('ring', 120)">120 Frags</button>
-    </div>
-    <div class="shopItem">
-        <div>Temp Overload (+10 power / 1min)</div>
-        <button id="buyBoostBtn" onclick="buyShop('boost', 60)">60 Frags</button>
+    <div class="item">
+        <div><b>Void Essence</b><br><small>Temp +15 Power (2m)</small></div>
+        <button onclick="buyFragShop('essence', 75)">75 Frags</button>
     </div>
 </div>
 
-<div id="upgrades" class="modal">
-    <div class="close" onclick="closeModal('upgrades')">X</div>
+<div id="arts-m" class="modal">
+    <span class="close" onclick="closeModal('arts-m')">&times;</span>
     <h2>Permanent Artifacts</h2>
-    <div class="shopItem">
-        <div><b>Autoclicker I</b><br><small>1 Click / Sec</small></div>
-        <button id="autoBtn" onclick="buyAuto()">150 Frags</button>
+    <div class="item">
+        <div><b>Chrono-Link</b><br><small>Unlocks Autoclicker (1 Click/s)</small></div>
+        <button id="art-auto" onclick="buyArtifact('auto', 150)">150 Frags</button>
     </div>
-    <div class="shopItem">
-        <div><b>Fragment Magnet</b><br><small>Increases drop chance by 15%</small></div>
-        <button id="magnetBtn" onclick="buyMagnet()">200 Frags</button>
-    </div>
-</div>
-
-<div id="milestones" class="modal">
-    <div class="close" onclick="closeModal('milestones')">X</div>
-    <h2 style="text-align:center;">Milestones</h2>
-    <div class="milestone-wrap">
-        <button onclick="moveMilestone(-1)">←</button>
-        <div id="mCard" class="card active">Lv 5</div>
-        <button onclick="moveMilestone(1)">→</button>
-    </div>
-    <div style="text-align: center; margin-top: 20px;">
-        <p id="mRewardText">Reward: 500 Coins, 1 Fragment</p>
-        <button id="claimMBtn" onclick="claimMilestone()">Claim Milestone</button>
+    <div class="item">
+        <div><b>Golden Magnet</b><br><small>Permanently +20% Gold gain</small></div>
+        <button id="art-mag" onclick="buyArtifact('magnet', 300)">300 Frags</button>
     </div>
 </div>
 
-<div id="coupons" class="modal">
-    <div class="close" onclick="closeModal('coupons')">X</div>
-    <h2>Coupon Market</h2>
-    <p style="font-size: 12px; color: #a78bfa;">Stock resets every Monday.</p>
-    <div class="shopItem">
-        <div>5฿ Coupon | Cost: 1200 Coins</div>
-        <div style="text-align: right;"><small id="stock5">Stock: 5</small><br><button onclick="buyCoupon(5, 1200)">Buy</button></div>
-    </div>
-    <div class="shopItem">
-        <div>10฿ Coupon | Cost: 3500 Coins</div>
-        <div style="text-align: right;"><small id="stock10">Stock: 3</small><br><button onclick="buyCoupon(10, 3500)">Buy</button></div>
-    </div>
-    <div class="shopItem">
-        <div>25฿ Coupon | Cost: 9000 Coins</div>
-        <div style="text-align: right;"><small id="stock25">Stock: 2</small><br><button onclick="buyCoupon(25, 9000)">Buy</button></div>
+<div id="coupon-m" class="modal">
+    <span class="close" onclick="closeModal('coupon-m')">&times;</span>
+    <h2 style="color:var(--gold)">Coupon Market</h2>
+    <p id="lockMsg" style="color:#ff4d4d; font-weight:bold; display:none;">LOCKED: Reach Level 15 to trade here.</p>
+    <div id="couponList">
+        <div class="item">
+            <div><b>Bronze Coupon</b><br><small>Price: 1,500 Gold</small></div>
+            <div style="text-align:right"><small id="stk1">Stock: 5</small><br><button onclick="buyCoupon(1, 1500)">Buy</button></div>
+        </div>
+        <div class="item">
+            <div><b>Silver Coupon</b><br><small>Price: 4,000 Gold</small></div>
+            <div style="text-align:right"><small id="stk2">Stock: 3</small><br><button onclick="buyCoupon(2, 4000)">Buy</button></div>
+        </div>
     </div>
 </div>
 
 <script>
-/* GAME DATA */
-let clicks=0, coins=0, fragments=0, combo=0, power=1;
-let level=1, exp=0, storyStage=0, fragmentBoost=1;
-let lastClickTime=Date.now(), lastDailyClaim=0, dailyClicks=0;
-let autoclicker=false, tempPower=0, claimedMilestones=[];
-let mIndex=0, loreIdx=0;
+/* CORE DATA */
+let clicks=0, gold=0, frags=0, combo=0, power=1;
+let level=1, exp=0, storyStage=0, dailyPower=0;
+let lastClick=Date.now(), lastDaily=0, lastWeekly=Date.now();
+let autoclicker=false, goldMult=1, tempPower=0;
+let stock1=5, stock2=3;
+let boughtArts = [];
 
-/* WEEKLY SYSTEM DATA */
-let lastWeeklyReset = 0;
-let stock5=5, stock10=3, stock25=2;
-
-const lorePages = [
-    "Before the Aetherfall, the sky was a deep blue, unmarred by the cracks of the Rift. We took the stability of reality for granted.",
-    "The first fragment fell in the Northern Wastes. It didn't just impact; it resonated. It sang a song that changed the DNA of the earth.",
-    "Now, the Abyssal Market is all that remains of civilization. We trade pieces of a broken sky just to survive another night.",
-    "You carry the Resonance Blade. It is the only tool capable of harvesting energy without shattering the user's mind."
+const LORE_PAGES = [
+    "The Aether did not fall quietly. It arrived in shards of violet glass that pierced the fabric of our reality, rewriting the laws of physics.",
+    "Gold is no longer just currency. It is a conductive material used to stabilize Aetheric resonance within the Resonance Blades.",
+    "Fragments are the literal debris of the old world. Collecting them is dangerous, but it is the only way to build permanent Artifacts.",
+    "The 'Market' is a loose collection of survivors who realized that trading Coupons for high-tier gear was safer than hunting shards manually.",
+    "Warning: As you transcend Level 15, the Aether becomes thicker. Progression slows as your soul struggles to contain the raw power."
 ];
+let pageIdx = 0;
 
-function getExpNeeded(lvl) {
-    if (lvl >= 100) return 50000;
-    return Math.floor(200 + (Math.pow(lvl, 2.3) * 3));
+/* EXP SCALING (Slows down hard after Level 15) */
+function getExpReq(lvl) {
+    if(lvl >= 100) return 50000;
+    let base = 200 + (Math.pow(lvl, 2.2) * 2.5);
+    if(lvl > 15) base *= 1.5; // Steep spike after 15
+    return Math.min(Math.floor(base), 50000);
 }
 
-/* WEEKLY RESET LOGIC */
-function checkWeeklyReset() {
-    let now = Date.now();
-    let oneWeek = 604800000; // 7 days in ms
-    
-    // Check if 7 days have passed since last reset
-    if (now - lastWeeklyReset > oneWeek) {
-        stock5 = 5;
-        stock10 = 3;
-        stock25 = 2;
-        lastWeeklyReset = now;
-        console.log("Weekly stocks have been reset.");
+/* AUTOMATIC COMBO DECAY */
+setInterval(() => {
+    if (Date.now() - lastClick > 3000 && combo > 0) {
+        combo = 0;
+        updateUI();
     }
-}
+}, 100);
 
 /* CLICKING */
-const sword = document.getElementById("sword");
-sword.onclick = e => {
-    let now = Date.now();
-    if(now - lastClickTime > 3000) combo = 0;
-    lastClickTime = now;
-
-    let gain = (power + tempPower) + Math.floor(combo / 30);
-    clicks += gain;
-    dailyClicks += gain;
+document.getElementById('sword').onclick = (e) => {
+    lastClick = Date.now();
+    
+    let isCrit = Math.random() < 0.05;
+    let critMult = isCrit ? 2 : 1;
+    let gain = (power + tempPower + Math.floor(combo/25)) * critMult;
+    
+    gold += Math.floor(gain * goldMult);
+    dailyPower += gain;
     combo++;
+    
+    // Slow EXP gain
+    let xpGain = 0.04 * critMult;
+    gainExp(xpGain);
 
-    exp += 0.04; // Hard progression
-    while(exp >= getExpNeeded(level) && level < 100) {
-        exp -= getExpNeeded(level);
-        level++;
+    if(combo % 120 === 0 && Math.random() < 0.1) {
+        frags++;
+        spawnFloat(e, "+1 Frag", "#a78bfa");
     }
 
-    if(combo % 100 === 0 && Math.random() < (0.05 * fragmentBoost)) fragments++;
-
-    float(e, "+" + gain, "#fff");
-    update();
+    spawnFloat(e, (isCrit ? "CRIT! +" : "+") + gain, isCrit ? "#ff4d4d" : "#fff");
+    updateUI();
 };
 
-function float(e, t, color){
-    let d = document.createElement("div");
-    d.className = "float"; d.innerText = t; d.style.color = color;
-    d.style.left = e.pageX + "px"; d.style.top = e.pageY + "px";
-    document.body.appendChild(d);
-    setTimeout(() => d.remove(), 1000);
+function gainExp(amt) {
+    exp += amt;
+    let req = getExpReq(level);
+    while(exp >= req && level < 100) {
+        exp -= req;
+        level++;
+        req = getExpReq(level);
+    }
 }
 
-/* SHOP LOGIC */
-function buyShop(type, cost) {
-    if(fragments >= cost) {
-        fragments -= cost;
-        if(type === 'power') power += 2;
-        if(type === 'ring') power += 4;
-        if(type === 'boost') {
-            tempPower += 10;
-            setTimeout(() => { tempPower -= 10; }, 60000);
+function spawnFloat(e, txt, col) {
+    let f = document.createElement('div');
+    f.className = 'float'; f.innerText = txt; f.style.color = col;
+    f.style.left = e.pageX + 'px'; f.style.top = e.pageY + 'px';
+    document.body.appendChild(f);
+    setTimeout(() => f.remove(), 800);
+}
+
+/* SHOP & ACTIONS */
+function buyFragShop(type, cost) {
+    if(frags >= cost) {
+        frags -= cost;
+        if(type === 'shard') power += 2;
+        if(type === 'essence') {
+            tempPower += 15;
+            setTimeout(() => { tempPower -= 15; updateUI(); }, 120000);
         }
-    } else { alert("Not enough Fragments!"); }
+        updateUI();
+    } else { alertFloat("Not enough Fragments!", "#ff4d4d"); }
 }
 
-function buyAuto() {
-    if(fragments >= 150 && !autoclicker) {
-        fragments -= 150;
-        autoclicker = true;
-        setInterval(() => {
-            clicks += (power + tempPower);
-            dailyClicks += (power + tempPower);
-            exp += 0.01;
-            update();
-        }, 1000);
-    }
+function buyArtifact(id, cost) {
+    if(frags >= cost && !boughtArts.includes(id)) {
+        frags -= cost;
+        boughtArts.push(id);
+        if(id === 'auto') {
+            autoclicker = true;
+            setInterval(() => { gold += (power + tempPower); gainExp(0.005); updateUI(); }, 1000);
+        }
+        if(id === 'magnet') goldMult = 1.2;
+        updateUI();
+    } else { alertFloat("Unavailable!", "#ff4d4d"); }
 }
 
-function buyMagnet() {
-    if(fragments >= 200 && fragmentBoost === 1) {
-        fragments -= 200;
-        fragmentBoost = 1.15;
-        alert("Magnet Activated!");
-    }
+function buyCoupon(id, cost) {
+    if(level < 15) return;
+    if(gold >= cost) {
+        if(id === 1 && stock1 > 0) { gold -= cost; stock1--; }
+        else if(id === 2 && stock2 > 0) { gold -= cost; stock2--; }
+        else { alertFloat("Out of Stock!", "#ff4d4d"); return; }
+        alertFloat("Purchased!", "#facc15");
+        updateUI();
+    } else { alertFloat("Need more Gold!", "#ff4d4d"); }
 }
 
-function buyCoupon(val, cost) {
-    if (coins >= cost) {
-        if (val == 5 && stock5 > 0) { coins -= cost; stock5--; alert("5฿ Coupon Purchased!"); }
-        else if (val == 10 && stock10 > 0) { coins -= cost; stock10--; alert("10฿ Coupon Purchased!"); }
-        else if (val == 25 && stock25 > 0) { coins -= cost; stock25--; alert("25฿ Coupon Purchased!"); }
-        else { alert("Out of Stock!"); }
-    } else { alert("Not enough coins!"); }
-}
-
-/* MISSIONS & MILESTONES */
 function claimStory() {
-    const goals = [100, 1000, 10000, 100000];
-    const rewards = [50, 500, 5000, 50000];
-    const btn = document.getElementById("storyBtn");
-    if(storyStage < goals.length && clicks >= goals[storyStage]) {
-        coins += rewards[storyStage];
+    const goals = [100, 1000, 10000, 50000, 250000];
+    const goldRew = [50, 400, 2000, 8000, 25000];
+    const xpRew = [10, 100, 500, 2000, 5000];
+    const fragRew = [0, 1, 3, 5, 15];
+
+    if(clicks >= goals[storyStage]) {
+        gold += goldRew[storyStage];
+        gainExp(xpRew[storyStage]);
+        frags += fragRew[storyStage];
         storyStage++;
-        btn.innerText = "Claimed!";
-    } else { btn.innerText = "Not Ready"; }
-    setTimeout(() => btn.innerText = "Claim Reward", 1500);
+        alertFloat("Quest Complete!", "#facc15");
+        updateUI();
+    } else { alertFloat("Goal not reached!", "#ff4d4d"); }
 }
 
 function claimDaily() {
-    let now = Date.now();
-    const btn = document.getElementById("dailyBtn");
-    if(now - lastDailyClaim > 86400000) {
-        if (dailyClicks >= 2000) {
-            coins += 500;
-            dailyClicks = 0;
-            lastDailyClaim = now;
-            btn.innerText = "Claimed!";
-        } else { btn.innerText = "Not Ready"; }
-    } else { btn.innerText = "Wait 24h"; }
-    setTimeout(() => btn.innerText = "Claim Daily", 1500);
+    if(Date.now() - lastDaily < 86400000) { alertFloat("Not ready!", "#ff4d4d"); return; }
+    if(dailyPower >= 2000) {
+        gold += 800;
+        frags += 2;
+        lastDaily = Date.now();
+        dailyPower = 0;
+        alertFloat("Daily Reward!", "#facc15");
+        updateUI();
+    }
 }
 
-function moveMilestone(n) {
-    mIndex = Math.max(0, Math.min(19, mIndex + n));
-    let lvl = (mIndex + 1) * 5;
-    document.getElementById("mCard").innerText = "Lv " + lvl;
-    document.getElementById("mRewardText").innerText = `Reward: ${lvl*100} Coins, ${Math.floor(lvl/5)} Fragments`;
-}
+/* UI & SAVING */
+function updateUI() {
+    document.getElementById('goldDisp').innerText = Math.floor(gold).toLocaleString();
+    document.getElementById('fragDisp').innerText = frags;
+    document.getElementById('comboDisp').innerText = combo;
+    
+    let req = getExpReq(level);
+    document.getElementById('lvDisplay').innerText = "Level " + level;
+    document.getElementById('expDisplay').innerText = Math.floor(exp).toLocaleString() + " / " + req.toLocaleString() + " EXP";
+    document.getElementById('levelFill').style.width = (exp/req*100) + "%";
 
-function claimMilestone() {
-    let lvl = (mIndex + 1) * 5;
-    const btn = document.getElementById("claimMBtn");
-    if(level >= lvl && !claimedMilestones.includes(lvl)) {
-        coins += lvl * 100;
-        fragments += Math.floor(lvl/5);
-        claimedMilestones.push(lvl);
-        btn.innerText = "Claimed!";
-    } else if (claimedMilestones.includes(lvl)) {
-        btn.innerText = "Already Claimed";
-    } else { btn.innerText = "Not Ready"; }
-    setTimeout(() => btn.innerText = "Claim Milestone", 1500);
-}
-
-/* UI & CORE */
-function update() {
-    document.getElementById("clicks").innerText = Math.floor(clicks).toLocaleString();
-    document.getElementById("coins").innerText = Math.floor(coins).toLocaleString();
-    document.getElementById("fragments").innerText = fragments;
-    document.getElementById("combo").innerText = combo;
-
-    let req = getExpNeeded(level);
-    document.getElementById("levelDisplay").innerText = "Level " + level;
-    document.getElementById("expDisplay").innerText = Math.floor(exp) + " / " + req + " EXP";
-    document.getElementById("levelFill").style.width = (exp / req * 100) + "%";
-
-    const storyGoals = [100, 1000, 10000, 100000];
-    if(storyStage < storyGoals.length) {
-        document.getElementById("storyFill").style.width = Math.min(100, (clicks / storyGoals[storyStage] * 100)) + "%";
+    // Quest UI
+    const goals = [100, 1000, 10000, 50000, 250000];
+    const goldRew = [50, 400, 2000, 8000, 25000];
+    const xpRew = [10, 100, 500, 2000, 5000];
+    const fragRew = [0, 1, 3, 5, 15];
+    
+    if(storyStage < goals.length) {
+        document.getElementById('storyGoal').innerText = "Goal: " + goals[storyStage].toLocaleString() + " Clicks";
+        document.getElementById('storyRewards').innerText = `Reward: ${goldRew[storyStage]} Gold | ${xpRew[storyStage]} EXP | ${fragRew[storyStage]} Frags`;
     }
 
-    document.getElementById("dailyFill").style.width = Math.min(100, (dailyClicks / 2000 * 100)) + "%";
-    document.getElementById("stock5").innerText = "Stock: " + stock5;
-    document.getElementById("stock10").innerText = "Stock: " + stock10;
-    document.getElementById("stock25").innerText = "Stock: " + stock25;
+    document.getElementById('dailyFill').style.width = Math.min(100, (dailyPower/2000)*100) + "%";
+    
+    // Lock Coupons
+    document.getElementById('lockMsg').style.display = level < 15 ? 'block' : 'none';
+    document.getElementById('couponList').style.opacity = level < 15 ? '0.3' : '1';
+    
+    document.getElementById('stk1').innerText = "Stock: " + stock1;
+    document.getElementById('stk2').innerText = "Stock: " + stock2;
+    
+    // Artifact buttons
+    if(boughtArts.includes('auto')) document.getElementById('art-auto').disabled = true;
+    if(boughtArts.includes('magnet')) document.getElementById('art-mag').disabled = true;
+}
+
+function alertFloat(txt, col) {
+    let a = document.createElement('div');
+    a.className = 'float'; a.innerText = txt; a.style.color = col;
+    a.style.left = '50%'; a.style.top = '20%';
+    document.body.appendChild(a);
+    setTimeout(() => a.remove(), 1000);
 }
 
 function openModal(id) { 
-    document.getElementById(id).style.display = "block"; 
-    if(id === 'lore') changeLore(0);
+    document.getElementById(id).style.display = 'block'; 
+    if(id === 'lore-m') changePage(0);
 }
-function closeModal(id) { document.getElementById(id).style.display = "none"; }
-function changeLore(n) {
-    loreIdx = (loreIdx + n + lorePages.length) % lorePages.length;
-    document.getElementById("lorePage").innerHTML = lorePages[loreIdx] + `<div class="page-num">Page ${loreIdx + 1}</div>`;
+function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+function changePage(n) {
+    pageIdx = Math.max(0, Math.min(LORE_PAGES.length - 1, pageIdx + n));
+    document.getElementById('loreText').innerText = LORE_PAGES[pageIdx];
+    document.getElementById('pageCounter').innerText = (pageIdx + 1) + "/" + LORE_PAGES.length;
 }
 
+/* IMPROVED SAVE SYSTEM */
 function save() {
-    localStorage.setItem("aetherfall_save", JSON.stringify({
-        clicks, coins, fragments, level, exp, storyStage, lastDailyClaim, autoclicker, power, claimedMilestones,
-        lastWeeklyReset, stock5, stock10, stock25, fragmentBoost
-    }));
+    let data = { gold, frags, level, exp, storyStage, dailyPower, lastDaily, boughtArts, power, goldMult, autoclicker, stock1, stock2, clicks };
+    localStorage.setItem("aetherfall_v3", JSON.stringify(data));
 }
 
 function load() {
-    let s = localStorage.getItem("aetherfall_save");
+    let s = localStorage.getItem("aetherfall_v3");
     if(s) {
         let d = JSON.parse(s);
-        Object.assign(window, d);
-        if (autoclicker) {
-            setInterval(() => {
-                clicks += (power + tempPower);
-                dailyClicks += (power + tempPower);
-                exp += 0.01;
-                update();
-            }, 1000);
+        gold = d.gold || 0; frags = d.frags || 0; level = d.level || 1;
+        exp = d.exp || 0; storyStage = d.storyStage || 0; dailyPower = d.dailyPower || 0;
+        lastDaily = d.lastDaily || 0; boughtArts = d.boughtArts || [];
+        power = d.power || 1; goldMult = d.goldMult || 1; 
+        autoclicker = d.autoclicker || false; clicks = d.clicks || 0;
+        stock1 = d.stock1 ?? 5; stock2 = d.stock2 ?? 3;
+        
+        if(autoclicker) {
+            setInterval(() => { gold += (power + tempPower); gainExp(0.005); updateUI(); }, 1000);
         }
     }
-    checkWeeklyReset(); // Check reset upon loading
+    updateUI();
 }
 
 load();
-setInterval(update, 100);
 setInterval(save, 5000);
 </script>
 </body>
