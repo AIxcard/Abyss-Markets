@@ -76,12 +76,10 @@
             background: rgba(13, 17, 23, 0.8); border: 1px solid rgba(30, 58, 138, 0.4);
             padding: 15px 20px; border-radius: 15px; text-align: center; min-width: 90px;
         }
-        .stat-box small { font-size: 10px; text-transform: uppercase; opacity: 0.6; display: block; margin-bottom: 5px; }
 
         #sword { width: 350px; cursor: pointer; transition: transform 0.05s; margin-top: 20px; z-index: 5; position: relative; }
         #sword:active { transform: scale(0.94); }
 
-        /* CLICK TEXTS */
         .click-text {
             position: absolute; pointer-events: none; font-weight: 900; font-size: 24px;
             color: white; text-shadow: 0 0 10px rgba(167, 139, 250, 0.8);
@@ -89,7 +87,7 @@
         }
         .crit-text { color: var(--gold); font-size: 48px; text-shadow: 0 0 20px orange; animation: critPop 0.6s ease-out forwards !important; }
         .gold-pop { color: var(--gold); font-size: 32px; text-shadow: 0 0 15px #fff; }
-        .frag-pop { color: var(--frag); font-size: 36px; text-shadow: 0 0 25px var(--frag); font-style: italic; }
+        .frag-pop { color: var(--frag); font-size: 36px; text-shadow: 0 0 25px var(--frag); }
 
         @keyframes floatUp {
             0% { transform: translateY(0) scale(1); opacity: 1; }
@@ -101,10 +99,9 @@
             100% { transform: translateY(-200px) opacity: 0; }
         }
 
-        .particle { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); pointer-events: none; z-index: 99; animation: particleFade 0.6s linear forwards; }
+        .particle { position: absolute; width: 6px; height: 6px; border-radius: 50%; pointer-events: none; z-index: 99; animation: particleFade 0.6s linear forwards; }
         @keyframes particleFade { to { transform: translate(var(--x), var(--y)); opacity: 0; } }
 
-        /* MENU UI */
         .menuBtn { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.08); padding: 18px; margin-bottom: 12px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 15px; transition: 0.2s; }
         .menuBtn:hover { border-color: var(--accent); background: rgba(167, 139, 250, 0.1); }
         .btn-claim { background: linear-gradient(180deg, #8b5cf6, #6d28d9); border: 1px solid #a78bfa; color: white; padding: 14px; border-radius: 10px; width: 100%; font-weight: 800; cursor: pointer; text-transform: uppercase; }
@@ -115,7 +112,6 @@
         .shop-card { background: var(--card-bg); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
         .close { float: right; cursor: pointer; color: #ff4d4d; font-size: 32px; }
 
-        /* MILESTONE CAROUSEL */
         .m-carousel { display: flex; align-items: center; justify-content: space-between; background: rgba(15, 23, 42, 0.8); padding: 40px; border-radius: 24px; border: 2px solid var(--border); margin-top: 40px; }
         .m-card { text-align: center; flex-grow: 1; }
         .arrow { font-size: 40px; cursor: pointer; color: var(--accent); }
@@ -157,14 +153,8 @@
 
     <div class="side-panel right-panel">
         <h2 style="color: var(--accent); margin-bottom: 20px;">MISSIONS</h2>
-        <div class="shop-card" id="storyContainer">
-            <p id="st-chapter" style="font-size:11px; color:var(--accent); font-weight:bold;">CHAPTER 1</p>
-            <p id="st-title" style="font-size:18px; font-weight:bold;">The Awakening</p>
-            <div style="background:#000; height:8px; border-radius:5px; overflow:hidden; margin:10px 0;">
-                <div id="st-fill" class="fill"></div>
+        <div id="story-ui" class="shop-card">
             </div>
-            <button class="btn-claim" id="st-btn" onclick="claimStory()">Claim Reward</button>
-        </div>
         <div class="shop-card" style="margin-top:20px;">
             <p style="margin:0; font-weight:bold;">Daily Focus</p>
             <div style="background:#000; height:8px; border-radius:5px; overflow:hidden; margin:10px 0;">
@@ -175,7 +165,7 @@
     </div>
 </div>
 
-<div id="lore-m" class="modal"><span class="close" onclick="closeModal('lore-m')">&times;</span><h1>The Archive</h1><p>Resources are rare. Gold drops at 0.5%. Fragments at 0.1%. Restoration is in your hands.</p></div>
+<div id="lore-m" class="modal"><span class="close" onclick="closeModal('lore-m')">&times;</span><h1>The Archive</h1><p>The Aether has shattered. Every click helps mend the world.</p></div>
 
 <div id="mile-m" class="modal">
     <span class="close" onclick="closeModal('mile-m')">&times;</span>
@@ -191,10 +181,10 @@
     <span class="close" onclick="closeModal('shop-m')">&times;</span>
     <h2 style="color:var(--frag)">FRAGMENT SHOP</h2>
     <div class="grid-shop">
-        <div class="shop-card"><b>Aether Catalyst</b><br><small>+1 Power</small><button class="btn-claim" onclick="buyUpgrade('Aether Catalyst', 5, 1)">5 Frags</button></div>
-        <div class="shop-card"><b>Void Resonator</b><br><small>+3 Power</small><button class="btn-claim" onclick="buyUpgrade('Void Resonator', 15, 3)">15 Frags</button></div>
-        <div class="shop-card"><b>Star Core</b><br><small>+10 Power</small><button class="btn-claim" onclick="buyUpgrade('Star Core', 50, 10)">50 Frags</button></div>
-        <div class="shop-card"><b>Aether Battery</b><br><small>+25 Power</small><button class="btn-claim" onclick="buyUpgrade('Aether Battery', 120, 25)">120 Frags</button></div>
+        <div class="shop-card"><b>Aether Catalyst</b><br><small>+1 Power</small><button class="btn-claim" onclick="buyItem('Aether Catalyst', 5, 'power', 1)">5 Frags</button></div>
+        <div class="shop-card"><b>Void Resonator</b><br><small>+3 Power</small><button class="btn-claim" onclick="buyItem('Void Resonator', 15, 'power', 3)">15 Frags</button></div>
+        <div class="shop-card"><b>Star Core</b><br><small>+10 Power</small><button class="btn-claim" onclick="buyItem('Star Core', 50, 'power', 10)">50 Frags</button></div>
+        <div class="shop-card"><b>Aether Battery</b><br><small>+25 Power</small><button class="btn-claim" onclick="buyItem('Aether Battery', 120, 'power', 25)">120 Frags</button></div>
     </div>
 </div>
 
@@ -202,19 +192,14 @@
     <span class="close" onclick="closeModal('coupon-m')">&times;</span>
     <h2 style="color:var(--gold)">COUPON MARKET</h2>
     <div class="grid-shop">
-        <div class="shop-card"><b>Bronze Coupon</b><br><button class="btn-claim" onclick="buyCoupon('Bronze Coupon', 1200)">1,200 Gold</button></div>
-        <div class="shop-card"><b>Silver Coupon</b><br><button class="btn-claim" onclick="buyCoupon('Silver Coupon', 3500)">3,500 Gold</button></div>
-        <div class="shop-card"><b>Gold Coupon</b><br><button class="btn-claim" onclick="buyCoupon('Gold Coupon', 8000)">8,000 Gold</button></div>
-        <div class="shop-card"><b>Master Coupon</b><br><button class="btn-claim" onclick="buyCoupon('Master Coupon', 25000)">25,000 Gold</button></div>
+        <div class="shop-card"><b>Bronze Coupon</b><br><button class="btn-claim" onclick="buyItem('Bronze Coupon', 1200, 'gold-buy')">1,200 Gold</button></div>
+        <div class="shop-card"><b>Silver Coupon</b><br><button class="btn-claim" onclick="buyItem('Silver Coupon', 3500, 'gold-buy')">3,500 Gold</button></div>
+        <div class="shop-card"><b>Gold Coupon</b><br><button class="btn-claim" onclick="buyItem('Gold Coupon', 8000, 'gold-buy')">8,000 Gold</button></div>
+        <div class="shop-card"><b>Master Coupon</b><br><button class="btn-claim" onclick="buyItem('Master Coupon', 25000, 'gold-buy')">25,000 Gold</button></div>
     </div>
 </div>
 
-<div id="arts-m" class="modal">
-    <span class="close" onclick="closeModal('arts-m')">&times;</span>
-    <h2 style="color:var(--combo)">MY ARTIFACTS</h2>
-    <div id="artList" class="grid-shop"></div>
-</div>
-
+<div id="arts-m" class="modal"><span class="close" onclick="closeModal('arts-m')">&times;</span><h2 style="color:var(--combo)">MY ARTIFACTS</h2><div id="artList" class="grid-shop"></div></div>
 <div id="set-m" class="modal"><span class="close" onclick="closeModal('set-m')">&times;</span><h2>Settings</h2><button class="btn-claim" style="background:#ef4444" onclick="hardReset()">Hard Reset</button></div>
 
 <script>
@@ -238,9 +223,8 @@ document.getElementById('sword').addEventListener('click', (e) => {
     let isCrit = Math.random() < 0.10;
     let actualPower = isCrit ? power * 2 : power;
     
-    // THE HARDCORE RATES
-    let gotGold = (Math.random() < 0.005 && combo > 10); // 0.5%
-    let gotFrag = (Math.random() < 0.001); // 0.1%
+    let gotGold = (Math.random() < 0.005 && combo > 10); 
+    let gotFrag = (Math.random() < 0.001); 
     
     if(gotGold) { gold += 10; triggerEffect('shake'); }
     if(gotFrag) { frags += 1; triggerEffect('pulse'); }
@@ -253,46 +237,46 @@ document.getElementById('sword').addEventListener('click', (e) => {
 });
 
 function triggerEffect(type) {
-    const area = document.getElementById('center-area');
-    const pulse = document.getElementById('pulse-layer');
     if(type === 'shake') {
-        area.classList.add('shake');
-        setTimeout(() => area.classList.remove('shake'), 200);
-    } else if(type === 'pulse') {
-        pulse.classList.add('pulse-frag');
-        setTimeout(() => pulse.classList.remove('pulse-frag'), 600);
+        document.getElementById('center-area').classList.add('shake');
+        setTimeout(() => document.getElementById('center-area').classList.remove('shake'), 200);
+    } else {
+        document.getElementById('pulse-layer').classList.add('pulse-frag');
+        setTimeout(() => document.getElementById('pulse-layer').classList.remove('pulse-frag'), 600);
     }
 }
 
 function createClickEffect(x, y, val, crit, goldDrop, fragDrop) {
+    const container = document.body;
     const txt = document.createElement('div');
     txt.className = 'click-text' + (crit ? ' crit-text' : '');
     txt.innerText = (crit ? 'CRIT! ' : '+') + val;
     txt.style.left = (x - 20) + 'px'; txt.style.top = (y - 40) + 'px';
-    document.body.appendChild(txt);
+    container.appendChild(txt);
     setTimeout(() => txt.remove(), 800);
 
     if(goldDrop) {
         const gt = document.createElement('div');
         gt.className = 'click-text gold-pop'; gt.innerText = '+10 GOLD';
         gt.style.left = (x + 30) + 'px'; gt.style.top = (y) + 'px';
-        document.body.appendChild(gt); setTimeout(() => gt.remove(), 1000);
+        container.appendChild(gt); setTimeout(() => gt.remove(), 1000);
     }
     if(fragDrop) {
         const ft = document.createElement('div');
         ft.className = 'click-text frag-pop'; ft.innerText = '+1 FRAG!!';
         ft.style.left = (x - 100) + 'px'; ft.style.top = (y - 80) + 'px';
-        document.body.appendChild(ft); setTimeout(() => ft.remove(), 1200);
+        container.appendChild(ft); setTimeout(() => ft.remove(), 1200);
     }
 
-    for(let i=0; i<(crit ? 12 : 5); i++) {
+    for(let i=0; i<(crit ? 10 : 4); i++) {
         const p = document.createElement('div');
-        p.className = 'particle'; p.style.left = x + 'px'; p.style.top = y + 'px';
+        p.className = 'particle';
+        p.style.left = x + 'px'; p.style.top = y + 'px';
+        p.style.background = fragDrop ? 'var(--frag)' : (crit ? 'var(--gold)' : 'var(--accent)');
         p.style.setProperty('--x', (Math.random() - 0.5) * 200 + 'px');
         p.style.setProperty('--y', (Math.random() - 0.5) * 200 + 'px');
-        if(fragDrop) p.style.background = 'var(--frag)';
-        else if(crit) p.style.background = 'var(--gold)';
-        document.body.appendChild(p); setTimeout(() => p.remove(), 600);
+        container.appendChild(p);
+        setTimeout(() => p.remove(), 600);
     }
 }
 
@@ -311,21 +295,54 @@ function updateUI() {
     document.getElementById('levelFill').style.width = (level >= 100 ? 100 : (exp/req*100)) + "%";
     document.getElementById('expDisplay').innerText = (level >= 100 ? "MAX" : Math.floor(exp) + " / " + req + " EXP");
 
+    // Story Logic
+    const sUI = document.getElementById('story-ui');
     if(storyStage < STORIES.length) {
         let s = STORIES[storyStage];
-        document.getElementById('st-chapter').innerText = s.ch;
-        document.getElementById('st-title').innerText = s.title;
-        document.getElementById('st-fill').style.width = Math.min(100, (clicks/s.goal)*100) + "%";
-        document.getElementById('st-btn').disabled = clicks < s.goal;
+        let prog = (clicks/s.goal)*100;
+        sUI.innerHTML = `<p style="font-size:11px; color:var(--accent); font-weight:bold;">${s.ch}</p>
+            <p style="font-size:18px; font-weight:bold;">${s.title}</p>
+            <div style="background:#000; height:8px; border-radius:5px; overflow:hidden; margin:10px 0;">
+                <div class="fill" style="width:${Math.min(100, prog)}%"></div>
+            </div>
+            <button class="btn-claim" id="st-btn" ${clicks >= s.goal ? "" : "disabled"} onclick="claimStory()">Claim Reward</button>`;
+    } else {
+        sUI.innerHTML = `<p style="text-align:center">ALL CHAPTERS COMPLETE</p>`;
     }
 
     let isToday = new Date(lastDailyClaimed).toDateString() === new Date().toDateString();
     document.getElementById('dailyFill').style.width = Math.min(100, (dailyPower/2000)*100) + "%";
     document.getElementById('daily-btn').disabled = (dailyPower < 2000 || isToday);
+    if(isToday) document.getElementById('daily-btn').innerText = "CLAIMED";
 }
 
-function claimStory() { let s = STORIES[storyStage]; gold += s.rG; exp += s.rE; storyStage++; updateUI(); }
-function claimDaily() { gold += 100; frags += 1; exp += 100; lastDailyClaimed = Date.now(); dailyPower = 0; updateUI(); }
+function claimStory() {
+    let s = STORIES[storyStage];
+    gold += s.rG; exp += s.rE; storyStage++;
+    updateUI();
+}
+
+function claimDaily() {
+    gold += 100; frags += 1; lastDailyClaimed = Date.now(); dailyPower = 0;
+    updateUI();
+}
+
+function buyItem(name, cost, type, val) {
+    if(type === 'power' && frags >= cost) {
+        frags -= cost; power += val;
+        if(!artifacts.includes(name)) artifacts.push(name);
+    } else if(type === 'gold-buy' && gold >= cost) {
+        gold -= cost;
+        if(!artifacts.includes(name)) artifacts.push(name);
+    }
+    updateUI(); renderArtifacts();
+}
+
+function renderArtifacts() {
+    let h = artifacts.length ? "" : "<p style='grid-column: 1/3; text-align:center; opacity:0.5;'>No artifacts found.</p>";
+    artifacts.forEach(a => h += `<div class="shop-card" style="text-align:center"><b>${a}</b></div>`);
+    document.getElementById('artList').innerHTML = h;
+}
 
 function moveMile(n) { mileIdx = Math.max(0, Math.min(MILESTONES.length-1, mileIdx+n)); renderMileCard(); }
 function renderMileCard() {
@@ -338,24 +355,15 @@ function renderMileCard() {
 }
 function claimMile(l, r) { frags += r; claimedMiles.push(l); renderMileCard(); updateUI(); }
 
-function buyUpgrade(name, cost, pwr) { if(frags >= cost) { frags -= cost; power += pwr; if(!artifacts.includes(name)) artifacts.push(name); updateUI(); renderArtifacts(); } }
-function buyCoupon(name, cost) { if(gold >= cost) { gold -= cost; if(!artifacts.includes(name)) artifacts.push(name); updateUI(); renderArtifacts(); } }
-
-function renderArtifacts() { 
-    let h = artifacts.length ? "" : "No artifacts yet.";
-    artifacts.forEach(a => h += `<div class="shop-card" style="text-align:center"><b>${a}</b></div>`);
-    document.getElementById('artList').innerHTML = h;
-}
-
 function openModal(id) { document.getElementById(id).style.display = 'block'; if(id==='mile-m') renderMileCard(); }
 function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-function hardReset() { if(confirm("Erase all progress?")) { localStorage.clear(); location.reload(); } }
+function hardReset() { if(confirm("Erase all data?")) { localStorage.clear(); location.reload(); } }
 
 setInterval(() => { if(combo > 0) { combo--; updateUI(); } }, 2000);
 
-function save() { localStorage.setItem("nexus_full_v1", JSON.stringify({clicks, gold, frags, level, exp, storyStage, dailyPower, lastDailyClaimed, claimedMiles, artifacts, power})); }
+function save() { localStorage.setItem("nexus_v2_final", JSON.stringify({clicks, gold, frags, level, exp, storyStage, dailyPower, lastDailyClaimed, claimedMiles, artifacts, power})); }
 function load() {
-    let s = localStorage.getItem("nexus_full_v1");
+    let s = localStorage.getItem("nexus_v2_final");
     if(s) {
         let d = JSON.parse(s); clicks=d.clicks; gold=d.gold; frags=d.frags; level=d.level; exp=d.exp; storyStage=d.storyStage; dailyPower=d.dailyPower; lastDailyClaimed=d.lastDailyClaimed; claimedMiles=d.claimedMiles; artifacts=d.artifacts; power=d.power;
     }
