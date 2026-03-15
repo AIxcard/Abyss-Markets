@@ -61,7 +61,6 @@ left:50%;
 top:50%;
 transform:translate(-50%,-50%);
 font-size:12px;
-pointer-events:none;
 }
 
 #stats{
@@ -99,11 +98,6 @@ justify-content:center;
 #sword{
 width:280px;
 cursor:pointer;
-transition:.15s;
-}
-
-#sword:hover{
-transform:scale(1.05);
 }
 
 .menuBtn{
@@ -229,11 +223,11 @@ animation:floatUp 1s forwards;
 
 <div id="levelWrap">
 
-<div id="levelText">Level 1 — 0 / 200 EXP</div>
+<div id="levelText">Level 1</div>
 
 <div class="bar">
 <div id="levelFill" class="fill"></div>
-<span class="barText" id="levelPercent">0%</span>
+<span id="levelPercent" class="barText">0%</span>
 </div>
 
 </div>
@@ -251,8 +245,6 @@ animation:floatUp 1s forwards;
 
 <div class="panel">
 
-<div class="menuBtn" onclick="openModal('lore')">📘 Lore</div>
-<div class="menuBtn" onclick="openModal('guide')">❓ Guide</div>
 <div class="menuBtn" onclick="openModal('shop')">🛒 Shop</div>
 <div class="menuBtn" onclick="openModal('upgrades')">⚡ Upgrades</div>
 <div class="menuBtn" onclick="openModal('milestones')">🏆 Milestones</div>
@@ -284,7 +276,7 @@ animation:floatUp 1s forwards;
 <h3>Daily Mission</h3>
 
 Goal: 2000 clicks  
-Reward: <span id="dailyReward">200 coins</span>
+Reward: 200 coins
 
 <div class="bar">
 <div id="dailyFill" class="fill"></div>
@@ -301,78 +293,23 @@ Reward: <span id="dailyReward">200 coins</span>
 
 </div>
 
-<!-- LORE -->
-
-<div id="lore" class="modal">
-<div class="close" onclick="closeModal('lore')">X</div>
-
-<h2>Aetherfall Chronicle</h2>
-
-<div id="lorePage"></div>
-
-<button onclick="prevLore()">←</button>
-<button onclick="nextLore()">→</button>
-
-</div>
-
-<!-- GUIDE -->
-
-<div id="guide" class="modal">
-<div class="close" onclick="closeModal('guide')">X</div>
-
-<h2>Game Guide</h2>
-
-<h3>Clicking</h3>
-<p>Click the sword to generate clicks. Each click produces power based on your upgrades and combo multiplier.</p>
-
-<h3>Combo System</h3>
-<p>Continuous clicking increases combo. Higher combos increase click power and fragment drop chances.</p>
-
-<h3>Fragments</h3>
-<p>Fragments are rare materials generated through combos. They are used to buy permanent upgrades.</p>
-
-<h3>Upgrades</h3>
-<p>Upgrades permanently increase your clicking strength, automate clicks, or improve fragment generation.</p>
-
-<h3>Coupons</h3>
-<p>Coupons can be purchased using coins and redeemed within the Abyssal Market.</p>
-
-<h3>Milestones</h3>
-<p>Every 5 levels unlocks milestone rewards containing coins and fragments.</p>
-
-</div>
-
 <!-- SHOP -->
 
 <div id="shop" class="modal">
 <div class="close" onclick="closeModal('shop')">X</div>
 
-<h2>Fragment Shop</h2>
-
-<div class="shopItem">Power Core (+2 power) | Cost 40 fragments
-<button onclick="buyPower()">Buy</button></div>
-
-<div class="shopItem">Resonance Ring (+4 power) | Cost 120 fragments
-<button onclick="buyRing()">Buy</button></div>
-
-<div class="shopItem">Echo Amplifier (+8 power) | Cost 300 fragments
-<button onclick="buyEcho()">Buy</button></div>
-
-<div class="shopItem">Fragment Magnet (better drops) | Cost 80 fragments
-<button onclick="buyMagnet()">Buy</button></div>
-
 <h2>Coupon Shop</h2>
 
-<div class="shopItem">5฿ Coupon | Cost 1200 coins | Stock <span id="stock5"></span>
+<div class="shopItem">5฿ Coupon | 1500 coins | Stock <span id="stock5"></span>
 <button onclick="buyCoupon(5)">Buy</button></div>
 
-<div class="shopItem">10฿ Coupon | Cost 3500 coins | Stock <span id="stock10"></span>
+<div class="shopItem">10฿ Coupon | 4500 coins | Stock <span id="stock10"></span>
 <button onclick="buyCoupon(10)">Buy</button></div>
 
-<div class="shopItem">25฿ Coupon | Cost 9000 coins | Stock <span id="stock25"></span>
+<div class="shopItem">25฿ Coupon | 12000 coins | Stock <span id="stock25"></span>
 <button onclick="buyCoupon(25)">Buy</button></div>
 
-<div class="shopItem">50฿ Coupon | Cost 20000 coins | Stock <span id="stock50"></span>
+<div class="shopItem">50฿ Coupon | 30000 coins | Stock <span id="stock50"></span>
 <button onclick="buyCoupon(50)">Buy</button></div>
 
 </div>
@@ -382,10 +319,32 @@ Reward: <span id="dailyReward">200 coins</span>
 <div id="upgrades" class="modal">
 <div class="close" onclick="closeModal('upgrades')">X</div>
 
-<h2>Permanent Upgrades</h2>
+<h2>Upgrades</h2>
 
 <div class="shopItem">
-Autoclicker (1 click/sec)  
+Combo Stabilizer  
+Cost: 200 fragments  
+<b>PERMANENT</b>
+<button onclick="buyComboBoost()">Buy</button>
+</div>
+
+<div class="shopItem">
+Fragment Extractor  
+Cost: 180 fragments
+<button onclick="buyExtractor()">Buy</button>
+</div>
+
+<div class="shopItem">
+Resonance Overdrive  
++10 click power  
+Cost: 500 fragments  
+<b>PERMANENT</b>
+<button onclick="buyOverdrive()">Buy</button>
+</div>
+
+<div class="shopItem">
+Autoclicker  
+1 click/sec  
 Cost: 120 fragments  
 <b>PERMANENT</b>
 <button onclick="buyAuto()">Buy</button>
@@ -402,11 +361,11 @@ Cost: 120 fragments
 
 <div class="carousel">
 
-<button onclick="prevMilestone()">←</button>
+<button type="button" onclick="prevMilestone()">←</button>
 
 <div id="milestoneCards"></div>
 
-<button onclick="nextMilestone()">→</button>
+<button type="button" onclick="nextMilestone()">→</button>
 
 </div>
 
@@ -425,7 +384,7 @@ Cost: 120 fragments
 
 <script>
 
-/* GAME DATA */
+/* DATA */
 
 let clicks=0
 let coins=0
@@ -433,15 +392,12 @@ let fragments=0
 let combo=0
 let power=1
 
+let comboBoost=1
+let fragmentBoost=1
+
 let level=1
 let exp=0
 
-let dailyClicks=0
-let lastDailyClaim=0
-
-let storyStage=0
-
-let fragmentBoost=1
 let autoclicker=false
 
 let stock5=5
@@ -449,97 +405,40 @@ let stock10=3
 let stock25=2
 let stock50=1
 
-let lastWeeklyReset=Date.now()
-
 let milestoneIndex=0
 let claimedMilestones=[]
 
-/* LORE */
+let clickLock=false
+let lastClick=Date.now()
 
-const lore=[
-
-`Long before the modern era, civilizations harnessed mysterious crystalline structures known as Aether Fragments.
-
-These fragments contained immense energy that could power cities, machines, and weapons.
-
-Entire nations were built around fragment energy.`,
-
-`Scientists later discovered fragments were not native to Earth.
-
-They were pieces of energy leaking from another dimension.
-
-When overused, the resonance destabilized reality.`,
-
-`The catastrophic event that followed became known as the Aetherfall.
-
-Cities vanished overnight as resonance storms tore across the planet.`,
-
-`After the collapse, fragments became rare and extremely valuable.
-
-Only skilled warriors could safely extract energy from them.`,
-
-`Today fragments are traded secretly through underground markets.
-
-One of these hidden places is the Abyssal Market.
-
-Your journey begins there.`
-
-]
-
-let loreIndex=0
-
-function showLore(){
-document.getElementById("lorePage").innerText=lore[loreIndex]
-}
-
-function nextLore(){
-loreIndex=(loreIndex+1)%lore.length
-showLore()
-}
-
-function prevLore(){
-loreIndex=(loreIndex-1+lore.length)%lore.length
-showLore()
-}
-
-/* LEVEL EXP */
-
-function expNeeded(lvl){
-return Math.min(200 + lvl*lvl*5,50000)
-}
-
-function gainExp(v){
-
-exp+=v
-
-while(exp>=expNeeded(level) && level<100){
-exp-=expNeeded(level)
-level++
-}
-
-}
-
-/* CLICK */
+/* CLICK SYSTEM */
 
 const sword=document.getElementById("sword")
 
 sword.onclick=e=>{
 
-let gain=power+Math.floor(combo/30)
+if(clickLock) return
+clickLock=true
+setTimeout(()=>clickLock=false,16)
+
+if(Date.now()-lastClick>3000) combo=0
+lastClick=Date.now()
+
+let gain = power + Math.floor((combo/30)*comboBoost)
 
 clicks+=gain
-dailyClicks+=gain
 combo++
 
-gainExp(0.02)
+/* RANDOM REWARDS */
 
-if(combo%(150/fragmentBoost)==0)fragments++
+if(Math.random()<0.005){coins+=10;float(e,"+10 coin")}
+if(Math.random()<0.001){fragments++;float(e,"+1 fragment")}
 
 float(e,"+"+gain)
 
 }
 
-/* FLOAT TEXT */
+/* FLOAT */
 
 function float(e,t){
 
@@ -556,49 +455,28 @@ setTimeout(()=>d.remove(),1000)
 
 }
 
-/* STORY */
+/* UPGRADES */
 
-const storyGoals=[100,1000,10000,100000,1000000]
-const storyRewards=[20,50,120,400,1200]
-
-function claimStory(){
-
-if(storyStage>=storyGoals.length)return
-
-if(clicks>=storyGoals[storyStage]){
-
-coins+=storyRewards[storyStage]
-storyStage++
-
+function buyComboBoost(){
+if(fragments>=200){
+fragments-=200
+comboBoost+=0.5
+}
 }
 
+function buyExtractor(){
+if(fragments>=180){
+fragments-=180
+fragmentBoost+=1
+}
 }
 
-/* DAILY */
-
-function claimDaily(){
-
-let now=Date.now()
-
-if(now-lastDailyClaim<86400000)return
-
-if(dailyClicks>=2000){
-
-coins+=200
-
-dailyClicks=0
-lastDailyClaim=now
-
+function buyOverdrive(){
+if(fragments>=500){
+fragments-=500
+power+=10
 }
-
 }
-
-/* SHOP */
-
-function buyPower(){if(fragments>=40){fragments-=40;power+=2}}
-function buyRing(){if(fragments>=120){fragments-=120;power+=4}}
-function buyEcho(){if(fragments>=300){fragments-=300;power+=8}}
-function buyMagnet(){if(fragments>=80){fragments-=80;fragmentBoost+=0.5}}
 
 function buyAuto(){
 
@@ -608,11 +486,7 @@ fragments-=120
 autoclicker=true
 
 setInterval(()=>{
-
 clicks+=power
-dailyClicks+=power
-gainExp(0.02)
-
 },1000)
 
 }
@@ -623,10 +497,15 @@ gainExp(0.02)
 
 function buyCoupon(v){
 
-if(v==5 && coins>=1200 && stock5>0){coins-=1200;stock5--}
-if(v==10 && coins>=3500 && stock10>0){coins-=3500;stock10--}
-if(v==25 && coins>=9000 && stock25>0){coins-=9000;stock25--}
-if(v==50 && coins>=20000 && stock50>0){coins-=20000;stock50--}
+if(level<15){
+alert("Coupons unlock at level 15")
+return
+}
+
+if(v==5 && coins>=1500 && stock5>0){coins-=1500;stock5--}
+if(v==10 && coins>=4500 && stock10>0){coins-=4500;stock10--}
+if(v==25 && coins>=12000 && stock25>0){coins-=12000;stock25--}
+if(v==50 && coins>=30000 && stock50>0){coins-=30000;stock50--}
 
 }
 
@@ -683,7 +562,6 @@ function openModal(id){
 
 document.getElementById(id).style.display="block"
 drawMilestones()
-showLore()
 
 }
 
@@ -702,47 +580,6 @@ document.getElementById("coins").innerText=coins
 document.getElementById("fragments").innerText=fragments
 document.getElementById("combo").innerText=combo
 
-let need=expNeeded(level)
-let percent=(exp/need)*100
-
-document.getElementById("levelText").innerText="Level "+level+" — "+Math.floor(exp)+" / "+need+" EXP"
-document.getElementById("levelFill").style.width=percent+"%"
-document.getElementById("levelPercent").innerText=Math.floor(percent)+"%"
-
-if(storyStage<storyGoals.length){
-
-let g=storyGoals[storyStage]
-let p=Math.min((clicks/g)*100,100)
-
-document.getElementById("storyText").innerText="Reach "+g.toLocaleString()+" clicks | Reward: "+storyRewards[storyStage]+" coins"
-
-document.getElementById("storyFill").style.width=p+"%"
-document.getElementById("storyPercent").innerText=Math.floor(p)+"%"
-
-}
-
-let d=Math.min((dailyClicks/2000)*100,100)
-
-document.getElementById("dailyFill").style.width=d+"%"
-document.getElementById("dailyPercent").innerText=Math.floor(d)+"%"
-
-let now=Date.now()
-
-let diff=86400000-(now-lastDailyClaim)
-
-if(diff>0){
-
-let h=Math.floor(diff/3600000)
-let m=Math.floor((diff%3600000)/60000)
-
-document.getElementById("dailyTimer").innerText="Ready in "+h+"h "+m+"m"
-
-}else{
-
-document.getElementById("dailyTimer").innerText="Ready"
-
-}
-
 document.getElementById("stock5").innerText=stock5
 document.getElementById("stock10").innerText=stock10
 document.getElementById("stock25").innerText=stock25
@@ -756,7 +593,7 @@ function save(){
 
 localStorage.setItem("aetherfall_save",JSON.stringify({
 
-clicks,coins,fragments,combo,power,level,exp,dailyClicks,lastDailyClaim,storyStage,fragmentBoost,autoclicker,stock5,stock10,stock25,stock50,claimedMilestones
+clicks,coins,fragments,combo,power,level,comboBoost,fragmentBoost,stock5,stock10,stock25,stock50,claimedMilestones
 
 }))
 
