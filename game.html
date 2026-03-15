@@ -6,38 +6,62 @@
 
 <style>
 
-body{
+html,body{
 margin:0;
-background:#060916;
-font-family:Segoe UI;
+height:100%;
+overflow:hidden;
+background:#050816;
+font-family:Segoe UI,Arial;
 color:white;
 }
 
 header{
 text-align:center;
-font-size:36px;
-padding:20px;
+font-size:38px;
+padding:18px;
 color:#a78bfa;
 font-weight:bold;
 }
 
+#backBtn{
+position:absolute;
+left:20px;
+top:20px;
+background:#0f172a;
+border:1px solid #1e3a8a;
+padding:8px 14px;
+border-radius:8px;
+color:white;
+cursor:pointer;
+}
+
 #levelWrap{
-width:500px;
+width:520px;
 margin:auto;
 text-align:center;
 }
 
-#levelBar{
-height:18px;
+.bar{
 background:#1e293b;
+height:20px;
 border-radius:8px;
 overflow:hidden;
+position:relative;
 }
 
-#levelFill{
+.fill{
 height:100%;
 background:#8b5cf6;
 width:0%;
+}
+
+.barText{
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+font-size:12px;
+pointer-events:none;
 }
 
 #stats{
@@ -63,7 +87,7 @@ height:calc(100vh - 170px);
 
 .panel{
 padding:20px;
-overflow:auto;
+overflow:hidden;
 }
 
 #center{
@@ -96,18 +120,12 @@ cursor:pointer;
 background:#1e293b;
 }
 
-.bar{
-background:#1e293b;
-height:16px;
-border-radius:6px;
-overflow:hidden;
-margin-top:6px;
-}
-
-.fill{
-height:100%;
-background:#22c55e;
-width:0%;
+.missionBox{
+background:#020617;
+border:1px solid #2563eb;
+padding:14px;
+border-radius:10px;
+margin-bottom:15px;
 }
 
 .modal{
@@ -119,8 +137,8 @@ transform:translate(-50%,-50%);
 background:#020617;
 border:1px solid #2563eb;
 border-radius:10px;
-width:800px;
-height:600px;
+width:900px;
+height:650px;
 padding:25px;
 overflow:auto;
 }
@@ -130,6 +148,62 @@ position:absolute;
 top:10px;
 right:14px;
 cursor:pointer;
+}
+
+.shopItem{
+background:#0f172a;
+border:1px solid #1e3a8a;
+padding:10px;
+border-radius:8px;
+margin-bottom:10px;
+}
+
+button{
+margin-top:6px;
+padding:6px 12px;
+background:#8b5cf6;
+border:none;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+.carousel{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:20px;
+margin-bottom:20px;
+}
+
+.card{
+width:150px;
+height:180px;
+background:#0f172a;
+border:2px solid #1e3a8a;
+border-radius:10px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:24px;
+}
+
+.active{
+border-color:#facc15;
+}
+
+.rewardBox{
+display:flex;
+justify-content:center;
+gap:20px;
+margin-top:20px;
+}
+
+.reward{
+background:#0f172a;
+border:1px solid #1e3a8a;
+padding:10px;
+border-radius:8px;
 }
 
 .float{
@@ -144,28 +218,12 @@ animation:floatUp 1s forwards;
 100%{opacity:0;transform:translateY(-60px)}
 }
 
-.shopItem{
-background:#0f172a;
-border:1px solid #1e3a8a;
-padding:10px;
-border-radius:8px;
-margin-bottom:10px;
-}
-
-button{
-margin-top:5px;
-padding:6px 12px;
-background:#8b5cf6;
-border:none;
-color:white;
-border-radius:6px;
-cursor:pointer;
-}
-
 </style>
 </head>
 
 <body>
+
+<button id="backBtn" onclick="location.href='market.html'">← Market</button>
 
 <header>AETHERFALL</header>
 
@@ -173,8 +231,9 @@ cursor:pointer;
 
 <div id="levelText">Level 1 — 0 / 200 EXP</div>
 
-<div id="levelBar">
-<div id="levelFill"></div>
+<div class="bar">
+<div id="levelFill" class="fill"></div>
+<span class="barText" id="levelPercent">0%</span>
 </div>
 
 </div>
@@ -195,6 +254,7 @@ cursor:pointer;
 <div class="menuBtn" onclick="openModal('lore')">📘 Lore</div>
 <div class="menuBtn" onclick="openModal('guide')">❓ Guide</div>
 <div class="menuBtn" onclick="openModal('shop')">🛒 Shop</div>
+<div class="menuBtn" onclick="openModal('upgrades')">⚡ Upgrades</div>
 <div class="menuBtn" onclick="openModal('milestones')">🏆 Milestones</div>
 
 </div>
@@ -205,100 +265,167 @@ cursor:pointer;
 
 <div class="panel">
 
-<h3>Storyline</h3>
+<div class="missionBox">
 
+<h3>Storyline</h3>
 <div id="storyText"></div>
 
 <div class="bar">
 <div id="storyFill" class="fill"></div>
+<span id="storyPercent" class="barText">0%</span>
 </div>
 
-<div id="storyPercent"></div>
+<button onclick="claimStory()">Claim Reward</button>
 
-<button onclick="claimStory()">Claim</button>
+</div>
 
-<h3 style="margin-top:20px;">Daily Mission</h3>
+<div class="missionBox">
 
-Goal: 2000 clicks
+<h3>Daily Mission</h3>
+
+Goal: 2000 clicks  
+Reward: <span id="dailyReward">200 coins</span>
 
 <div class="bar">
 <div id="dailyFill" class="fill"></div>
+<span id="dailyPercent" class="barText">0%</span>
 </div>
 
 <div id="dailyTimer"></div>
 
-<button onclick="claimDaily()">Claim</button>
+<button onclick="claimDaily()">Claim Daily</button>
 
 </div>
 
 </div>
+
+</div>
+
+<!-- LORE -->
 
 <div id="lore" class="modal">
 <div class="close" onclick="closeModal('lore')">X</div>
+
 <h2>Aetherfall Chronicle</h2>
-<p>
-In the ancient world of Aetherfall, power was not mined from the earth or drawn from the sky.  
-It was created through effort. Every strike, every clash, every movement of will caused the
-fragments of the world to resonate. Warriors learned that repeated action could awaken
-something hidden inside the universe itself.
-<br><br>
-Over centuries, the fragments grew unstable. Entire regions collapsed under the pressure
-of uncontrolled resonance. The ancient orders vanished, leaving behind only scattered
-shards and forgotten teachings.
-<br><br>
-Now a new wielder rises to rediscover the lost balance between effort and power.
-</p>
+
+<div id="lorePage"></div>
+
+<button onclick="prevLore()">←</button>
+<button onclick="nextLore()">→</button>
+
 </div>
+
+<!-- GUIDE -->
 
 <div id="guide" class="modal">
 <div class="close" onclick="closeModal('guide')">X</div>
-<h2>Guide</h2>
-<p>Click the sword to gain clicks.</p>
-<p>Combos increase power.</p>
-<p>Fragments unlock upgrades.</p>
-<p>Leveling is slow and long-term.</p>
+
+<h2>Game Guide</h2>
+
+<h3>Clicking</h3>
+<p>Click the sword to generate clicks. Each click produces power based on your upgrades and combo multiplier.</p>
+
+<h3>Combo System</h3>
+<p>Continuous clicking increases combo. Higher combos increase click power and fragment drop chances.</p>
+
+<h3>Fragments</h3>
+<p>Fragments are rare materials generated through combos. They are used to buy permanent upgrades.</p>
+
+<h3>Upgrades</h3>
+<p>Upgrades permanently increase your clicking strength, automate clicks, or improve fragment generation.</p>
+
+<h3>Coupons</h3>
+<p>Coupons can be purchased using coins and redeemed within the Abyssal Market.</p>
+
+<h3>Milestones</h3>
+<p>Every 5 levels unlocks milestone rewards containing coins and fragments.</p>
+
 </div>
 
-<div id="milestones" class="modal">
-<div class="close" onclick="closeModal('milestones')">X</div>
-<h2>Milestones</h2>
-<div id="milestoneList"></div>
-</div>
+<!-- SHOP -->
 
 <div id="shop" class="modal">
 <div class="close" onclick="closeModal('shop')">X</div>
 
 <h2>Fragment Shop</h2>
 
-<div class="shopItem">
-Power Core (+2 power)<br>
-Cost: 40 fragments
-<button onclick="buyPower()">Buy</button>
-</div>
+<div class="shopItem">Power Core (+2 power) | Cost 40 fragments
+<button onclick="buyPower()">Buy</button></div>
 
-<div class="shopItem">
-Autoclicker (1 click/sec)<br>
-Cost: 120 fragments
-<button onclick="buyAuto()">Buy</button>
-</div>
+<div class="shopItem">Resonance Ring (+4 power) | Cost 120 fragments
+<button onclick="buyRing()">Buy</button></div>
+
+<div class="shopItem">Echo Amplifier (+8 power) | Cost 300 fragments
+<button onclick="buyEcho()">Buy</button></div>
+
+<div class="shopItem">Fragment Magnet (better drops) | Cost 80 fragments
+<button onclick="buyMagnet()">Buy</button></div>
 
 <h2>Coupon Shop</h2>
 
-<div class="shopItem">
-5 Baht Coupon<br>
-Cost: 1200 coins
-<button onclick="buyCoupon(5)">Buy</button>
+<div class="shopItem">5฿ Coupon | Cost 1200 coins | Stock <span id="stock5"></span>
+<button onclick="buyCoupon(5)">Buy</button></div>
+
+<div class="shopItem">10฿ Coupon | Cost 3500 coins | Stock <span id="stock10"></span>
+<button onclick="buyCoupon(10)">Buy</button></div>
+
+<div class="shopItem">25฿ Coupon | Cost 9000 coins | Stock <span id="stock25"></span>
+<button onclick="buyCoupon(25)">Buy</button></div>
+
+<div class="shopItem">50฿ Coupon | Cost 20000 coins | Stock <span id="stock50"></span>
+<button onclick="buyCoupon(50)">Buy</button></div>
+
 </div>
 
+<!-- UPGRADES -->
+
+<div id="upgrades" class="modal">
+<div class="close" onclick="closeModal('upgrades')">X</div>
+
+<h2>Permanent Upgrades</h2>
+
 <div class="shopItem">
-10 Baht Coupon<br>
-Cost: 3500 coins
-<button onclick="buyCoupon(10)">Buy</button>
+Autoclicker (1 click/sec)  
+Cost: 120 fragments  
+<b>PERMANENT</b>
+<button onclick="buyAuto()">Buy</button>
 </div>
+
+</div>
+
+<!-- MILESTONES -->
+
+<div id="milestones" class="modal">
+<div class="close" onclick="closeModal('milestones')">X</div>
+
+<h2 style="text-align:center;">Level Milestones</h2>
+
+<div class="carousel">
+
+<button onclick="prevMilestone()">←</button>
+
+<div id="milestoneCards"></div>
+
+<button onclick="nextMilestone()">→</button>
+
+</div>
+
+<h3 id="milestoneTitle"></h3>
+
+<div class="rewardBox">
+
+<div class="reward">Coins: <span id="mCoins"></span></div>
+<div class="reward">Fragments: <span id="mFrags"></span></div>
+
+</div>
+
+<button onclick="claimMilestone()">Claim Rewards</button>
 
 </div>
 
 <script>
+
+/* GAME DATA */
 
 let clicks=0
 let coins=0
@@ -314,10 +441,68 @@ let lastDailyClaim=0
 
 let storyStage=0
 
+let fragmentBoost=1
 let autoclicker=false
 
-const storyGoals=[100,1000,10000,100000,1000000,10000000,100000000]
-const storyRewards=[20,50,120,400,1200,3000,10000]
+let stock5=5
+let stock10=3
+let stock25=2
+let stock50=1
+
+let lastWeeklyReset=Date.now()
+
+let milestoneIndex=0
+let claimedMilestones=[]
+
+/* LORE */
+
+const lore=[
+
+`Long before the modern era, civilizations harnessed mysterious crystalline structures known as Aether Fragments.
+
+These fragments contained immense energy that could power cities, machines, and weapons.
+
+Entire nations were built around fragment energy.`,
+
+`Scientists later discovered fragments were not native to Earth.
+
+They were pieces of energy leaking from another dimension.
+
+When overused, the resonance destabilized reality.`,
+
+`The catastrophic event that followed became known as the Aetherfall.
+
+Cities vanished overnight as resonance storms tore across the planet.`,
+
+`After the collapse, fragments became rare and extremely valuable.
+
+Only skilled warriors could safely extract energy from them.`,
+
+`Today fragments are traded secretly through underground markets.
+
+One of these hidden places is the Abyssal Market.
+
+Your journey begins there.`
+
+]
+
+let loreIndex=0
+
+function showLore(){
+document.getElementById("lorePage").innerText=lore[loreIndex]
+}
+
+function nextLore(){
+loreIndex=(loreIndex+1)%lore.length
+showLore()
+}
+
+function prevLore(){
+loreIndex=(loreIndex-1+lore.length)%lore.length
+showLore()
+}
+
+/* LEVEL EXP */
 
 function expNeeded(lvl){
 return Math.min(200 + lvl*lvl*5,50000)
@@ -328,13 +513,13 @@ function gainExp(v){
 exp+=v
 
 while(exp>=expNeeded(level) && level<100){
-
 exp-=expNeeded(level)
 level++
-
 }
 
 }
+
+/* CLICK */
 
 const sword=document.getElementById("sword")
 
@@ -346,15 +531,15 @@ clicks+=gain
 dailyClicks+=gain
 combo++
 
-gainExp(0.05)
+gainExp(0.02)
 
-if(combo%150==0)fragments++
+if(combo%(150/fragmentBoost)==0)fragments++
 
 float(e,"+"+gain)
 
-update()
-
 }
+
+/* FLOAT TEXT */
 
 function float(e,t){
 
@@ -371,6 +556,11 @@ setTimeout(()=>d.remove(),1000)
 
 }
 
+/* STORY */
+
+const storyGoals=[100,1000,10000,100000,1000000]
+const storyRewards=[20,50,120,400,1200]
+
 function claimStory(){
 
 if(storyStage>=storyGoals.length)return
@@ -378,16 +568,13 @@ if(storyStage>=storyGoals.length)return
 if(clicks>=storyGoals[storyStage]){
 
 coins+=storyRewards[storyStage]
-
-gainExp(100)
-
 storyStage++
 
-save()
-
 }
 
 }
+
+/* DAILY */
 
 function claimDaily(){
 
@@ -398,29 +585,20 @@ if(now-lastDailyClaim<86400000)return
 if(dailyClicks>=2000){
 
 coins+=200
-gainExp(200)
 
 dailyClicks=0
 lastDailyClaim=now
 
-save()
-
 }
 
 }
 
-function buyPower(){
+/* SHOP */
 
-if(fragments>=40){
-
-fragments-=40
-power+=2
-
-save()
-
-}
-
-}
+function buyPower(){if(fragments>=40){fragments-=40;power+=2}}
+function buyRing(){if(fragments>=120){fragments-=120;power+=4}}
+function buyEcho(){if(fragments>=300){fragments-=300;power+=8}}
+function buyMagnet(){if(fragments>=80){fragments-=80;fragmentBoost+=0.5}}
 
 function buyAuto(){
 
@@ -429,51 +607,83 @@ if(fragments>=120 && !autoclicker){
 fragments-=120
 autoclicker=true
 
-startAuto()
-
-save()
-
-}
-
-}
-
-function buyCoupon(v){
-
-let cost=v==5?1200:3500
-
-if(coins>=cost){
-
-coins-=cost
-
-alert("Coupon claimed: "+v+" baht")
-
-save()
-
-}
-
-}
-
-function startAuto(){
-
 setInterval(()=>{
-
-if(!autoclicker)return
 
 clicks+=power
 dailyClicks+=power
-
-gainExp(0.05)
-
-update()
+gainExp(0.02)
 
 },1000)
 
 }
 
+}
+
+/* COUPONS */
+
+function buyCoupon(v){
+
+if(v==5 && coins>=1200 && stock5>0){coins-=1200;stock5--}
+if(v==10 && coins>=3500 && stock10>0){coins-=3500;stock10--}
+if(v==25 && coins>=9000 && stock25>0){coins-=9000;stock25--}
+if(v==50 && coins>=20000 && stock50>0){coins-=20000;stock50--}
+
+}
+
+/* MILESTONES */
+
+function milestoneLevel(){return (milestoneIndex+1)*5}
+
+function drawMilestones(){
+
+let cards=""
+
+for(let i=milestoneIndex-1;i<=milestoneIndex+1;i++){
+
+if(i<0||i>19)continue
+
+let lvl=(i+1)*5
+
+cards+=`<div class="card ${i==milestoneIndex?"active":""}">Lv ${lvl}</div>`
+
+}
+
+document.getElementById("milestoneCards").innerHTML=cards
+
+let lvl=milestoneLevel()
+
+document.getElementById("milestoneTitle").innerText="Level "+lvl+" Rewards"
+
+document.getElementById("mCoins").innerText=lvl*100
+document.getElementById("mFrags").innerText=Math.floor(lvl/5)
+
+}
+
+function nextMilestone(){if(milestoneIndex<19)milestoneIndex++;drawMilestones()}
+function prevMilestone(){if(milestoneIndex>0)milestoneIndex--;drawMilestones()}
+
+function claimMilestone(){
+
+let lvl=milestoneLevel()
+
+if(level>=lvl && !claimedMilestones.includes(lvl)){
+
+coins+=lvl*100
+fragments+=Math.floor(lvl/5)
+
+claimedMilestones.push(lvl)
+
+}
+
+}
+
+/* MODALS */
+
 function openModal(id){
 
 document.getElementById(id).style.display="block"
 drawMilestones()
+showLore()
 
 }
 
@@ -483,43 +693,7 @@ document.getElementById(id).style.display="none"
 
 }
 
-function drawMilestones(){
-
-let box=document.getElementById("milestoneList")
-box.innerHTML=""
-
-for(let i=5;i<=100;i+=5){
-
-let reward=i*60
-
-let div=document.createElement("div")
-
-div.innerHTML="Level "+i+" reward: "+reward+" coins"
-
-if(level>=i){
-
-let b=document.createElement("button")
-
-b.innerText="Claim"
-
-b.onclick=()=>{
-
-coins+=reward
-b.disabled=true
-
-save()
-
-}
-
-div.appendChild(b)
-
-}
-
-box.appendChild(div)
-
-}
-
-}
+/* UPDATE */
 
 function update(){
 
@@ -529,33 +703,28 @@ document.getElementById("fragments").innerText=fragments
 document.getElementById("combo").innerText=combo
 
 let need=expNeeded(level)
-
 let percent=(exp/need)*100
 
-document.getElementById("levelText").innerText=
-"Level "+level+" — "+Math.floor(exp)+" / "+need+" EXP"
-
+document.getElementById("levelText").innerText="Level "+level+" — "+Math.floor(exp)+" / "+need+" EXP"
 document.getElementById("levelFill").style.width=percent+"%"
+document.getElementById("levelPercent").innerText=Math.floor(percent)+"%"
 
 if(storyStage<storyGoals.length){
 
 let g=storyGoals[storyStage]
-
 let p=Math.min((clicks/g)*100,100)
 
-document.getElementById("storyText").innerText=
-"Reach "+g.toLocaleString()+" clicks | Reward: "+storyRewards[storyStage]+" coins"
+document.getElementById("storyText").innerText="Reach "+g.toLocaleString()+" clicks | Reward: "+storyRewards[storyStage]+" coins"
 
 document.getElementById("storyFill").style.width=p+"%"
-
-document.getElementById("storyPercent").innerText=
-Math.floor(p)+"%"
+document.getElementById("storyPercent").innerText=Math.floor(p)+"%"
 
 }
 
 let d=Math.min((dailyClicks/2000)*100,100)
 
 document.getElementById("dailyFill").style.width=d+"%"
+document.getElementById("dailyPercent").innerText=Math.floor(d)+"%"
 
 let now=Date.now()
 
@@ -566,8 +735,7 @@ if(diff>0){
 let h=Math.floor(diff/3600000)
 let m=Math.floor((diff%3600000)/60000)
 
-document.getElementById("dailyTimer").innerText=
-"Ready in "+h+"h "+m+"m"
+document.getElementById("dailyTimer").innerText="Ready in "+h+"h "+m+"m"
 
 }else{
 
@@ -575,13 +743,20 @@ document.getElementById("dailyTimer").innerText="Ready"
 
 }
 
+document.getElementById("stock5").innerText=stock5
+document.getElementById("stock10").innerText=stock10
+document.getElementById("stock25").innerText=stock25
+document.getElementById("stock50").innerText=stock50
+
 }
+
+/* SAVE */
 
 function save(){
 
 localStorage.setItem("aetherfall_save",JSON.stringify({
 
-clicks,coins,fragments,combo,power,level,exp,dailyClicks,lastDailyClaim,storyStage,autoclicker
+clicks,coins,fragments,combo,power,level,exp,dailyClicks,lastDailyClaim,storyStage,fragmentBoost,autoclicker,stock5,stock10,stock25,stock50,claimedMilestones
 
 }))
 
@@ -595,22 +770,22 @@ if(!s)return
 
 let data=JSON.parse(s)
 
-Object.assign(window,data)
-
-if(autoclicker)startAuto()
+for(let k in data){
+window[k]=data[k]
+}
 
 }
 
 load()
 
 setInterval(()=>{
-
 update()
 save()
-
 },500)
 
 </script>
+
+<script src="cursor.js"></script>
 
 </body>
 </html>
