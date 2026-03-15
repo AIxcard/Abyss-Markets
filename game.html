@@ -13,7 +13,6 @@
             --gold: #fbbf24;
             --frag: #d8b4fe;
             --combo: #06b6d4;
-            --crit: #ff4d4d;
             --text: #f8fafc;
             --card-bg: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
             --grad-action: linear-gradient(180deg, #4f46e5 0%, #3730a3 100%);
@@ -87,7 +86,7 @@
         .btn-claim:disabled { background: #333 !important; cursor: not-allowed; opacity: 0.5; }
 
         .timer-text { font-family: 'Orbitron'; font-size: 9px; color: var(--accent); display: block; margin-top: 5px; }
-        .click-text { position: absolute; pointer-events: none; font-family: 'Orbitron'; font-weight: 900; animation: floatUp 0.6s ease-out forwards; z-index: 100; }
+        .click-text { position: absolute; pointer-events: none; font-family: 'Orbitron'; font-weight: 900; animation: floatUp 0.6s ease-out forwards; z-index: 100; text-shadow: 0 0 5px #000; }
         @keyframes floatUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-100px); opacity: 0; } }
     </style>
 </head>
@@ -128,7 +127,7 @@
         <h3 style="font-family:'Orbitron'; font-size: 11px; color:var(--accent);">MISSIONS</h3>
         <div class="shop-card" style="border-left: 3px solid var(--accent); margin-bottom: 10px;">
             <b id="st-ch">CH 1: PART 1</b>
-            <p id="st-obj" style="font-size:11px; margin:4px 0; color:var(--accent);"></p>
+            <p id="st-obj" style="font-size:11px; margin:4px 0; color:var(--accent); font-weight: bold;"></p>
             <div class="bar-outer" style="height:8px; margin:8px 0;"><div id="st-fill" class="fill"></div></div>
             <small id="st-rew" style="font-size:9px; color:var(--gold)"></small>
             <button class="btn-claim" id="st-btn" onclick="claimStory()">CLAIM STORY</button>
@@ -154,25 +153,46 @@
     <span class="close" onclick="closeModal('coupon-m')">[X]</span>
     <h2 style="font-family:'Orbitron'">Coupon Market</h2>
     <div class="grid-shop">
-        <div class="shop-card"><b>Bronze Coupon</b><br>5 Baht Discount<button class="btn-claim cp-item" onclick="buyCoupon('Bronze', 500, 5)">500 Gold</button></div>
-        <div class="shop-card"><b>Silver Coupon</b><br>10 Baht Discount<button class="btn-claim cp-item" onclick="buyCoupon('Silver', 1500, 10)">1,500 Gold</button></div>
-        <div class="shop-card"><b>Gold Coupon</b><br>25 Baht Discount<button class="btn-claim cp-item" onclick="buyCoupon('Gold', 5000, 25)">5,000 Gold</button></div>
+        <div class="shop-card"><b>Bronze Coupon</b><br>5 Baht Discount<button class="btn-claim" onclick="buyCoupon('Bronze', 500, 5)">500 Gold</button></div>
+        <div class="shop-card"><b>Silver Coupon</b><br>10 Baht Discount<button class="btn-claim" onclick="buyCoupon('Silver', 1500, 10)">1,500 Gold</button></div>
+        <div class="shop-card"><b>Gold Coupon</b><br>25 Baht Discount<button class="btn-claim" onclick="buyCoupon('Gold', 5000, 25)">5,000 Gold</button></div>
     </div>
+</div>
+
+<div id="forge-m" class="modal">
+    <span class="close" onclick="closeModal('forge-m')">[X]</span>
+    <h2 style="font-family:'Orbitron'">Nexus Forge</h2>
+    <div class="grid-shop">
+        <div class="shop-card"><b>Iron Blade</b><br>+2 Base Power<button class="btn-claim" onclick="buyForge(1000, 2)">1,000 Gold</button></div>
+        <div class="shop-card"><b>Tuned Edge</b><br>+5 Base Power<button class="btn-claim" onclick="buyForge(4000, 5)">4,000 Gold</button></div>
+    </div>
+</div>
+
+<div id="shop-m" class="modal">
+    <span class="close" onclick="closeModal('shop-m')">[X]</span>
+    <h2 style="font-family:'Orbitron'">Fragment Shop</h2>
+    <div class="grid-shop">
+        <div class="shop-card"><b>Void Core</b><br>+10 Base Power<button class="btn-claim" onclick="buyArt('Void Core', 15, 10)">15 Frags</button></div>
+        <div class="shop-card"><b>Star Fragment</b><br>+40 Base Power<button class="btn-claim" onclick="buyArt('Star Fragment', 50, 40)">50 Frags</button></div>
+    </div>
+</div>
+
+<div id="guide-m" class="modal">
+    <span class="close" onclick="closeModal('guide-m')">[X]</span>
+    <h2 style="font-family:'Orbitron'">Nexus Guide</h2>
+    <p>• Every 100 Combo hits adds +1 Click Power.</p>
+    <p>• Story Chapters 4 and 5 reward Fragments.</p>
+    <p>• Daily/Weekly reset at midnight (UTC).</p>
 </div>
 
 <div id="settings-m" class="modal">
     <span class="close" onclick="closeModal('settings-m')">[X]</span>
     <h2 style="font-family:'Orbitron'">Settings</h2>
-    <p style="font-size:12px; opacity:0.7;">Factory Reset will wipe all local data permanently.</p>
-    <button class="btn-claim" style="background:#b91c1c; margin-top:20px" onclick="hardReset()">FACTORY RESET</button>
+    <button class="btn-claim" style="background:#b91c1c;" onclick="hardReset()">FACTORY RESET</button>
 </div>
 
-<div id="forge-m" class="modal"><span class="close" onclick="closeModal('forge-m')">[X]</span><h2 style="font-family:'Orbitron'">Forge</h2><p>Forge currently offline.</p></div>
-<div id="shop-m" class="modal"><span class="close" onclick="closeModal('shop-m')">[X]</span><h2 style="font-family:'Orbitron'">Fragment Shop</h2><p>Shop currently offline.</p></div>
-<div id="guide-m" class="modal"><span class="close" onclick="closeModal('guide-m')">[X]</span><h2 style="font-family:'Orbitron'">Guide</h2><p>Welcome to Aetherfall. Click the sword to gain EXP and find Gold.</p></div>
-
 <script>
-let clicks=0, gold=0, frags=0, power=1, level=1, exp=0, combo=0, storyCh=1, storyPart=1, discount=0, inv=[];
+let clicks=0, gold=0, frags=0, basePower=1, level=1, exp=0, combo=0, storyCh=1, storyPart=1, discount=0, inv=[];
 let dailyClaimed=false, weeklyClaimed=false, dailyClicks=0, weeklyClicks=0;
 
 function updateUI() {
@@ -186,17 +206,17 @@ function updateUI() {
     document.getElementById('levelFill').style.width = (exp/req*100) + "%";
     document.getElementById('expDisplay').innerText = `${Math.floor(exp)} / ${req} EXP`;
 
-    // Story Logic
+    // Story Loop logic
     document.getElementById('st-ch').innerText = `CH ${storyCh}: PART ${storyPart}`;
-    let target = (storyCh * 1000) + (storyPart * 200);
+    let target = (storyCh * 1500) + (storyPart * 300);
     document.getElementById('st-obj').innerText = `Objective: ${target.toLocaleString()} Clicks`;
     document.getElementById('st-fill').style.width = Math.min(100, (clicks/target)*100) + "%";
     document.getElementById('st-btn').disabled = (clicks < target);
     
-    let rewG = (storyCh * 150) + (storyPart * 50);
-    let rewE = (storyCh * 100) + (storyPart * 20);
+    let rewG = (storyCh * 200) + (storyPart * 50);
+    let rewE = (storyCh * 150) + (storyPart * 20);
     let rewF = storyCh >= 4 ? Math.floor(storyPart/2) : 0;
-    document.getElementById('st-rew').innerText = `Reward: ${rewG} Gold, ${rewE} EXP ${rewF > 0 ? '+ '+rewF+' Frags' : ''}`;
+    document.getElementById('st-rew').innerText = `Reward: ${rewG}G, ${rewE}XP ${rewF > 0 ? '+ '+rewF+'F' : ''}`;
 
     document.getElementById('daily-btn').disabled = (dailyClicks < 5000 || dailyClaimed);
     document.getElementById('daily-btn').innerText = dailyClaimed ? "CLAIMED" : "CLAIM DAILY";
@@ -207,8 +227,13 @@ function updateUI() {
 }
 
 document.getElementById('sword').addEventListener('click', (e) => {
-    let hit = 1 + Math.floor(combo / 100);
-    clicks += hit; dailyClicks += hit; weeklyClicks += hit; combo++;
+    let comboBonus = Math.floor(combo / 100);
+    let hit = basePower + comboBonus;
+    
+    clicks += 1; // Increment total clicks count
+    dailyClicks += 1;
+    weeklyClicks += 1;
+    combo++;
     
     if(Math.random() < 0.005) gold += 10;
     exp += (0.2 * hit);
@@ -251,17 +276,14 @@ function formatTime(ms) {
 }
 
 function claimStory() {
-    gold += (storyCh * 150) + (storyPart * 50);
-    exp += (storyCh * 100) + (storyPart * 20);
+    gold += (storyCh * 200) + (storyPart * 50);
+    exp += (storyCh * 150) + (storyPart * 20);
     if(storyCh >= 4) frags += Math.floor(storyPart/2);
     
     storyPart++;
     if(storyPart > 10) { 
-        if(storyCh === 5) { // Reset loop after Ch 5 P 10
-            storyCh = 5; storyPart = 1; 
-        } else {
-            storyPart = 1; storyCh++; 
-        }
+        if(storyCh >= 5) { storyCh = 5; storyPart = 1; } // Loop Ch 5 indefinitely
+        else { storyPart = 1; storyCh++; }
     }
     updateUI();
 }
@@ -273,20 +295,29 @@ function buyCoupon(name, cost, dV) {
     if(gold >= cost) { gold -= cost; discount = dV; inv.push(name + " Coupon"); renderInv(); updateUI(); }
 }
 
+function buyForge(cost, p) {
+    let finalCost = Math.max(0, cost - discount);
+    if(gold >= finalCost) { gold -= finalCost; basePower += p; inv.push("Forge Upgrade"); renderInv(); updateUI(); }
+}
+
+function buyArt(name, fCost, p) {
+    if(frags >= fCost) { frags -= fCost; basePower += p; inv.push(name); renderInv(); updateUI(); }
+}
+
 function renderInv() { document.getElementById('invList').innerHTML = inv.map(i => `<div class="shop-card"><b>${i}</b></div>`).join(''); }
 function openModal(id) { document.getElementById(id).style.display='block'; }
 function closeModal(id) { document.getElementById(id).style.display='none'; }
 function hardReset() { if(confirm("WIPE DATA?")) { localStorage.clear(); location.reload(); } }
 
 function save() {
-    const d = {clicks, gold, frags, level, exp, storyCh, storyPart, discount, inv, dailyClaimed, weeklyClaimed, dailyClicks, weeklyClicks};
-    localStorage.setItem('aether_v9', JSON.stringify(d));
+    const d = {clicks, gold, frags, basePower, level, exp, storyCh, storyPart, discount, inv, dailyClaimed, weeklyClaimed, dailyClicks, weeklyClicks};
+    localStorage.setItem('aether_vX', JSON.stringify(d));
 }
 function load() {
-    let s = localStorage.getItem('aether_v9');
+    let s = localStorage.getItem('aether_vX');
     if(s) {
         let d = JSON.parse(s);
-        clicks=d.clicks||0; gold=d.gold||0; frags=d.frags||0; level=d.level||1; exp=d.exp||0;
+        clicks=d.clicks||0; gold=d.gold||0; frags=d.frags||0; basePower=d.basePower||1; level=d.level||1; exp=d.exp||0;
         storyCh=d.storyCh||1; storyPart=d.storyPart||1; discount=d.discount||0; inv=d.inv||[];
         dailyClaimed=d.dailyClaimed||false; weeklyClaimed=d.weeklyClaimed||false;
         dailyClicks=d.dailyClicks||0; weeklyClicks=d.weeklyClicks||0;
