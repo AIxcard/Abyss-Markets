@@ -230,28 +230,35 @@ animation:floatUp 1s forwards;
 <header>AETHERFALL</header>
 
 <div id="levelWrap">
+
 <div id="levelText">Level 1 — 0 / 200 EXP</div>
+
 <div class="bar">
 <div id="levelFill" class="fill"></div>
 <span class="barText" id="levelPercent">0%</span>
 </div>
+
 </div>
 
 <div id="stats">
+
 <div class="stat">Clicks<br><span id="clicks">0</span></div>
 <div class="stat">Coins<br><span id="coins">0</span></div>
 <div class="stat">Fragments<br><span id="fragments">0</span></div>
 <div class="stat">Combo<br><span id="combo">0</span></div>
+
 </div>
 
 <div id="layout">
 
 <div class="panel">
+
 <div class="menuBtn" onclick="openModal('lore')">📘 Lore</div>
 <div class="menuBtn" onclick="openModal('guide')">❓ Guide</div>
 <div class="menuBtn" onclick="openModal('shop')">🛒 Shop</div>
 <div class="menuBtn" onclick="openModal('upgrades')">⚡ Upgrades</div>
 <div class="menuBtn" onclick="openModal('milestones')">🏆 Milestones</div>
+
 </div>
 
 <div id="center">
@@ -261,6 +268,7 @@ animation:floatUp 1s forwards;
 <div class="panel">
 
 <div class="missionBox">
+
 <h3>Storyline</h3>
 <div id="storyText"></div>
 
@@ -274,8 +282,11 @@ animation:floatUp 1s forwards;
 </div>
 
 <div class="missionBox">
+
 <h3>Daily Mission</h3>
-Goal: 2000 clicks — Reward: 200 coins
+
+Goal: 2000 clicks
+Reward: <span id="dailyReward">200 coins</span>
 
 <div class="bar">
 <div id="dailyFill" class="fill"></div>
@@ -283,103 +294,18 @@ Goal: 2000 clicks — Reward: 200 coins
 </div>
 
 <div id="dailyTimer"></div>
+
 <button onclick="claimDaily()">Claim Daily</button>
-</div>
 
 </div>
 
 </div>
-
-<!-- GUIDE -->
-
-<div id="guide" class="modal">
-<div class="close" onclick="closeModal('guide')">X</div>
-
-<h2>Game Guide</h2>
-
-<h3>Clicking</h3>
-Click the sword to gain clicks and EXP.
-
-<h3>Combo</h3>
-Continuous clicking increases combo which boosts power.
-
-<h3>Fragments</h3>
-Fragments are rare materials used for permanent upgrades.
-
-<h3>Milestones</h3>
-Every 5 levels grants milestone rewards.
-
-</div>
-
-<!-- SHOP -->
-
-<div id="shop" class="modal">
-<div class="close" onclick="closeModal('shop')">X</div>
-
-<h2>Fragment Shop</h2>
-
-<div class="shopItem">Power Core (+2 power) | Cost 40 fragments
-<button onclick="buyPower()">Buy</button></div>
-
-<div class="shopItem">Resonance Ring (+4 power) | Cost 120 fragments
-<button onclick="buyRing()">Buy</button></div>
-
-<div class="shopItem">Echo Amplifier (+8 power) | Cost 300 fragments
-<button onclick="buyEcho()">Buy</button></div>
-
-<div class="shopItem">Fragment Magnet | Cost 80 fragments
-<button onclick="buyMagnet()">Buy</button></div>
-
-</div>
-
-<!-- UPGRADES -->
-
-<div id="upgrades" class="modal">
-<div class="close" onclick="closeModal('upgrades')">X</div>
-
-<h2>Permanent Upgrades</h2>
-
-<div class="shopItem">
-Autoclicker (1 click/sec)  
-Cost: 120 fragments  
-<button onclick="buyAuto()">Buy</button>
-</div>
-
-</div>
-
-<!-- MILESTONES -->
-
-<div id="milestones" class="modal">
-<div class="close" onclick="closeModal('milestones')">X</div>
-
-<h2 style="text-align:center;">Level Milestones</h2>
-
-<div class="carousel">
-
-<button onclick="prevMilestone()">←</button>
-
-<div id="milestoneCards"></div>
-
-<button onclick="nextMilestone()">→</button>
-
-</div>
-
-<h3 id="milestoneTitle"></h3>
-
-<div class="rewardBox">
-
-<div class="reward">Coins: <span id="mCoins"></span></div>
-<div class="reward">Fragments: <span id="mFrags"></span></div>
-
-</div>
-
-<button onclick="claimMilestone()">Claim Rewards</button>
 
 </div>
 
 <script>
 
-/* CORE DATA */
+/* GAME DATA */
 
 let clicks=0
 let coins=0
@@ -390,18 +316,60 @@ let power=1
 let level=1
 let exp=0
 
+let dailyClicks=0
+let lastDailyClaim=0
+
+let storyStage=0
+
+let fragmentBoost=1
+let autoclicker=false
+
+let stock5=5
+let stock10=3
+let stock25=2
+let stock50=1
+
+let milestoneIndex=0
+let claimedMilestones=[]
+
 let lastClickTime=Date.now()
 
 /* FLOAT TEXT */
 
 function float(e,t){
+
 let d=document.createElement("div")
 d.className="float"
 d.innerText=t
+
 d.style.left=e.pageX+"px"
 d.style.top=e.pageY+"px"
+
 document.body.appendChild(d)
+
 setTimeout(()=>d.remove(),1000)
+
+}
+
+function msg(text){
+float({pageX:window.innerWidth/2,pageY:window.innerHeight/2},text)
+}
+
+/* LEVEL EXP */
+
+function expNeeded(lvl){
+return Math.min(200 + lvl*lvl*5,50000)
+}
+
+function gainExp(v){
+
+exp+=v
+
+while(exp>=expNeeded(level) && level<100){
+exp-=expNeeded(level)
+level++
+}
+
 }
 
 /* CLICK */
@@ -415,7 +383,15 @@ lastClickTime=Date.now()
 let gain=power+Math.floor(combo/30)
 
 clicks+=gain
+dailyClicks+=gain
 combo++
+
+gainExp(0.02)
+
+if(combo%(150/fragmentBoost)==0){
+fragments++
+float(e,"+1 Fragment")
+}
 
 if(Math.random()<0.005){
 coins+=10
@@ -439,13 +415,68 @@ combo=0
 }
 },200)
 
+/* STORY */
+
+const storyGoals=[100,1000,10000,100000,1000000]
+const storyRewards=[20,50,120,400,1200]
+
+function claimStory(){
+
+if(storyStage>=storyGoals.length){
+msg("All Completed")
+return
+}
+
+if(clicks>=storyGoals[storyStage]){
+
+coins+=storyRewards[storyStage]
+storyStage++
+msg("Reward Claimed")
+
+}else{
+
+msg("Not Ready")
+
+}
+
+}
+
+/* DAILY */
+
+function claimDaily(){
+
+let now=Date.now()
+
+if(now-lastDailyClaim<86400000){
+msg("Already Claimed")
+return
+}
+
+if(dailyClicks>=2000){
+
+coins+=200
+dailyClicks=0
+lastDailyClaim=now
+
+msg("Daily Reward Claimed")
+
+}else{
+
+msg("Not Ready")
+
+}
+
+}
+
 /* UPDATE */
 
 function update(){
+
 document.getElementById("clicks").innerText=Math.floor(clicks)
 document.getElementById("coins").innerText=coins
 document.getElementById("fragments").innerText=fragments
 document.getElementById("combo").innerText=combo
+
 }
 
 setInterval(update,200)
