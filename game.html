@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Aetherfall | Nexus</title>
+    <title>Aetherfall | Nexus Master</title>
     <style>
         :root {
             --bg: #020408;
@@ -52,6 +52,7 @@
         .stat-mini small { font-size: 7px; text-transform: uppercase; display: block; opacity: 0.6; }
         .stat-mini span { font-size: 13px; font-weight: 800; }
 
+        /* LEVEL BAR */
         #levelWrap { width: 380px; margin-bottom: 15px; }
         .bar-outer {
             background: #000; height: 20px; border-radius: 4px;
@@ -67,7 +68,7 @@
         #sword { width: 230px; cursor: pointer; transition: transform 0.05s; z-index: 5; }
         #sword:active { transform: scale(0.93); }
 
-        /* OLD SCHOOL ANGLED CRITS */
+        /* RE-FORGED DIAGONAL CRITS */
         .click-text {
             position: absolute; pointer-events: none; font-weight: 900; font-size: 16px;
             color: white; animation: floatDiag 0.7s ease-out forwards; z-index: 100;
@@ -79,15 +80,15 @@
         }
         @keyframes floatDiag {
             0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(30px, -80px); opacity: 0; }
+            100% { transform: translate(30px, -80px) rotate(10deg); opacity: 0; }
         }
         @keyframes critDiag {
-            0% { transform: translate(0, 0) scale(0.5) rotate(-10deg); opacity: 1; }
+            0% { transform: translate(0, 0) scale(0.5) rotate(-15deg); opacity: 1; }
             20% { transform: translate(-15px, -15px) scale(1.2) rotate(5deg); }
-            100% { transform: translate(-50px, -140px) rotate(-15deg); opacity: 0; }
+            100% { transform: translate(-50px, -140px) rotate(-20deg); opacity: 0; }
         }
 
-        /* UI BUTTONS */
+        /* NAVIGATION & CARDS */
         .nav-btn {
             background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05);
             padding: 10px; margin-bottom: 6px; border-radius: 4px;
@@ -103,6 +104,7 @@
         }
         .btn-claim:disabled { background: #1a1a1a; color: #444; cursor: not-allowed; }
 
+        /* MODALS */
         .modal {
             display: none; position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%); background: #080a0f;
@@ -110,14 +112,15 @@
             width: 500px; max-height: 60vh; padding: 20px; z-index: 1000; overflow-y: auto;
         }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .close-btn { float: right; cursor: pointer; color: #ff4d4d; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div id="layout">
     <div class="side-panel">
-        <div style="font-size:10px; color:var(--accent); font-weight:900; margin-bottom:15px; letter-spacing:1px;">CORE TERMINAL</div>
-        <div class="nav-btn" onclick="openM('lore')">📘 Lore Archive</div>
+        <div style="font-size:10px; color:var(--accent); font-weight:900; margin-bottom:15px; letter-spacing:1px;">NEXUS TERMINAL</div>
+        <div class="nav-btn" onclick="openM('lore')">📘 Archive</div>
         <div class="nav-btn" onclick="openM('shop')">💎 Frag Shop</div>
         <div class="nav-btn" onclick="openM('arts')">✨ Artifacts</div>
         <div class="nav-btn" onclick="openM('miles')">🏆 Milestones</div>
@@ -142,7 +145,7 @@
     </div>
 
     <div class="side-panel right-panel">
-        <div style="font-size:10px; color:var(--accent); font-weight:900; margin-bottom:10px;">QUESTS</div>
+        <div style="font-size:10px; color:var(--accent); font-weight:900; margin-bottom:10px;">QUEST LOG</div>
         <div id="quest-area" class="quest-card"></div>
         <div class="quest-card" style="margin-top:10px;">
             <small style="font-weight:bold;">DAILY REFLEX</small>
@@ -153,39 +156,51 @@
 </div>
 
 <div id="modal-lore" class="modal">
-    <h3 style="color:var(--accent); margin-top:0;">THE SHATTERED ARCHIVE</h3>
+    <span class="close-btn" onclick="closeM()">[X]</span>
+    <h3 style="color:var(--accent)">THE SHATTERED ARCHIVE</h3>
     <p style="font-size:13px; line-height:1.5; opacity:0.8;">
-        The Aether once flowed as a singular consciousness until the Great Divergence. Now, fragments of reality are all that remain. 
-        <br><br><b>Gold (0.5%):</b> Residual soul-dust found in the cracks of the Nexus. 
-        <br><b>Fragments (0.1%):</b> Raw shards of existence. Near impossible to synthesize.
+        The Divergence tore the Aether apart. Reality now exists as static shards. 
+        <br><br><b>Gold:</b> Ancient solar residue. Yield: 0.5%.
+        <br><b>Fragments:</b> Pure crystalline logic. Yield: 0.1%.
+        <br><br>Striking the Nexus generates enough friction to synthesize these rarities.
     </p>
-    <button class="btn-claim" onclick="closeM()">CLOSE</button>
 </div>
 
 <div id="modal-shop" class="modal">
+    <span class="close-btn" onclick="closeM()">[X]</span>
     <h3>FRAGMENT SHOP</h3>
     <div class="grid">
-        <div class="quest-card"><b>Core</b> (+1 Pow)<button class="btn-claim" onclick="buy('Core', 5, 1)">5 Frags</button></div>
-        <div class="quest-card"><b>Void</b> (+3 Pow)<button class="btn-claim" onclick="buy('Void', 15, 3)">15 Frags</button></div>
+        <div class="quest-card"><b>Star Core</b> (+1 Pow)<button class="btn-claim" onclick="buy('Star Core', 5, 1)">5 Frags</button></div>
+        <div class="quest-card"><b>Void Cell</b> (+3 Pow)<button class="btn-claim" onclick="buy('Void Cell', 15, 3)">15 Frags</button></div>
+        <div class="quest-card"><b>Aether Battery</b> (+10 Pow)<button class="btn-claim" onclick="buy('Aether Battery', 50, 10)">50 Frags</button></div>
     </div>
-    <button class="btn-claim" onclick="closeM()" style="margin-top:10px;">CLOSE</button>
 </div>
 
 <div id="modal-arts" class="modal">
-    <h3>ARTIFACTS</h3>
+    <span class="close-btn" onclick="closeM()">[X]</span>
+    <h3>MY ARTIFACTS</h3>
     <div id="art-list" class="grid"></div>
-    <button class="btn-claim" onclick="closeM()" style="margin-top:10px;">CLOSE</button>
+</div>
+
+<div id="modal-miles" class="modal">
+    <span class="close-btn" onclick="closeM()">[X]</span>
+    <h3>MILESTONES</h3>
+    <div id="mile-area"></div>
 </div>
 
 <script>
 let clicks=0, gold=0, frags=0, combo=0, power=1;
 let level=1, exp=0, storyIdx=0, dailyP=0, lastD=0;
-let artifacts = [];
+let artifacts = [], claimedMiles = [];
 
 const CHAPTERS = [
-    {t: "The Awakening", d: "First sparks in the dark.", g: 100, rG: 50, rE: 40},
-    {t: "The Void Path", d: "Searching the empty expanse.", g: 1000, rG: 200, rE: 150},
-    {t: "Final Ascent", d: "Rebuilding the Core.", g: 5000, rG: 1000, rE: 500}
+    {t: "The Awakening", d: "First sparks return to the void.", g: 100, rG: 50, rE: 40},
+    {t: "The Void Path", d: "Searching for the lost horizon.", g: 1000, rG: 200, rE: 150},
+    {t: "Aether Synthesis", d: "Binding the shards back together.", g: 5000, rG: 1000, rE: 500}
+];
+
+const MILESTONES = [
+    {lv: 5, r: 2}, {lv: 10, r: 5}, {lv: 25, r: 20}
 ];
 
 document.getElementById('sword').addEventListener('click', (e) => {
@@ -193,6 +208,7 @@ document.getElementById('sword').addEventListener('click', (e) => {
     let crit = Math.random() < 0.10;
     let v = crit ? power * 2 : power;
     
+    // Hardcore Rates
     if(Math.random() < 0.005 && combo > 10) gold += 10;
     if(Math.random() < 0.001) frags += 1;
     
@@ -223,6 +239,7 @@ function update() {
     document.getElementById('lvTxt').innerText = "LV " + level;
     let r = 200 + (level * 50);
     document.getElementById('levelFill').style.width = (level>=100?100:(exp/r*100)) + "%";
+    document.getElementById('expTxt').innerText = Math.floor(exp) + "/" + r;
 
     const qA = document.getElementById('quest-area');
     if(storyIdx < CHAPTERS.length) {
@@ -231,27 +248,46 @@ function update() {
         <p style="font-size:9px;margin:3px 0;opacity:0.7">${s.d}</p>
         <div style="background:#000;height:3px;"><div class="fill" style="width:${Math.min(100,(clicks/s.g)*100)}%"></div></div>
         <button class="btn-claim" ${clicks >= s.g ? "" : "disabled"} onclick="claimS()">CLAIM</button>`;
-    } else { qA.innerHTML = "CORE RESTORED"; }
+    } else { qA.innerHTML = "SYSTEM RESTORED"; }
 
     let isD = new Date(lastD).toDateString() === new Date().toDateString();
     document.getElementById('dailyFill').style.width = Math.min(100, (dailyP/1500)*100) + "%";
     document.getElementById('daily-btn').disabled = (dailyP < 1500 || isD);
+    
+    renderMiles();
 }
 
 function claimS() { let s = CHAPTERS[storyIdx]; gold += s.rG; exp += s.rE; storyIdx++; update(); }
 function claimDaily() { gold += 150; frags += 1; lastD = Date.now(); dailyP = 0; update(); }
 
-function buy(n, c, p) { if(frags >= c) { frags -= c; power += p; artifacts.push(n); update(); renderA(); } }
+function buy(n, c, p) { 
+    if(frags >= c) { 
+        frags -= c; power += p; 
+        if(!artifacts.includes(n)) artifacts.push(n); 
+        update(); renderA(); 
+    } 
+}
+
 function renderA() {
-    let h = ""; artifacts.forEach(a => h += `<div class="stat-mini">${a}</div>`);
+    let h = artifacts.length ? "" : "No items collected.";
+    artifacts.forEach(a => h += `<div class="stat-mini">${a}</div>`);
     document.getElementById('art-list').innerHTML = h;
 }
+
+function renderMiles() {
+    let mArea = document.getElementById('mile-area');
+    let m = MILESTONES.find(mil => !claimedMiles.includes(mil.lv));
+    if(!m) { mArea.innerHTML = "All milestones claimed."; return; }
+    mArea.innerHTML = `<div class="quest-card"><b>Level ${m.lv}</b><br><small>Reward: ${m.r} Frags</small>
+    <button class="btn-claim" ${level >= m.lv ? "" : "disabled"} onclick="claimM(${m.lv}, ${m.r})">CLAIM</button></div>`;
+}
+function claimM(lv, r) { frags += r; claimedMiles.push(lv); update(); }
 
 function openM(id) { document.querySelectorAll('.modal').forEach(m=>m.style.display='none'); document.getElementById('modal-'+id).style.display='block'; }
 function closeM() { document.querySelectorAll('.modal').forEach(m=>m.style.display='none'); }
 
 setInterval(() => { if(combo > 0) { combo--; update(); } }, 2500);
-update();
+update(); renderA();
 </script>
 </body>
 </html>
