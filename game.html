@@ -13,7 +13,7 @@
             --grad-action: linear-gradient(180deg, #4f46e5 0%, #3730a3 100%);
         }
 
-        * { -webkit-tap-highlight-color: transparent; touch-action: manipulation; -webkit-user-select: none; user-select: none; }
+        * { -webkit-tap-highlight-color: transparent; touch-action: manipulation; -webkit-user-select: none; user-select: none; box-sizing: border-box; }
 
         body, html { margin: 0; height: 100%; overflow: hidden; background: var(--bg); font-family: 'Rajdhani', sans-serif; color: var(--text); width: 100%; position: fixed; }
         #layout { display: grid; grid-template-columns: 300px 1fr 340px; height: 100vh; }
@@ -22,13 +22,13 @@
 
         .side-panel { background: var(--panel); border-right: 1px solid var(--border); padding: 20px; display: flex; flex-direction: column; z-index: 10; }
         .right-panel { border-right: none; border-left: 1px solid var(--border); overflow-y: auto; }
-        #center-area { display: flex; flex-direction: column; align-items: center; padding-top: 20px; background: radial-gradient(circle at center, #0a1128 0%, #010206 100%); position: relative; }
+        #center-area { display: flex; flex-direction: column; align-items: center; padding-top: 20px; background: radial-gradient(circle at center, #0a1128 0%, #010206 100%); position: relative; flex: 1; }
         
         header { font-family: 'Orbitron', sans-serif; font-size: 38px; font-weight: 900; letter-spacing: 10px; background: linear-gradient(to bottom, #fff 20%, var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; }
 
         .bar-outer { background: #000; height: 32px; border-radius: 4px; border: 1px solid var(--border); position: relative; overflow: hidden; width: 85%; max-width: 600px; margin-bottom: 15px; }
         .fill { height: 100%; background: linear-gradient(90deg, #1e3a8a, #7c3aed, #c084fc); width: 0%; transition: width 0.3s; }
-        .bar-content { position: absolute; width: 100%; height: 100%; top:0; z-index: 6; display: flex; justify-content: space-between; align-items: center; padding: 0 12px; box-sizing: border-box; font-family: 'Orbitron'; font-size: 10px; }
+        .bar-content { position: absolute; width: 100%; height: 100%; top:0; z-index: 6; display: flex; justify-content: space-between; align-items: center; padding: 0 12px; font-family: 'Orbitron'; font-size: 10px; }
 
         #stats-hud { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; width: 80%; }
         .stat-box { background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255,255,255,0.1); padding: 8px; border-radius: 4px; text-align: center; }
@@ -43,15 +43,18 @@
         .grid-shop { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .shop-card { background: var(--card-bg); padding: 15px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); min-height: 130px; display: flex; flex-direction: column; justify-content: space-between; }
         
-        .btn-action { background: var(--grad-action); border: none; color: white; height: 40px; width: 100%; font-family: 'Orbitron'; font-size: 9px; cursor: pointer; border-radius: 2px; display: flex; align-items: center; justify-content: center; margin-top: 10px; }
-        .btn-action:disabled { background: #1a1a1a !important; color: #444; }
+        .btn-action { background: var(--grad-action); border: none; color: white; height: 40px; width: 100%; font-family: 'Orbitron'; font-size: 9px; cursor: pointer; border-radius: 2px; display: flex; align-items: center; justify-content: center; margin-top: 10px; font-weight: bold; }
+        .btn-action:disabled { background: #1a1a1a !important; color: #444; cursor: not-allowed; }
 
-        input[type="text"] { background: #000; border: 1px solid var(--border); color: #fff; padding: 12px; font-family: 'Orbitron'; font-size: 12px; width: 100%; outline: none; box-sizing: border-box; margin-top: 10px; }
+        input[type="text"] { background: #000; border: 1px solid var(--border); color: #fff; padding: 12px; font-family: 'Orbitron'; font-size: 12px; width: 100%; outline: none; margin-top: 10px; }
         .admin-panel { border: 2px dashed #ef4444; padding: 15px; margin-top: 25px; display: none; background: rgba(239, 68, 68, 0.05); }
 
         .reward-tag { display: block; font-size: 10px; color: var(--gold); margin-top: 5px; font-weight: bold; }
         .click-text { position: absolute; pointer-events: none; font-family: 'Orbitron'; font-weight: 900; animation: floatUp 0.6s ease-out forwards; z-index: 100; text-shadow: 0 0 5px #000; }
         @keyframes floatUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-120px); opacity: 0; } }
+
+        .lvl-up-pop { position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: var(--accent); color: white; padding: 10px 20px; font-family: 'Orbitron'; border-radius: 40px; z-index: 2000; animation: bounceIn 0.5s ease; box-shadow: 0 0 20px var(--accent); pointer-events: none; }
+        @keyframes bounceIn { 0% { opacity: 0; transform: translateX(-50%) scale(0.5); } 70% { transform: translateX(-50%) scale(1.1); } 100% { opacity: 1; transform: translateX(-50%) scale(1); } }
     </style>
 </head>
 <body>
@@ -89,7 +92,7 @@
             <b id="st-ch">CH 1: PART 1</b>
             <p id="st-obj" style="font-size:12px; color:var(--accent); font-weight:bold;"></p>
             <div class="bar-outer" style="height:12px; width:100%;"><div id="st-fill" class="fill"></div></div>
-            <span class="reward-tag">REWARD: 600 Gold | 1200 EXP</span>
+            <span class="reward-tag" id="st-reward-txt">REWARD: 600 Gold | 1200 EXP</span>
             <button class="btn-action" id="st-btn" onclick="claimStory()">CLAIM PROGRESS</button>
         </div>
         <div class="shop-card" style="border-left: 5px solid var(--frag); margin-bottom: 12px;">
@@ -169,13 +172,39 @@
 </div>
 
 <script>
-let clicks=0, gold=0, frags=0, basePower=1, level=1, exp=0, combo=0, storyCh=1, storyPart=1, inv=[];
+let clicks=0, questClicks=0, gold=0, frags=0, basePower=1, level=1, exp=0, combo=0, storyCh=1, storyPart=1, inv=[];
 let dailyClaimed=false, weeklyClaimed=false, dailyClicks=0, weeklyClicks=0;
 let stock = { b: 3, s: 2, g: 1 };
 let milestonesClaimed = [], redeemedCodes = [];
 let autoActive = false;
 
 const SAVE_KEY = 'AETHERFALL_PERMANENT_SAVE';
+
+function getExpReq(lvl) {
+    return Math.min(50000, 1000 + (Math.pow(lvl, 2) * 110));
+}
+
+function addExp(amount) {
+    if (level >= 100) return;
+    exp += amount;
+    let levelsGained = 0;
+    while (exp >= getExpReq(level) && level < 100) {
+        exp -= getExpReq(level);
+        level++;
+        levelsGained++;
+    }
+    if (level >= 100) { level = 100; exp = 0; }
+    if (levelsGained > 0) showLevelPop(level);
+    updateUI();
+}
+
+function showLevelPop(lvl) {
+    const p = document.createElement('div');
+    p.className = 'lvl-up-pop';
+    p.innerText = `ASCENDED: LV ${lvl}`;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 2000);
+}
 
 function updateUI() {
     document.getElementById('hud-clicks').innerText = clicks.toLocaleString();
@@ -184,31 +213,29 @@ function updateUI() {
     document.getElementById('hud-combo').innerText = combo.toLocaleString();
     document.getElementById('lvDisplay').innerText = `LV ${level}`;
     
-    let req = 1000 + (Math.pow(level, 2) * 110); 
+    let req = getExpReq(level);
     document.getElementById('levelFill').style.width = (exp/req*100) + "%";
-    document.getElementById('expDisplay').innerText = `${Math.floor(exp).toLocaleString()} / ${req.toLocaleString()} EXP`;
+    document.getElementById('expDisplay').innerText = level >= 100 ? "MAX LEVEL" : `${Math.floor(exp).toLocaleString()} / ${req.toLocaleString()} EXP`;
 
-    let isComplete = (storyCh === 5 && storyPart === 10);
+    let isComplete = (storyCh === 6);
+    let totalPartsIdx = ((storyCh - 1) * 10) + (storyPart - 1);
     
-    // --- UPDATED STORY MISSION VALUES ---
     let target = 0;
-    if (storyCh <= 2) {
-        target = (storyCh * 500) + (storyPart * 100); 
-    } else if (storyCh === 3) {
-        target = 4000 + (storyPart * 500);
-    } else if (storyCh === 4) {
-        target = 15000 + (storyPart * 5000);
-    } else if (storyCh === 5) {
-        target = 80000 + (storyPart * 20000);
-    }
+    if (storyCh <= 2) target = (storyCh * 500) + (storyPart * 100);
+    else if (storyCh === 3) target = 4000 + (storyPart * 500);
+    else if (storyCh === 4) target = 15000 + (storyPart * 5000);
+    else if (storyCh === 5) target = 80000 + (storyPart * 20000);
+
+    let rewGold = 600 + (totalPartsIdx * 75);
+    let rewExp = 1200 + (totalPartsIdx * 150);
 
     document.getElementById('st-ch').innerText = isComplete ? "COMPLETED" : `CH ${storyCh}: PART ${storyPart}`;
-    let prog = Math.min(100, (clicks/target)*100);
-    document.getElementById('st-obj').innerText = isComplete ? "MAX RANK" : `${prog.toFixed(1)}% (${clicks.toLocaleString()} / ${target.toLocaleString()})`;
+    let prog = Math.min(100, (questClicks/target)*100);
+    document.getElementById('st-obj').innerText = isComplete ? "MAX RANK" : `${prog.toFixed(1)}% (${questClicks.toLocaleString()} / ${target.toLocaleString()})`;
     document.getElementById('st-fill').style.width = prog + "%";
-    document.getElementById('st-btn').disabled = (clicks < target || isComplete);
+    document.getElementById('st-reward-txt').innerText = `REWARD: ${rewGold.toLocaleString()} Gold | ${rewExp.toLocaleString()} EXP`;
+    document.getElementById('st-btn').disabled = (questClicks < target || isComplete);
 
-    // --- UPDATED DAILY/WEEKLY MISSION VALUES ---
     document.getElementById('daily-prog-text').innerText = `${dailyClicks.toLocaleString()} / 5,000`;
     document.getElementById('weekly-prog-text').innerText = `${weeklyClicks.toLocaleString()} / 30,000`;
     document.getElementById('daily-fill').style.width = (dailyClicks/5000*100) + "%";
@@ -221,25 +248,22 @@ function updateUI() {
     save();
 }
 
-document.getElementById('sword').addEventListener('touchstart', (e) => { e.preventDefault(); handleHit(e.touches[0]); }, {passive: false});
-document.getElementById('sword').addEventListener('mousedown', (e) => handleHit(e));
-
 function handleHit(e) {
     let isCrit = Math.random() < 0.10;
     let hit = (basePower + Math.floor(combo / 1500)) * (isCrit ? 2 : 1);
     
-    clicks++; dailyClicks++; weeklyClicks++; combo++;
+    clicks++; questClicks++; dailyClicks++; weeklyClicks++; combo++;
     if(Math.random() < 0.01) gold += 5; 
     if(Math.random() < 0.008) frags += 1;
     
-    exp += (0.4 * hit); 
-    let req = 1000 + (Math.pow(level, 2) * 110);
-    if(exp >= req) { exp = 0; level++; }
+    addExp(0.4 * hit); 
     
-    if(e && e.clientX) {
+    if(e && (e.clientX || (e.touches && e.touches.length > 0))) {
+        let x = e.clientX || e.touches[0].clientX;
+        let y = e.clientY || e.touches[0].clientY;
         const el = document.createElement('div');
         el.className = 'click-text';
-        el.style.left = e.clientX + 'px'; el.style.top = e.clientY + 'px';
+        el.style.left = x + 'px'; el.style.top = y + 'px';
         el.style.color = isCrit ? 'var(--gold)' : 'white';
         el.innerText = "+" + hit;
         document.body.appendChild(el);
@@ -250,11 +274,23 @@ function handleHit(e) {
     updateUI();
 }
 
+function claimStory() { 
+    let totalPartsIdx = ((storyCh - 1) * 10) + (storyPart - 1);
+    gold += (600 + (totalPartsIdx * 75)); 
+    addExp(1200 + (totalPartsIdx * 150));
+    questClicks = 0; 
+    storyPart++; 
+    if(storyPart > 10) { storyPart = 1; storyCh++; } 
+    updateUI(); 
+}
+
+function claimDaily() { gold += 500; frags += 1; addExp(1250); dailyClaimed = true; updateUI(); }
+function claimWeekly() { gold += 10000; frags += 10; addExp(5000); weeklyClaimed = true; updateUI(); }
+
 function redeemCode() {
     const input = document.getElementById('code-input');
     const val = input.value.trim();
     if(redeemedCodes.includes(val)) { alert("Code already used!"); return; }
-
     if(val === "Aetherfall") {
         if(level < 5) { alert("Requires Level 5!"); return; }
         gold += 5000; frags += 7; redeemedCodes.push(val); alert("Redeemed: 5000 Gold & 7 Frags");
@@ -287,10 +323,6 @@ function buyAuto() {
     }
 }
 
-function claimStory() { gold += (storyCh * 600); exp += (storyCh * 1200); storyPart++; if(storyPart > 10) { storyPart = 1; storyCh++; } updateUI(); }
-function claimDaily() { gold += 500; frags += 1; exp += 1250; dailyClaimed = true; updateUI(); }
-function claimWeekly() { gold+=10000; frags+=10; exp+=5000; weeklyClaimed=true; updateUI(); }
-
 function renderMilestones() {
     let h = "";
     for(let i=5; i<=100; i+=5) {
@@ -309,14 +341,14 @@ function closeModal(id) { document.getElementById(id).style.display='none'; }
 function hardReset() { if(confirm("WIPE ALL PROGRESS?")) { localStorage.clear(); location.reload(); } }
 
 function save() {
-    const data = { clicks, gold, frags, basePower, level, exp, storyCh, storyPart, inv, dailyClaimed, weeklyClaimed, dailyClicks, weeklyClicks, milestonesClaimed, autoActive, stock, redeemedCodes };
+    const data = { clicks, questClicks, gold, frags, basePower, level, exp, storyCh, storyPart, inv, dailyClaimed, weeklyClaimed, dailyClicks, weeklyClicks, milestonesClaimed, autoActive, stock, redeemedCodes };
     localStorage.setItem(SAVE_KEY, JSON.stringify(data));
 }
 function load() {
     const saved = localStorage.getItem(SAVE_KEY);
     if(saved) {
         const d = JSON.parse(saved);
-        clicks=d.clicks||0; gold=d.gold||0; frags=d.frags||0; basePower=d.basePower||1; 
+        clicks=d.clicks||0; questClicks=d.questClicks||0; gold=d.gold||0; frags=d.frags||0; basePower=d.basePower||1; 
         level=d.level||1; exp=d.exp||0; 
         storyCh=d.storyCh||1; storyPart=d.storyPart||1; inv=d.inv||[]; 
         dailyClicks=d.dailyClicks||0; weeklyClicks=d.weeklyClicks||0; 
@@ -327,10 +359,11 @@ function load() {
     }
     updateUI();
 }
+
+document.getElementById('sword').addEventListener('touchstart', (e) => { e.preventDefault(); handleHit(e); }, {passive: false});
+document.getElementById('sword').addEventListener('mousedown', (e) => handleHit(e));
 window.onload = load;
 </script>
-    
-    <script src="cursor.js"></script>
-    
+<script src="cursor.js"></script>
 </body>
 </html>
