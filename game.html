@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Aetherfall | Nexus</title>
+    <title>Aetherfall | Game</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,7 +13,7 @@
             --grad-action: linear-gradient(180deg, #4f46e5 0%, #3730a3 100%);
         }
 
-        * { -webkit-tap-highlight-color: transparent; touch-action: manipulation; -webkit-user-select: none; user-select: none; }
+        * { -webkit-tap-highlight-color: transparent; touch-action: manipulation; -webkit-user-select: none; user-select: none; box-sizing: border-box; }
 
         body, html { margin: 0; height: 100%; overflow: hidden; background: var(--bg); font-family: 'Rajdhani', sans-serif; color: var(--text); width: 100%; position: fixed; }
         #layout { display: grid; grid-template-columns: 300px 1fr 340px; height: 100vh; }
@@ -37,17 +37,19 @@
         #sword { width: 260px; max-width: 70vw; cursor: pointer; transition: transform 0.05s; z-index: 5; filter: drop-shadow(0 0 25px rgba(124, 58, 237, 0.2)); }
         #sword:active { transform: scale(0.90); }
 
-        .menuBtn { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05); padding: 12px; margin-bottom: 8px; border-radius: 4px; cursor: pointer; font-family: 'Orbitron'; font-size: 9px; letter-spacing: 1.5px; text-align: center; }
+        .menuBtn { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05); padding: 12px; margin-bottom: 8px; border-radius: 4px; cursor: pointer; font-family: 'Orbitron'; font-size: 9px; letter-spacing: 1.5px; text-align: center; transition: 0.2s; }
+        .menuBtn:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
+
         .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #02040a; border: 1px solid var(--accent); border-radius: 4px; width: 90%; max-width: 800px; height: 80vh; padding: 25px; z-index: 1000; overflow-y: auto; }
         
         .grid-shop { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .shop-card { background: var(--card-bg); padding: 15px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); min-height: 130px; display: flex; flex-direction: column; justify-content: space-between; }
         
         .btn-action { background: var(--grad-action); border: none; color: white; height: 40px; width: 100%; font-family: 'Orbitron'; font-size: 9px; cursor: pointer; border-radius: 2px; display: flex; align-items: center; justify-content: center; margin-top: 10px; }
-        .btn-action:disabled { background: #1a1a1a !important; color: #444; }
+        .btn-action:disabled { background: #1a1a1a !important; color: #444; cursor: not-allowed; }
 
-        input[type="text"] { background: #000; border: 1px solid var(--border); color: #fff; padding: 12px; font-family: 'Orbitron'; font-size: 12px; width: 100%; outline: none; box-sizing: border-box; margin-top: 10px; }
-        .admin-panel { border: 2px dashed #ef4444; padding: 15px; margin-top: 25px; display: none; background: rgba(239, 68, 68, 0.05); }
+        input[type="text"] { background: #000; border: 1px solid var(--border); color: #fff; padding: 12px; font-family: 'Orbitron'; font-size: 12px; width: 100%; outline: none; margin-top: 10px; }
+        .admin-panel { border: 2px dashed #ef4444; padding: 15 invention: 25px; display: none; background: rgba(239, 68, 68, 0.05); margin-top: 20px; }
 
         .reward-tag { display: block; font-size: 10px; color: var(--gold); margin-top: 5px; font-weight: bold; }
         .click-text { position: absolute; pointer-events: none; font-family: 'Orbitron'; font-weight: 900; animation: floatUp 0.6s ease-out forwards; z-index: 100; text-shadow: 0 0 5px #000; }
@@ -58,7 +60,7 @@
 
 <div id="layout">
     <div class="side-panel">
-        <h3 style="font-family:'Orbitron'; font-size: 11px; color:var(--accent); text-align: center;">AETHER OS</h3>
+        <h3 style="font-family:'Orbitron'; font-size: 11px; color:var(--accent); text-align: center; letter-spacing: 2px;">AETHER OS</h3>
         <div class="menuBtn" onclick="openModal('guide-m')">GUIDE</div>
         <div class="menuBtn" onclick="openModal('forge-m')">FORGE</div>
         <div class="menuBtn" onclick="openModal('shop-m')">FRAG SHOP</div>
@@ -84,24 +86,26 @@
     </div>
 
     <div class="side-panel right-panel">
-        <h3 style="font-family:'Orbitron'; font-size: 11px; color:var(--accent);">OBJECTIVES</h3>
+        <h3 style="font-family:'Orbitron'; font-size: 11px; color:var(--accent); letter-spacing: 1px;">OBJECTIVES</h3>
         <div class="shop-card" style="border-left: 5px solid var(--accent); margin-bottom: 20px;">
             <b id="st-ch">CH 1: PART 1</b>
-            <p id="st-obj" style="font-size:12px; color:var(--accent); font-weight:bold;"></p>
+            <p id="st-obj" style="font-size:12px; color:var(--accent); font-weight:bold; margin: 8px 0;"></p>
             <div class="bar-outer" style="height:12px; width:100%;"><div id="st-fill" class="fill"></div></div>
             <span class="reward-tag">REWARD: 600 Gold | 1200 EXP</span>
             <button class="btn-action" id="st-btn" onclick="claimStory()">CLAIM PROGRESS</button>
         </div>
+        
         <div class="shop-card" style="border-left: 5px solid var(--frag); margin-bottom: 12px;">
             <b>DAILY MISSION [Time]</b>
-            <p id="daily-prog-text" style="font-size:11px; color:var(--frag);"></p>
+            <p id="daily-prog-text" style="font-size:11px; color:var(--frag); margin: 5px 0;"></p>
             <div class="bar-outer" style="height:10px; width:100%; border-color:var(--frag);"><div id="daily-fill" class="fill" style="background:var(--frag)"></div></div>
             <span class="reward-tag">500 Gold | 1 Frag | 1250 EXP</span>
             <button class="btn-action" id="daily-btn" onclick="claimDaily()">CLAIM DAILY</button>
         </div>
+
         <div class="shop-card" style="border-left: 5px solid var(--combo);">
             <b>WEEKLY MISSION [Time]</b>
-            <p id="weekly-prog-text" style="font-size:11px; color:var(--combo);"></p>
+            <p id="weekly-prog-text" style="font-size:11px; color:var(--combo); margin: 5px 0;"></p>
             <div class="bar-outer" style="height:10px; width:100%; border-color:var(--combo);"><div id="weekly-fill" class="fill" style="background:var(--combo)"></div></div>
             <span class="reward-tag">10000 Gold | 10 Frags | 5000 EXP</span>
             <button class="btn-action" id="weekly-btn" onclick="claimWeekly()">CLAIM WEEKLY</button>
@@ -109,50 +113,59 @@
     </div>
 </div>
 
-<div id="guide-m" class="modal"><span onclick="closeModal('guide-m')" style="float:right; cursor:pointer; color:red;">[X]</span><h2 style="font-family:'Orbitron'">Nexus Guide</h2><p>Welcome to Aetherfall. Max Level is 100. Each story mission resets your progress to 0/X for that part.</p></div>
+<div id="guide-m" class="modal">
+    <span onclick="closeModal('guide-m')" style="float:right; cursor:pointer; color:red; font-family: 'Orbitron';">[X]</span>
+    <h2 style="font-family:'Orbitron'">Nexus Guide</h2>
+    <p style="line-height: 1.6; opacity: 0.8;">Welcome to the Aetherfall Terminal. Max Level is 100. Story missions reset your progress to 0 for each part. Combo bonus: +1 power every 1,500 hits.</p>
+</div>
 
 <div id="forge-m" class="modal">
-    <span onclick="closeModal('forge-m')" style="float:right; cursor:pointer; color:red;">[X]</span>
+    <span onclick="closeModal('forge-m')" style="float:right; cursor:pointer; color:red; font-family: 'Orbitron';">[X]</span>
     <h2 style="font-family:'Orbitron'">The Forge</h2>
     <div class="grid-shop">
-        <div class="shop-card"><div><b>Auto-Core MK-I</b><br>Generates 2 Clicks per second.</div><button class="btn-action" onclick="buyAuto()">PURCHASE: 10k G / 20 F</button></div>
-        <div class="shop-card"><div><b>Tungsten Sharpener</b><br>Adds +5 Click Power.</div><button class="btn-action" onclick="buyPower('gold', 5000, 5)">BUY: 5,000 GOLD</button></div>
+        <div class="shop-card"><div><b>Auto-Core MK-I</b><br><small>Generates 2 clicks/sec.</small></div><button class="btn-action" onclick="buyAuto()">PURCHASE: 10k G / 20 F</button></div>
+        <div class="shop-card"><div><b>Tungsten Sharpener</b><br><small>Adds +5 Click Power.</small></div><button class="btn-action" onclick="buyPower('gold', 5000, 5)">BUY: 5,000 GOLD</button></div>
     </div>
 </div>
 
 <div id="shop-m" class="modal">
-    <span onclick="closeModal('shop-m')" style="float:right; cursor:pointer; color:red;">[X]</span>
+    <span onclick="closeModal('shop-m')" style="float:right; cursor:pointer; color:red; font-family: 'Orbitron';">[X]</span>
     <h2 style="font-family:'Orbitron'">Fragment Shop</h2>
     <div class="grid-shop">
-        <div class="shop-card"><div><b>Lesser Aether Core</b><br>+2 Click Power.</div><button class="btn-action" onclick="buyPower('frag', 15, 2)">BUY: 15 FRAGS</button></div>
-        <div class="shop-card"><div><b>Stable Aether Core</b><br>+5 Click Power.</div><button class="btn-action" onclick="buyPower('frag', 40, 5)">BUY: 40 FRAGS</button></div>
-        <div class="shop-card"><div><b>Greater Aether Core</b><br>+10 Click Power.</div><button class="btn-action" onclick="buyPower('frag', 80, 10)">BUY: 80 FRAGS</button></div>
+        <div class="shop-card"><div><b>Lesser Aether Core</b><br><small>+2 Click Power.</small></div><button class="btn-action" onclick="buyPower('frag', 15, 2)">BUY: 15 FRAGS</button></div>
+        <div class="shop-card"><div><b>Stable Aether Core</b><br><small>+5 Click Power.</small></div><button class="btn-action" onclick="buyPower('frag', 40, 5)">BUY: 40 FRAGS</button></div>
+        <div class="shop-card"><div><b>Greater Aether Core</b><br><small>+10 Click Power.</small></div><button class="btn-action" onclick="buyPower('frag', 80, 10)">BUY: 80 FRAGS</button></div>
     </div>
 </div>
 
 <div id="coupon-m" class="modal">
-    <span onclick="closeModal('coupon-m')" style="float:right; cursor:pointer; color:red;">[X]</span>
+    <span onclick="closeModal('coupon-m')" style="float:right; cursor:pointer; color:red; font-family: 'Orbitron';">[X]</span>
     <h2 style="font-family:'Orbitron'">Coupon Market [Time]</h2>
     <div class="grid-shop">
-        <div class="shop-card"><div><b>Bronze Coupon</b><br>5 Baht.</div><button class="btn-action" onclick="buyCoupon('Bronze', 5000, 'b')">5,000 GOLD</button></div>
-        <div class="shop-card"><div><b>Silver Coupon</b><br>10 Baht.</div><button class="btn-action" onclick="buyCoupon('Silver', 15000, 's')">15,000 GOLD</button></div>
-        <div class="shop-card"><div><b>Gold Coupon</b><br>25 Baht.</div><button class="btn-action" onclick="buyCoupon('Gold', 50000, 'g')">50,000 GOLD</button></div>
+        <div class="shop-card"><b>Bronze Coupon (5B)</b><button class="btn-action" onclick="buyCoupon('Bronze', 5000, 'b')">5,000 GOLD</button></div>
+        <div class="shop-card"><b>Silver Coupon (10B)</b><button class="btn-action" onclick="buyCoupon('Silver', 15000, 's')">15,000 GOLD</button></div>
+        <div class="shop-card"><b>Gold Coupon (25B)</b><button class="btn-action" onclick="buyCoupon('Gold', 50000, 'g')">50,000 GOLD</button></div>
     </div>
 </div>
 
-<div id="milestone-m" class="modal"><span onclick="closeModal('milestone-m')" style="float:right; color:red;">[X]</span><h2 style="font-family:'Orbitron'">Milestones</h2><div id="milestoneList" class="grid-shop"></div></div>
-<div id="inv-m" class="modal"><span onclick="closeModal('inv-m')" style="float:right; color:red;">[X]</span><h2 style="font-family:'Orbitron'">Inventory</h2><div id="invList" class="grid-shop"></div></div>
+<div id="milestone-m" class="modal"><span onclick="closeModal('milestone-m')" style="float:right; color:red; cursor:pointer;">[X]</span><h2 style="font-family:'Orbitron'">Milestones</h2><div id="milestoneList" class="grid-shop"></div></div>
+<div id="inv-m" class="modal"><span onclick="closeModal('inv-m')" style="float:right; color:red; cursor:pointer;">[X]</span><h2 style="font-family:'Orbitron'">Inventory</h2><div id="invList" class="grid-shop"></div></div>
 
 <div id="settings-m" class="modal">
     <span onclick="closeModal('settings-m')" style="float:right; cursor:pointer; color:red;">[X]</span>
     <h2 style="font-family:'Orbitron'">Settings & Codes</h2>
-    <input type="text" id="code-input" placeholder="Enter code here...">
-    <button class="btn-action" onclick="redeemCode()">REDEEM</button>
-    <button class="btn-action" style="background:#b91c1c; margin-top: 10px;" onclick="hardReset()">FACTORY RESET</button>
+    <div style="margin-bottom: 20px;">
+        <p style="font-size: 10px; color: var(--accent);">REDEMPTION CODE</p>
+        <input type="text" id="code-input" placeholder="...">
+        <button class="btn-action" onclick="redeemCode()">REDEEM</button>
+    </div>
+    <button class="btn-action" style="background:#b91c1c" onclick="hardReset()">FACTORY RESET</button>
     <div id="admin-panel" class="admin-panel">
-        <h3 style="color:#ef4444; font-family:'Orbitron';">ADMIN</h3>
-        <button class="btn-action" onclick="adminMod('gold')">INF GOLD</button>
-        <button class="btn-action" onclick="adminMod('level')">LV 100</button>
+        <h3 style="color:#ef4444; font-family:'Orbitron'; font-size: 14px;">ADMIN OVERRIDE</h3>
+        <div class="grid-shop">
+            <button class="btn-action" onclick="adminMod('gold')">INF GOLD</button>
+            <button class="btn-action" onclick="adminMod('level')">LV 100</button>
+        </div>
     </div>
 </div>
 
@@ -171,7 +184,7 @@ function updateUI() {
     document.getElementById('hud-frags').innerText = frags.toLocaleString();
     document.getElementById('hud-combo').innerText = combo.toLocaleString();
     
-    // Level 100 Cap & Balanced EXP
+    // Level 100 Cap & Balanced EXP Logic
     let req = 500 + (Math.pow(level, 1.8) * 12); 
     if (level >= 100) {
         level = 100;
@@ -184,7 +197,7 @@ function updateUI() {
         document.getElementById('levelFill').style.width = (exp/req*100) + "%";
     }
 
-    // Balanced Story Logic
+    // Story Logic: Reset-based progress
     let isComplete = (storyCh === 5 && storyPart === 10);
     let target = 0;
     if (storyCh === 1) target = 50 + (storyPart * 30);
@@ -211,6 +224,9 @@ function updateUI() {
     renderInv();
     save();
 }
+
+document.getElementById('sword').addEventListener('touchstart', (e) => { e.preventDefault(); handleHit(e.touches[0]); }, {passive: false});
+document.getElementById('sword').addEventListener('mousedown', (e) => handleHit(e));
 
 function handleHit(e) {
     let isCrit = Math.random() < 0.10;
@@ -242,7 +258,7 @@ function handleHit(e) {
 
 function claimStory() { 
     gold += (storyCh * 600); exp += (storyCh * 1200); 
-    storyProgress = 0; // Reset for next part
+    storyProgress = 0; // RESET PROGRESS FOR NEXT PART
     storyPart++; 
     if(storyPart > 10) { storyPart = 1; storyCh++; } 
     updateUI(); 
@@ -292,7 +308,7 @@ function renderMilestones() {
 
 function claimM(l, g, f) { gold += g; frags += f; milestonesClaimed.push(l); updateUI(); }
 function buyCoupon(n, c, t) { if(gold >= c && stock[t] > 0) { gold -= c; stock[t]--; inv.push(n); updateUI(); } }
-function renderInv() { document.getElementById('invList').innerHTML = inv.length ? inv.map(i => `<div class="shop-card"><b>${i}</b></div>`).join('') : "<p>Empty</p>"; }
+function renderInv() { document.getElementById('invList').innerHTML = inv.length ? inv.map(i => `<div class="shop-card"><b>${i}</b></div>`).join('') : "<p style='text-align:center; opacity:0.5;'>Empty</p>"; }
 function openModal(id) { document.getElementById(id).style.display='block'; }
 function closeModal(id) { document.getElementById(id).style.display='none'; }
 function hardReset() { if(confirm("Wipe Progress?")) { localStorage.clear(); location.reload(); } }
