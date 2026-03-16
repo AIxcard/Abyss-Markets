@@ -13,7 +13,7 @@
             --grad-action: linear-gradient(180deg, #4f46e5 0%, #3730a3 100%);
         }
 
-        * { -webkit-tap-highlight-color: transparent; touch-action: manipulation; -webkit-user-select: none; user-select: none; box-sizing: border-box; }
+        * { -webkit-tap-highlight-color: transparent; touch-action: manipulation; -webkit-user-select: none; user-select: none; }
 
         body, html { margin: 0; height: 100%; overflow: hidden; background: var(--bg); font-family: 'Rajdhani', sans-serif; color: var(--text); width: 100%; position: fixed; }
         #layout { display: grid; grid-template-columns: 300px 1fr 340px; height: 100vh; }
@@ -22,13 +22,13 @@
 
         .side-panel { background: var(--panel); border-right: 1px solid var(--border); padding: 20px; display: flex; flex-direction: column; z-index: 10; }
         .right-panel { border-right: none; border-left: 1px solid var(--border); overflow-y: auto; }
-        #center-area { display: flex; flex-direction: column; align-items: center; padding-top: 20px; background: radial-gradient(circle at center, #0a1128 0%, #010206 100%); position: relative; flex: 1; }
+        #center-area { display: flex; flex-direction: column; align-items: center; padding-top: 20px; background: radial-gradient(circle at center, #0a1128 0%, #010206 100%); position: relative; }
         
         header { font-family: 'Orbitron', sans-serif; font-size: 38px; font-weight: 900; letter-spacing: 10px; background: linear-gradient(to bottom, #fff 20%, var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; }
 
         .bar-outer { background: #000; height: 32px; border-radius: 4px; border: 1px solid var(--border); position: relative; overflow: hidden; width: 85%; max-width: 600px; margin-bottom: 15px; }
         .fill { height: 100%; background: linear-gradient(90deg, #1e3a8a, #7c3aed, #c084fc); width: 0%; transition: width 0.3s; }
-        .bar-content { position: absolute; width: 100%; height: 100%; top:0; z-index: 6; display: flex; justify-content: space-between; align-items: center; padding: 0 12px; font-family: 'Orbitron'; font-size: 10px; }
+        .bar-content { position: absolute; width: 100%; height: 100%; top:0; z-index: 6; display: flex; justify-content: space-between; align-items: center; padding: 0 12px; box-sizing: border-box; font-family: 'Orbitron'; font-size: 10px; }
 
         #stats-hud { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; width: 80%; }
         .stat-box { background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255,255,255,0.1); padding: 8px; border-radius: 4px; text-align: center; }
@@ -43,17 +43,18 @@
         .grid-shop { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .shop-card { background: var(--card-bg); padding: 15px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); min-height: 130px; display: flex; flex-direction: column; justify-content: space-between; }
         
-        .btn-action { background: var(--grad-action); border: none; color: white; height: 40px; width: 100%; font-family: 'Orbitron'; font-size: 9px; cursor: pointer; border-radius: 2px; display: flex; align-items: center; justify-content: center; margin-top: 10px; font-weight: bold; }
-        .btn-action:disabled { background: #1a1a1a !important; color: #444; cursor: not-allowed; }
+        .btn-action { background: var(--grad-action); border: none; color: white; height: 40px; width: 100%; font-family: 'Orbitron'; font-size: 9px; cursor: pointer; border-radius: 2px; display: flex; align-items: center; justify-content: center; margin-top: 10px; }
+        .btn-action:disabled { background: #1a1a1a !important; color: #444; }
 
-        input[type="text"] { background: #000; border: 1px solid var(--border); color: #fff; padding: 12px; font-family: 'Orbitron'; font-size: 12px; width: 100%; outline: none; margin-top: 10px; }
+        input[type="text"] { background: #000; border: 1px solid var(--border); color: #fff; padding: 12px; font-family: 'Orbitron'; font-size: 12px; width: 100%; outline: none; box-sizing: border-box; margin-top: 10px; }
         .admin-panel { border: 2px dashed #ef4444; padding: 15px; margin-top: 25px; display: none; background: rgba(239, 68, 68, 0.05); }
 
         .reward-tag { display: block; font-size: 10px; color: var(--gold); margin-top: 5px; font-weight: bold; }
         .click-text { position: absolute; pointer-events: none; font-family: 'Orbitron'; font-weight: 900; animation: floatUp 0.6s ease-out forwards; z-index: 100; text-shadow: 0 0 5px #000; }
         @keyframes floatUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-120px); opacity: 0; } }
-
-        .lvl-up-pop { position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: var(--accent); color: white; padding: 10px 20px; font-family: 'Orbitron'; border-radius: 40px; z-index: 2000; animation: bounceIn 0.5s ease; box-shadow: 0 0 20px var(--accent); pointer-events: none; }
+        
+        /* New Level Up Pop */
+        .lvl-up-pop { position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: var(--accent); color: white; padding: 10px 20px; font-family: 'Orbitron'; border-radius: 40px; z-index: 2000; animation: bounceIn 0.5s ease; box-shadow: 0 0 20px var(--accent); }
         @keyframes bounceIn { 0% { opacity: 0; transform: translateX(-50%) scale(0.5); } 70% { transform: translateX(-50%) scale(1.1); } 100% { opacity: 1; transform: translateX(-50%) scale(1); } }
     </style>
 </head>
@@ -184,26 +185,24 @@ function getExpReq(lvl) {
     return Math.min(50000, 1000 + (Math.pow(lvl, 2) * 110));
 }
 
+// Logic: Instant Multi-Level Jump
 function addExp(amount) {
     if (level >= 100) return;
     exp += amount;
-    let levelsGained = 0;
+    let leveledUp = false;
     while (exp >= getExpReq(level) && level < 100) {
         exp -= getExpReq(level);
         level++;
-        levelsGained++;
+        leveledUp = true;
     }
-    if (level >= 100) { level = 100; exp = 0; }
-    if (levelsGained > 0) showLevelPop(level);
+    if (leveledUp) {
+        const pop = document.createElement('div');
+        pop.className = 'lvl-up-pop';
+        pop.innerText = `LEVEL UP! NOW LV ${level}`;
+        document.body.appendChild(pop);
+        setTimeout(() => pop.remove(), 2000);
+    }
     updateUI();
-}
-
-function showLevelPop(lvl) {
-    const p = document.createElement('div');
-    p.className = 'lvl-up-pop';
-    p.innerText = `ASCENDED: LV ${lvl}`;
-    document.body.appendChild(p);
-    setTimeout(() => p.remove(), 2000);
 }
 
 function updateUI() {
@@ -215,17 +214,16 @@ function updateUI() {
     
     let req = getExpReq(level);
     document.getElementById('levelFill').style.width = (exp/req*100) + "%";
-    document.getElementById('expDisplay').innerText = level >= 100 ? "MAX LEVEL" : `${Math.floor(exp).toLocaleString()} / ${req.toLocaleString()} EXP`;
+    document.getElementById('expDisplay').innerText = (level >= 100) ? "MAX LEVEL" : `${Math.floor(exp).toLocaleString()} / ${req.toLocaleString()} EXP`;
 
-    let isComplete = (storyCh === 6);
     let totalPartsIdx = ((storyCh - 1) * 10) + (storyPart - 1);
-    
     let target = 0;
     if (storyCh <= 2) target = (storyCh * 500) + (storyPart * 100);
     else if (storyCh === 3) target = 4000 + (storyPart * 500);
     else if (storyCh === 4) target = 15000 + (storyPart * 5000);
     else if (storyCh === 5) target = 80000 + (storyPart * 20000);
 
+    let isComplete = (storyCh === 6);
     let rewGold = 600 + (totalPartsIdx * 75);
     let rewExp = 1200 + (totalPartsIdx * 150);
 
@@ -258,7 +256,7 @@ function handleHit(e) {
     
     addExp(0.4 * hit); 
     
-    if(e && (e.clientX || (e.touches && e.touches.length > 0))) {
+    if(e && (e.clientX || e.touches)) {
         let x = e.clientX || e.touches[0].clientX;
         let y = e.clientY || e.touches[0].clientY;
         const el = document.createElement('div');
@@ -274,6 +272,7 @@ function handleHit(e) {
     updateUI();
 }
 
+// Logic: Claim Story with Hard Reset to 0
 function claimStory() { 
     let totalPartsIdx = ((storyCh - 1) * 10) + (storyPart - 1);
     gold += (600 + (totalPartsIdx * 75)); 
@@ -344,6 +343,7 @@ function save() {
     const data = { clicks, questClicks, gold, frags, basePower, level, exp, storyCh, storyPart, inv, dailyClaimed, weeklyClaimed, dailyClicks, weeklyClicks, milestonesClaimed, autoActive, stock, redeemedCodes };
     localStorage.setItem(SAVE_KEY, JSON.stringify(data));
 }
+
 function load() {
     const saved = localStorage.getItem(SAVE_KEY);
     if(saved) {
