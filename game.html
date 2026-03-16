@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Aetherfall | Game</title>
+    <title>Aetherfall | Nexus</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -189,21 +189,32 @@ function updateUI() {
     document.getElementById('expDisplay').innerText = `${Math.floor(exp).toLocaleString()} / ${req.toLocaleString()} EXP`;
 
     let isComplete = (storyCh === 5 && storyPart === 10);
-    let targetBase = storyCh <= 3 ? 4000 : 70000;
-    let targetIncr = storyCh <= 3 ? 1000 : 30000;
-    let target = isComplete ? clicks : (storyCh * targetBase) + (storyPart * targetIncr);
+    
+    // --- UPDATED STORY MISSION VALUES ---
+    let target = 0;
+    if (storyCh <= 2) {
+        target = (storyCh * 500) + (storyPart * 100); 
+    } else if (storyCh === 3) {
+        target = 4000 + (storyPart * 500);
+    } else if (storyCh === 4) {
+        target = 15000 + (storyPart * 5000);
+    } else if (storyCh === 5) {
+        target = 80000 + (storyPart * 20000);
+    }
+
     document.getElementById('st-ch').innerText = isComplete ? "COMPLETED" : `CH ${storyCh}: PART ${storyPart}`;
     let prog = Math.min(100, (clicks/target)*100);
-    document.getElementById('st-obj').innerText = `${prog.toFixed(1)}% (${clicks.toLocaleString()} / ${target.toLocaleString()})`;
+    document.getElementById('st-obj').innerText = isComplete ? "MAX RANK" : `${prog.toFixed(1)}% (${clicks.toLocaleString()} / ${target.toLocaleString()})`;
     document.getElementById('st-fill').style.width = prog + "%";
     document.getElementById('st-btn').disabled = (clicks < target || isComplete);
 
-    document.getElementById('daily-prog-text').innerText = `${dailyClicks.toLocaleString()} / 30,000`;
-    document.getElementById('weekly-prog-text').innerText = `${weeklyClicks.toLocaleString()} / 250,000`;
-    document.getElementById('daily-fill').style.width = (dailyClicks/30000*100) + "%";
-    document.getElementById('weekly-fill').style.width = (weeklyClicks/250000*100) + "%";
-    document.getElementById('daily-btn').disabled = (dailyClicks < 30000 || dailyClaimed);
-    document.getElementById('weekly-btn').disabled = (weeklyClicks < 250000 || weeklyClaimed);
+    // --- UPDATED DAILY/WEEKLY MISSION VALUES ---
+    document.getElementById('daily-prog-text').innerText = `${dailyClicks.toLocaleString()} / 5,000`;
+    document.getElementById('weekly-prog-text').innerText = `${weeklyClicks.toLocaleString()} / 30,000`;
+    document.getElementById('daily-fill').style.width = (dailyClicks/5000*100) + "%";
+    document.getElementById('weekly-fill').style.width = (weeklyClicks/30000*100) + "%";
+    document.getElementById('daily-btn').disabled = (dailyClicks < 5000 || dailyClaimed);
+    document.getElementById('weekly-btn').disabled = (weeklyClicks < 30000 || weeklyClaimed);
 
     renderMilestones();
     renderInv();
@@ -306,7 +317,7 @@ function load() {
     if(saved) {
         const d = JSON.parse(saved);
         clicks=d.clicks||0; gold=d.gold||0; frags=d.frags||0; basePower=d.basePower||1; 
-        level=d.level||1; exp=d.exp||0; // EXP fixed here
+        level=d.level||1; exp=d.exp||0; 
         storyCh=d.storyCh||1; storyPart=d.storyPart||1; inv=d.inv||[]; 
         dailyClicks=d.dailyClicks||0; weeklyClicks=d.weeklyClicks||0; 
         dailyClaimed=d.dailyClaimed||false; weeklyClaimed=d.weeklyClaimed||false;
