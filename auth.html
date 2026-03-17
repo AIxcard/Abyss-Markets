@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aetherfall | Authentication</title>
+    <title>Aetherfall Market | Auth</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #020617;
-            --panel: rgba(15, 23, 42, 0.8);
-            --border: #1e40af;
-            --accent: #22c55e;
-            --text: #f8fafc;
-            --glow: rgba(34, 197, 94, 0.2);
+            --bg: #05070a;
+            --panel: rgba(13, 17, 23, 0.9);
+            --border: #30363d;
+            --accent: #238636; /* Market Green */
+            --text: #ffffff;
+            --link: #58a6ff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -25,163 +25,132 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            /* Animated Grid Background */
+            /* Subtler tech grid */
             background-image: 
-                linear-gradient(rgba(30, 64, 175, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(30, 64, 175, 0.1) 1px, transparent 1px);
-            background-size: 40px 40px;
-            animation: gridMove 20s linear infinite;
-        }
-
-        @keyframes gridMove {
-            from { background-position: 0 0; }
-            to { background-position: 40px 40px; }
+                linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
         }
 
         .auth-card {
             background: var(--panel);
-            backdrop-filter: blur(12px);
             width: 100%;
-            max-width: 420px;
-            padding: 50px 40px;
-            border-radius: 4px;
+            max-width: 380px;
+            padding: 40px;
+            border-radius: 12px;
             border: 1px solid var(--border);
-            box-shadow: 0 0 40px rgba(0,0,0,0.6), inset 0 0 20px rgba(30, 64, 175, 0.1);
-            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
             text-align: center;
-        }
-
-        /* Top Accent Line */
-        .auth-card::before {
-            content: "";
-            position: absolute;
-            top: -1px; left: 20%; right: 20%; height: 2px;
-            background: var(--accent);
-            box-shadow: 0 0 15px var(--accent);
         }
 
         h2 {
             font-family: 'Orbitron';
-            text-transform: uppercase;
-            letter-spacing: 3px;
+            font-size: 24px;
             margin-bottom: 8px;
-            font-size: 22px;
-        }
-
-        p.subtitle {
-            font-size: 13px;
-            color: #94a3b8;
-            margin-bottom: 35px;
-            text-transform: uppercase;
             letter-spacing: 1px;
         }
 
+        p.subtitle {
+            color: #8b949e;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
         .input-group {
-            position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         input {
             width: 100%;
-            padding: 14px 18px;
-            background: rgba(0, 0, 0, 0.3);
+            padding: 12px 16px;
+            background: #0d1117;
             border: 1px solid var(--border);
-            border-radius: 2px;
+            border-radius: 6px;
             color: white;
             font-family: 'Rajdhani';
             font-size: 16px;
             outline: none;
-            transition: 0.3s;
+            transition: border-color 0.2s;
         }
 
         input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 10px var(--glow);
-            background: rgba(0, 0, 0, 0.5);
+            border-color: var(--link);
         }
 
         .btn-main {
             width: 100%;
-            padding: 14px;
-            background: transparent;
-            color: var(--accent);
-            border: 1px solid var(--accent);
-            font-family: 'Orbitron';
+            padding: 12px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Rajdhani';
             font-weight: 700;
-            font-size: 14px;
+            font-size: 16px;
             cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
             margin-top: 10px;
-            letter-spacing: 1px;
+            transition: opacity 0.2s;
         }
 
         .btn-main:hover {
-            background: var(--accent);
-            color: #000;
-            box-shadow: 0 0 20px var(--glow);
+            opacity: 0.9;
         }
 
         .toggle-area {
-            margin-top: 25px;
+            margin-top: 20px;
             font-size: 14px;
+            color: #8b949e;
         }
 
         .btn-toggle {
             background: none;
             border: none;
-            color: #60a5fa;
+            color: var(--link);
             font-family: 'Rajdhani';
             font-weight: 700;
             cursor: pointer;
-            text-decoration: underline;
         }
 
         .status-box {
-            height: 20px;
             font-size: 13px;
-            margin-bottom: 15px;
-            font-weight: 700;
+            margin-bottom: 10px;
+            min-height: 18px;
         }
 
         .back-link {
-            display: block;
-            margin-top: 30px;
-            color: #475569;
+            display: inline-block;
+            margin-top: 25px;
+            color: #8b949e;
             text-decoration: none;
-            font-size: 12px;
-            font-family: 'Orbitron';
-            transition: 0.2s;
+            font-size: 13px;
         }
 
-        .back-link:hover { color: var(--text); }
-
+        .back-link:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
 
     <div class="auth-card">
-        <h2 id="title">User Registration</h2>
-        <p class="subtitle" id="subtitle">Establish a new market connection</p>
+        <h2 id="title">Create Account</h2>
+        <p class="subtitle" id="subtitle">Join Aetherfall Market to start shopping.</p>
         
         <div id="status-msg" class="status-box"></div>
         
         <div class="input-group">
-            <input type="text" id="userInput" placeholder="IDENTITY CODE" autocomplete="off">
+            <input type="text" id="userInput" placeholder="Choose Username" autocomplete="off">
         </div>
         <div class="input-group">
-            <input type="password" id="passInput" placeholder="SECURITY ACCESS KEY">
+            <input type="password" id="passInput" placeholder="Create Password">
         </div>
         
-        <button class="btn-main" id="mainBtn">Execute Registry</button>
+        <button class="btn-main" id="mainBtn">Create Account</button>
         
         <div class="toggle-area">
-            <span id="toggleText">Already authorized?</span> 
+            <span id="toggleText">Already have an account?</span> 
             <button class="btn-toggle" id="toggleMode">Sign In</button>
         </div>
         
-        <a href="market.html" class="back-link">← Terminal Home</a>
+        <a href="market.html" class="back-link">← Return to Aetherfall Market</a>
     </div>
 
     <script type="module">
@@ -214,26 +183,26 @@
 
         function updateUI() {
             if (isLoginMode) {
-                title.innerText = "Access Terminal";
-                subtitle.innerText = "Authorized personnel only";
-                mainBtn.innerText = "Initialize Login";
-                toggleText.innerText = "New operative?";
-                toggleBtn.innerText = "Register Now";
-                document.getElementById('userInput').placeholder = "USERNAME";
-                document.getElementById('passInput').placeholder = "PASSWORD";
+                title.innerText = "Sign In";
+                subtitle.innerText = "Welcome back to Aetherfall Market.";
+                mainBtn.innerText = "Sign In";
+                toggleText.innerText = "Need an account?";
+                toggleBtn.innerText = "Create one";
+                document.getElementById('userInput').placeholder = "Username";
+                document.getElementById('passInput').placeholder = "Password";
             } else {
-                title.innerText = "User Registration";
-                subtitle.innerText = "Establish a new market connection";
-                mainBtn.innerText = "Execute Registry";
-                toggleText.innerText = "Already authorized?";
+                title.innerText = "Create Account";
+                subtitle.innerText = "Join Aetherfall Market to start shopping.";
+                mainBtn.innerText = "Create Account";
+                toggleText.innerText = "Already have an account?";
                 toggleBtn.innerText = "Sign In";
-                document.getElementById('userInput').placeholder = "IDENTITY CODE";
-                document.getElementById('passInput').placeholder = "SECURITY ACCESS KEY";
+                document.getElementById('userInput').placeholder = "Choose Username";
+                document.getElementById('passInput').placeholder = "Create Password";
             }
             notify("", "");
         }
 
-        // CRITICAL FIX: Hash Checker to detect button from market.html
+        // Logic to check URL Hash
         function checkMode() {
             if (window.location.hash === "#login") {
                 isLoginMode = true;
@@ -256,7 +225,7 @@
             const user = document.getElementById('userInput').value;
             const pass = document.getElementById('passInput').value;
 
-            if (!user || !pass) return notify("DATA INPUT REQUIRED.", "#ff7b72");
+            if (!user || !pass) return notify("Please fill in all fields.", "#ff7b72");
 
             if (isLoginMode) {
                 signInWithEmailAndPassword(auth, toEmail(user), pass)
@@ -264,17 +233,17 @@
                         localStorage.setItem("market_user", user);
                         window.location.href = "market.html";
                     })
-                    .catch(() => notify("ACCESS DENIED: INVALID CREDENTIALS", "#ff7b72"));
+                    .catch(() => notify("Invalid username or password.", "#ff7b72"));
             } else {
-                if (pass.length < 6) return notify("KEY MUST BE 6+ CHARACTERS", "#ff7b72");
+                if (pass.length < 6) return notify("Password must be 6+ characters.", "#ff7b72");
                 
                 createUserWithEmailAndPassword(auth, toEmail(user), pass)
                     .then(() => {
                         localStorage.setItem("market_user", user);
-                        notify("REGISTRY SUCCESSFUL. REDIRECTING...", "#22c55e");
+                        notify("Account created! Entering market...", "#238636");
                         setTimeout(() => { window.location.href = "market.html"; }, 1500);
                     })
-                    .catch((err) => notify("REGISTRY FAILED: " + err.code, "#ff7b72"));
+                    .catch((err) => notify("Error: " + err.message, "#ff7b72"));
             }
         });
     </script>
