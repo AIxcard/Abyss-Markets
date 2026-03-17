@@ -105,30 +105,43 @@
         .price-tag { color: var(--gold); font-weight: bold; font-family: 'Orbitron'; font-size: 11px; }
         .stock-tag { color: var(--combo); font-size: 9px; float: right; }
 
-        .btn-action {
-            background: var(--grad-action); border: none; color: white; padding: 8px;
-            font-family: 'Orbitron'; font-size: 10px; cursor: pointer; border-radius: 2px;
-            margin-top: 12px; text-align: center; text-decoration: none; display: block;
-            letter-spacing: 1px;
+        /* Review UI Section */
+        .review-ui-container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
         }
+        
+        .review-banner {
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px dashed var(--accent);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 4px;
+        }
+
+        .review-banner-text h3 { font-family: 'Orbitron'; font-size: 14px; color: #fff; margin-bottom: 5px; }
+        .review-banner-text p { font-size: 12px; opacity: 0.6; }
+
+        .review-link-btn {
+            background: var(--grad-action);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-family: 'Orbitron';
+            font-size: 11px;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+        .review-link-btn:hover { filter: brightness(1.2); box-shadow: 0 0 15px var(--accent); }
 
         .info-card {
             background: rgba(0,0,0,0.3); border: 1px solid var(--border);
             padding: 18px; margin-bottom: 12px; border-radius: 4px;
         }
         .info-card h3 { font-family: 'Orbitron'; font-size: 12px; color: var(--combo); margin-bottom: 8px; }
-
-        /* Review UI specific style */
-        .review-panel {
-            background: linear-gradient(90deg, rgba(124, 58, 237, 0.1), transparent);
-            border: 1px solid var(--accent);
-            padding: 20px;
-            border-radius: 4px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
 
         details { margin-bottom: 15px; background: rgba(255,255,255,0.02); border-radius: 4px; overflow: hidden; }
         summary { font-family: 'Orbitron'; font-size: 12px; color: var(--accent); cursor: pointer; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); }
@@ -157,15 +170,15 @@
     <a href="reviews.html" class="cat-card">Reviews</a>
 </div>
 
-<section id="reviews-ui">
-    <div class="review-panel">
-        <div>
-            <h3 style="font-family:'Orbitron'; font-size:14px; color:#fff;">CUSTOMER SATISFACTION</h3>
-            <p style="font-size:12px; opacity:0.7;">Check out our verified trade history and feedback.</p>
+<div class="review-ui-container">
+    <div class="review-banner">
+        <div class="review-banner-text">
+            <h3>TERMINAL FEEDBACK</h3>
+            <p>Verified trades and customer testimonials.</p>
         </div>
-        <a href="reviews.html" class="btn-action" style="margin-top:0; padding: 10px 25px;">VIEW REVIEWS</a>
+        <a href="reviews.html" class="review-link-btn">OPEN REVIEWS</a>
     </div>
-</section>
+</div>
 
 <audio id="music" loop>
     <source src="Petals Beneath the Ice (Anime Vanguards OST).mp3" type="audio/mpeg">
@@ -203,27 +216,10 @@
     </details>
 
     <details>
-        <summary>FLEE THE FACILITY</summary>
+        <summary>ANIME SPIRITS</summary>
         <div class="product-grid" style="padding:15px">
-            <div class="shop-card"><b>NUCLEAR WASTE</b><span class="price-tag">60 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
-            <div class="shop-card"><b>S’MORES</b><span class="price-tag">60 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
-            <div class="shop-card"><b>GOLDEN</b><span class="price-tag">60 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
-            <div class="shop-card"><b>ANCIENT TRIDENT</b><span class="price-tag">145 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
-            <div class="shop-card"><b>ANCIENT PORTAL</b><span class="price-tag">135 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
-            <div class="shop-card"><b>LUNAR WITCH BROOM</b><span class="price-tag">130 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
-            <div class="shop-card"><b>CURSED CIRCUS TENT</b><span class="price-tag">130 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
-            <div class="shop-card"><b>ENCHANTED CIRCUS TENT</b><span class="price-tag">130 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
-            <div class="shop-card"><b>CHROMATIC PHOENIX</b><span class="price-tag">130 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
-            
-            <div style="grid-column: 1 / -1; margin: 10px 0; color: var(--accent); font-family: 'Orbitron'; font-size: 11px;">GEMSTONES</div>
-            
-            <div class="shop-card"><b>RADIANT SHELL</b><span class="price-tag">110 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
-            <div class="shop-card"><b>ANCIENT KEY</b><span class="price-tag">110 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
-            <div class="shop-card"><b>LUNAR WITCH HAT</b><span class="price-tag">125 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
-            <div class="shop-card"><b>CURSED JESTER HAT</b><span class="price-tag">120 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
-            <div class="shop-card"><b>ENCHANTED JESTER HAT</b><span class="price-tag">120 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
-            <div class="shop-card"><b>CHROMATIC SPARK</b><span class="price-tag">120 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
-            <div class="shop-card"><b>SUNRISE</b><span class="price-tag">40 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
+            <div class="shop-card"><b>LIMITED ITEMS</b><p>All in-game limiteds.</p><span class="price-tag">VARIES</span></div>
+            <div class="shop-card"><b>SOUL SWORD FS SPEC</b><span class="price-tag">100 BAHT</span></div>
         </div>
     </details>
 
@@ -238,13 +234,68 @@
             <div class="shop-card"><b>MADOKA SETS</b><span class="price-tag">8 BAHT</span><span class="stock-tag">STOCK: 2</span></div>
         </div>
     </details>
+
+    <details>
+        <summary>ANIME PARADOX</summary>
+        <div class="product-grid" style="padding:15px">
+            <div class="shop-card"><b>STORY STAGE</b><span class="price-tag">5 BAHT</span></div>
+            <div class="shop-card"><b>RAID STAGE</b><span class="price-tag">15 BAHT</span></div>
+            <div class="shop-card"><b>30 MIN CARRY</b><span class="price-tag">30 BAHT</span></div>
+            <div class="shop-card"><b>1 HOUR CARRY</b><span class="price-tag">50 BAHT</span></div>
+            <div class="shop-card"><b>SUKUNA PORTAL CARRY</b><span class="price-tag">120 BAHT</span><span class="stock-tag">STOCK: 5</span></div>
+            <div class="shop-card"><b>GOJO PORTAL CARRY</b><span class="price-tag">100 BAHT</span><span class="stock-tag">STOCK: 3</span></div>
+        </div>
+    </details>
+
+    <details>
+        <summary>99 NIGHTS IN THE FOREST</summary>
+        <div class="product-grid" style="padding:15px">
+            <div class="shop-card"><b>100 DAYS CARRY</b><span class="price-tag">32 BAHT</span></div>
+            <div class="shop-card"><b>250 DAYS CARRY</b><span class="price-tag">60 BAHT</span></div>
+            <div class="shop-card"><b>500 DAYS CARRY</b><span class="price-tag">100 BAHT</span></div>
+            <div class="shop-card"><b>1K DAYS CARRY</b><span class="price-tag">249 BAHT</span></div>
+        </div>
+    </details>
+
+    <details>
+        <summary>FLEE THE FACILITY</summary>
+        <div class="product-grid" style="padding:15px">
+            <div class="shop-card"><b>NUCLEAR WASTE</b><span class="price-tag">60 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
+            <div class="shop-card"><b>S’MORES</b><span class="price-tag">60 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
+            <div class="shop-card"><b>GOLDEN</b><span class="price-tag">60 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
+            <div class="shop-card"><b>ANCIENT TRIDENT</b><span class="price-tag">145 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
+            <div class="shop-card"><b>ANCIENT PORTAL</b><span class="price-tag">135 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
+            <div class="shop-card"><b>LUNAR WITCH BROOM</b><span class="price-tag">130 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
+            <div class="shop-card"><b>CURSED CIRCUS TENT</b><span class="price-tag">130 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
+            <div class="shop-card"><b>ENCHANTED CIRCUS TENT</b><span class="price-tag">130 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
+            <div class="shop-card"><b>CHROMATIC PHOENIX</b><span class="price-tag">130 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
+            <div class="shop-card"><b>RED GUARDIAN</b><span class="price-tag">120 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
+            <div class="shop-card"><b>DARK HARVEST</b><span class="price-tag">110 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
+            
+            <div class="shop-card" style="border-left-color: var(--accent);"><b>RADIANT SHELL</b><span class="price-tag">110 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
+            <div class="shop-card" style="border-left-color: var(--accent);"><b>ANCIENT KEY</b><span class="price-tag">110 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
+            <div class="shop-card" style="border-left-color: var(--accent);"><b>LUNAR WITCH HAT</b><span class="price-tag">125 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
+            <div class="shop-card" style="border-left-color: var(--accent);"><b>CURSED JESTER HAT</b><span class="price-tag">120 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
+            <div class="shop-card" style="border-left-color: var(--accent);"><b>ENCHANTED JESTER HAT</b><span class="price-tag">120 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
+            <div class="shop-card" style="border-left-color: var(--accent);"><b>CHROMATIC SPARK</b><span class="price-tag">120 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
+            <div class="shop-card" style="border-left-color: var(--accent);"><b>SUNRISE</b><span class="price-tag">40 BAHT</span><span class="stock-tag">STOCK: 1</span></div>
+        </div>
+    </details>
 </section>
 
 <section id="purchase-info">
     <h2>Purchase Information</h2>
     <div class="info-card">
-        <h3>How to Order</h3>
-        <p>To order any items, contact the seller via <b>Google Chat (tp.buno@gmail.com)</b>. Mention the items you want, and once payment is confirmed, we will coordinate the trade in-game via account <b>Tpbuno</b>.</p>
+        <h3>Order Process</h3>
+        <p>Contact the seller via <b>Google Chat (tp.buno@gmail.com)</b>. Mention the item you want. Once verified, you'll be instructed to add the Roblox account <b>Tpbuno</b> to receive your items or start the service.</p>
+    </div>
+</section>
+
+<section id="qa">
+    <h2>Q&A</h2>
+    <div class="info-card">
+        <h3>Refunds?</h3>
+        <p>Issued only if a service cannot be completed. Snacks are non-refundable.</p>
     </div>
 </section>
 
@@ -259,11 +310,11 @@
     
     <p style="font-size:10px; color:var(--accent); margin-top:10px;">VISUAL THEME</p>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px">
-        <button class="btn-action" style="margin:0; padding:5px 15px;" onclick="prevBG()">◀</button>
+        <button class="review-link-btn" style="margin:0; padding:5px 15px;" onclick="prevBG()">◀</button>
         <div id="bgName" style="color:white; font-family:'Orbitron'; font-size:10px;">STELLAR</div>
-        <button class="btn-action" style="margin:0; padding:5px 15px;" onclick="nextBG()">▶</button>
+        <button class="review-link-btn" style="margin:0; padding:5px 15px;" onclick="nextBG()">▶</button>
     </div>
-    <button class="btn-action" style="width:100%; margin-top:20px; background:#ef4444;" onclick="closeSettings()">CLOSE</button>
+    <button class="review-link-btn" style="width:100%; margin-top:20px; background:#ef4444;" onclick="closeSettings()">CLOSE</button>
 </div>
 
 <script>
