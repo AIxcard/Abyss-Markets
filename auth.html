@@ -32,7 +32,7 @@
         <button class="btn-secondary" id="toggleMode">Already have an account? Sign in</button>
         
         <br>
-        <a href="index.html" style="display:block; margin-top:20px; color: #8b949e; text-decoration: none; font-size: 12px;">← Back Home</a>
+        <a href="market.html" style="display:block; margin-top:20px; color: #8b949e; text-decoration: none; font-size: 12px;">← Back Home</a>
     </div>
 
     <script type="module">
@@ -58,28 +58,52 @@
         const toggleBtn = document.getElementById('toggleMode');
         const title = document.getElementById('title');
         const subtitle = document.getElementById('subtitle');
+        const userInput = document.getElementById('userInput');
+        const passInput = document.getElementById('passInput');
 
         const notify = (text, color) => { msg.innerText = text; msg.style.color = color; };
         const toEmail = (name) => `${name.trim().toLowerCase()}@market.com`;
 
-        // Switch between Sign Up and Login UI
-        toggleBtn.addEventListener('click', () => {
-            isLoginMode = !isLoginMode;
+        // Function to update the UI based on mode
+        function updateUI() {
             title.innerText = isLoginMode ? "Market Login" : "Join Market";
             subtitle.innerText = isLoginMode ? "Welcome back!" : "Create an account to start browsing.";
             mainBtn.innerText = isLoginMode ? "Sign In" : "Create Account";
             toggleBtn.innerText = isLoginMode ? "Need an account? Register" : "Already have an account? Sign in";
+            userInput.placeholder = isLoginMode ? "Username" : "Choose Username";
+            passInput.placeholder = isLoginMode ? "Password" : "Create Password";
             notify("", "");
+        }
+
+        // Check the URL hash (#login or #signup)
+        function checkHash() {
+            if (window.location.hash === '#login') {
+                isLoginMode = true;
+            } else {
+                isLoginMode = false;
+            }
+            updateUI();
+        }
+
+        // Initialize on load
+        window.addEventListener('load', checkHash);
+        window.addEventListener('hashchange', checkHash);
+
+        // Manual switch via button
+        toggleBtn.addEventListener('click', () => {
+            isLoginMode = !isLoginMode;
+            // Update hash without reloading page
+            window.location.hash = isLoginMode ? 'login' : 'signup';
+            updateUI();
         });
 
         mainBtn.addEventListener('click', () => {
-            const user = document.getElementById('userInput').value;
-            const pass = document.getElementById('passInput').value;
+            const user = userInput.value;
+            const pass = passInput.value;
 
             if (!user || !pass) return notify("Fill in all fields.", "#ff7b72");
 
             if (isLoginMode) {
-                // LOGIN
                 signInWithEmailAndPassword(auth, toEmail(user), pass)
                     .then(() => {
                         localStorage.setItem("market_user", user);
@@ -87,7 +111,6 @@
                     })
                     .catch(() => notify("Invalid login credentials.", "#ff7b72"));
             } else {
-                // SIGN UP
                 if (pass.length < 6) return notify("Password must be 6+ chars.", "#ff7b72");
                 
                 createUserWithEmailAndPassword(auth, toEmail(user), pass)
