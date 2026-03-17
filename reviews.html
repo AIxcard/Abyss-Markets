@@ -1,288 +1,196 @@
 <!DOCTYPE html>
-
 <html>
-
 <head>
-<title>Aetherfall Market Reviews</title>
+    <title>Aetherfall Market Reviews</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #010206; --panel: rgba(15, 23, 42, 0.9); --border: #1e40af;
+            --accent: #c084fc; --gold: #fbbf24; --text: #f8fafc;
+        }
 
-<style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Rajdhani', sans-serif; }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial;
-}
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; min-height: 100vh; }
 
-body{
-background:#020617;
-color:white;
-overflow-x:hidden;
-}
+        /* THEMES SYNCED FROM MARKET */
+        .nebula { background: radial-gradient(circle at 20% 30%,#312e81 0%,transparent 50%), radial-gradient(circle at 80% 70%,#1e1b4b 0%,transparent 50%), #010206; }
+        .singularity { background: radial-gradient(circle at center,#581c87 0%,#000000 70%); }
+        .abyss { background:#000000; }
 
-/* GALAXY BACKGROUND */
+        .stars-bg {
+            position:fixed; width:100%; height:200%; top:-100%; left:0;
+            background: radial-gradient(white 1px, transparent 1px), radial-gradient(#60a5fa 1px, transparent 1px);
+            background-size:120px 120px, 200px 200px;
+            animation:starsMove 120s linear infinite; z-index:-2;
+        }
+        @keyframes starsMove { from{transform:translateY(0)} to{transform:translateY(2000px)} }
 
-.stars{
-position:fixed;
-width:100%;
-height:200%;
-top:-100%;
-left:0;
+        .header {
+            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+            text-align: center; padding: 50px 20px;
+        }
+        .header h1 { font-family: 'Orbitron'; font-size: 32px; letter-spacing: 5px; color: #fff; text-shadow: 0 0 10px var(--accent); }
 
-background:
-radial-gradient(white 1px, transparent 1px),
-radial-gradient(#60a5fa 1px, transparent 1px),
-radial-gradient(#3b82f6 2px, transparent 2px);
+        .container { max-width: 800px; margin: auto; padding: 20px; }
 
-background-size:120px 120px,200px 200px,300px 300px;
+        .formBox {
+            background: var(--panel); border: 1px solid var(--border);
+            border-radius: 4px; padding: 25px; margin-bottom: 40px;
+            border-left: 4px solid var(--accent);
+        }
 
-animation:starsMove 120s linear infinite;
+        .formBox h2 { font-family: 'Orbitron'; font-size: 16px; margin-bottom: 20px; color: var(--accent); }
 
-z-index:-2;
-}
+        input, textarea, select {
+            width: 100%; padding: 12px; margin-bottom: 15px;
+            background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+            border-radius: 4px; color: white; outline: none;
+        }
 
-@keyframes starsMove{
-from{transform:translateY(0)}
-to{transform:translateY(2000px)}
-}
+        button {
+            padding: 12px 25px; background: var(--accent); border: none;
+            border-radius: 2px; cursor: pointer; color: white;
+            font-family: 'Orbitron'; font-size: 11px; transition: 0.3s;
+        }
+        button:hover { opacity: 0.8; transform: translateY(-2px); }
 
-/* HEADER */
+        .review {
+            background: var(--panel); border: 1px solid rgba(255,255,255,0.05);
+            padding: 20px; margin-bottom: 15px; border-radius: 4px;
+            position: relative; transition: 0.3s;
+        }
+        .review:hover { border-color: var(--accent); }
 
-.header{
-background:linear-gradient(90deg,#000000,#4c1d95);
-text-align:center;
-padding:35px;
-font-size:42px;
-font-weight:bold;
-letter-spacing:4px;
-}
+        .reviewName { font-family: 'Orbitron'; color: var(--accent); font-size: 14px; margin-bottom: 5px; display: flex; align-items: center; gap: 10px; }
+        .reviewStars { color: var(--gold); margin-bottom: 10px; font-size: 12px; }
+        .reviewText { opacity: 0.9; line-height: 1.5; font-size: 15px; }
 
-/* CONTAINER */
+        .delete-btn {
+            position: absolute; top: 20px; right: 20px;
+            color: #ef4444; cursor: pointer; font-size: 10px;
+            font-family: 'Orbitron'; border: 1px solid #ef4444;
+            padding: 4px 8px; border-radius: 4px;
+        }
 
-.container{
-max-width:900px;
-margin:auto;
-padding:40px 20px;
-}
-
-/* REVIEW FORM */
-
-.formBox{
-background:rgba(15,23,42,.85);
-border:1px solid #1e3a8a;
-border-radius:12px;
-padding:25px;
-margin-bottom:40px;
-}
-
-.formBox h2{
-margin-bottom:15px;
-color:#60a5fa;
-}
-
-input,textarea,select{
-
-width:100%;
-padding:10px;
-margin-top:10px;
-margin-bottom:15px;
-
-border:none;
-border-radius:6px;
-
-background:#020617;
-color:white;
-
-}
-
-button{
-
-padding:10px 18px;
-
-background:#2563eb;
-border:none;
-border-radius:8px;
-cursor:pointer;
-
-color:white;
-
-}
-
-/* REVIEW BOX */
-
-.review{
-
-background:rgba(15,23,42,.85);
-
-border:1px solid #1e3a8a;
-
-border-radius:12px;
-
-padding:20px;
-
-margin-bottom:20px;
-
-}
-
-.reviewName{
-
-color:#38bdf8;
-
-font-weight:bold;
-
-margin-bottom:5px;
-
-}
-
-.reviewStars{
-
-color:#facc15;
-
-margin-bottom:8px;
-
-}
-
-/* BACK BUTTON */
-
-.back{
-
-margin-top:30px;
-
-display:inline-block;
-
-color:#38bdf8;
-
-text-decoration:none;
-
-}
-
-</style>
-
+        .back {
+            display: inline-block; margin-top: 30px; color: var(--accent);
+            text-decoration: none; font-family: 'Orbitron'; font-size: 12px;
+        }
+    </style>
 </head>
+<body class="stellar">
 
-<body>
-
-<div class="stars"></div>
+<div class="stars-bg"></div>
 
 <div class="header">
-AETHERFALL MARKET REVIEWS
+    <h1>TERMINAL FEEDBACK</h1>
 </div>
 
 <div class="container">
+    <div class="formBox">
+        <h2>Submit Transmission</h2>
+        <input id="name" placeholder="User Identity" readonly style="opacity: 0.6;">
+        
+        <select id="stars">
+            <option value="★★★★★">★★★★★ (Excellent)</option>
+            <option value="★★★★">★★★★ (Good)</option>
+            <option value="★★★">★★★ (Average)</option>
+            <option value="★★">★★ (Poor)</option>
+            <option value="★">★ (Critical Failure)</option>
+        </select>
+        
+        <textarea id="review" placeholder="Enter feedback details..." rows="4"></textarea>
+        <button onclick="postReview()">BROADCAST REVIEW</button>
+    </div>
 
-<div class="formBox">
+    <div id="reviews"></div>
 
-<h2>Leave a Review</h2>
-
-<input id="name" placeholder="Your Name">
-
-<select id="stars">
-
-<option>★★★★★</option>
-<option>★★★★</option>
-<option>★★★</option>
-<option>★★</option>
-<option>★</option>
-
-</select>
-
-<textarea id="review" placeholder="Write your review"></textarea>
-
-<button onclick="postReview()">Submit Review</button>
-  <button onclick="clearReviews()" style="background:#dc2626;margin-left:10px;">
-Clear All Reviews
-</button>
-
+    <a class="back" href="market.html">← RETURN TO MARKET</a>
 </div>
 
-<div id="reviews"></div>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+    import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
-<a class="back" href="market.html">← Back to Market</a>
+    // Same Firebase config as your Auth
+    const firebaseConfig = {
+        apiKey: "AIzaSyBVvsUZJlFEMsdjH7FSXxmxCMZgU_zLzBg",
+        authDomain: "quickaetherfall.firebaseapp.com",
+        projectId: "quickaetherfall",
+        databaseURL: "https://quickaetherfall-default-rtdb.firebaseio.com/", // Make sure RTDB is enabled in Firebase Console
+        storageBucket: "quickaetherfall.firebasestorage.app",
+        messagingSenderId: "1061970586865",
+        appId: "1:1061970586865:web:ad87fa9b304b0909d04d50"
+    };
 
-</div>
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const reviewsRef = ref(db, 'reviews');
 
-<script>
+    // Sync Background from Market
+    const savedBG = localStorage.getItem("marketBG");
+    const backgrounds = ["stellar", "nebula", "singularity", "abyss"];
+    if (savedBG !== null) {
+        document.body.className = backgrounds[parseInt(savedBG)];
+        if(backgrounds[parseInt(savedBG)] !== "stellar") {
+            document.querySelector(".stars-bg").style.display = "none";
+        }
+    }
 
-let reviews = JSON.parse(localStorage.getItem("abyssReviews")) || []
+    // Get Logged In User
+    const currentUser = localStorage.getItem("market_user") || "Anonymous";
+    document.getElementById("name").value = currentUser;
 
-function displayReviews(){
+    window.postReview = function() {
+        const text = document.getElementById("review").value;
+        const stars = document.getElementById("stars").value;
 
-let container=document.getElementById("reviews")
+        if (text.trim() === "") return alert("Transmission empty.");
 
-container.innerHTML=""
+        push(reviewsRef, {
+            name: currentUser,
+            stars: stars,
+            text: text,
+            timestamp: Date.now()
+        });
 
-reviews.slice().reverse().forEach(r=>{
+        document.getElementById("review").value = "";
+    };
 
-container.innerHTML+=`
+    window.deleteReview = function(id) {
+        if(confirm("Delete this review?")) {
+            remove(ref(db, 'reviews/' + id));
+        }
+    };
 
-<div class="review">
+    // Real-time listener
+    onValue(reviewsRef, (snapshot) => {
+        const container = document.getElementById("reviews");
+        container.innerHTML = "";
+        const data = snapshot.val();
 
-<div class="reviewName">${r.name}</div>
-
-<div class="reviewStars">${r.stars}</div>
-
-<div>${r.text}</div>
-
-</div>
-
-`
-
-})
-
-}
-
-function postReview(){
-
-let name=document.getElementById("name").value
-
-let stars=document.getElementById("stars").value
-
-let text=document.getElementById("review").value
-
-if(name=="" || text==""){
-
-alert("Please fill everything")
-
-return
-
-}
-
-reviews.push({
-
-name:name,
-
-stars:stars,
-
-text:text
-
-})
-
-localStorage.setItem("abyssReviews",JSON.stringify(reviews))
-
-document.getElementById("name").value=""
-document.getElementById("review").value=""
-
-displayReviews()
-
-}
-
-displayReviews()
-  function clearReviews(){
-
-localStorage.removeItem("abyssReviews")
-
-reviews=[]
-
-displayReviews()
-
-alert("All reviews cleared")
-
-}
-
+        if (data) {
+            // Convert to array and reverse to show newest first
+            Object.keys(data).reverse().forEach(id => {
+                const r = data[id];
+                const isOwner = r.name === currentUser;
+                
+                container.innerHTML += `
+                    <div class="review">
+                        <div class="reviewName">
+                            ${r.name} 
+                            ${isOwner ? '<span style="font-size:8px; color:#238636;">(YOU)</span>' : ''}
+                        </div>
+                        <div class="reviewStars">${r.stars}</div>
+                        <div class="reviewText">${r.text}</div>
+                        ${isOwner ? `<div class="delete-btn" onclick="deleteReview('${id}')">DELETE</div>` : ''}
+                    </div>
+                `;
+            });
+        }
+    });
 </script>
-  
-<script src="cursor.js"></script>
-  
-</body>
 
+</body>
 </html>
