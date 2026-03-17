@@ -10,10 +10,9 @@
         }
 
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Rajdhani', sans-serif; }
-
         body { background: var(--bg); color: var(--text); overflow-x: hidden; min-height: 100vh; }
 
-        /* THEMES SYNCED FROM MARKET */
+        /* THEMES */
         .nebula { background: radial-gradient(circle at 20% 30%,#312e81 0%,transparent 50%), radial-gradient(circle at 80% 70%,#1e1b4b 0%,transparent 50%), #010206; }
         .singularity { background: radial-gradient(circle at center,#581c87 0%,#000000 70%); }
         .abyss { background:#000000; }
@@ -26,99 +25,84 @@
         }
         @keyframes starsMove { from{transform:translateY(0)} to{transform:translateY(2000px)} }
 
-        .header {
-            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
-            text-align: center; padding: 50px 20px;
-        }
-        .header h1 { font-family: 'Orbitron'; font-size: 32px; letter-spacing: 5px; color: #fff; text-shadow: 0 0 10px var(--accent); }
+        .header { text-align: center; padding: 40px 20px; }
+        .header h1 { font-family: 'Orbitron'; font-size: 28px; letter-spacing: 4px; color: #fff; }
 
         .container { max-width: 800px; margin: auto; padding: 20px; }
 
         .formBox {
             background: var(--panel); border: 1px solid var(--border);
             border-radius: 4px; padding: 25px; margin-bottom: 40px;
-            border-left: 4px solid var(--accent);
         }
 
-        .formBox h2 { font-family: 'Orbitron'; font-size: 16px; margin-bottom: 20px; color: var(--accent); }
+        .formBox h2 { font-family: 'Orbitron'; font-size: 16px; margin-bottom: 15px; color: var(--accent); }
 
         input, textarea, select {
-            width: 100%; padding: 12px; margin-bottom: 15px;
-            background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+            width: 100%; padding: 12px; margin-bottom: 10px;
+            background: rgba(0,0,0,0.5); border: 1px solid var(--border);
             border-radius: 4px; color: white; outline: none;
         }
 
-        button {
-            padding: 12px 25px; background: var(--accent); border: none;
-            border-radius: 2px; cursor: pointer; color: white;
-            font-family: 'Orbitron'; font-size: 11px; transition: 0.3s;
+        .post-btn {
+            width: 100%; padding: 12px; background: var(--accent); border: none;
+            cursor: pointer; color: white; font-family: 'Orbitron'; font-weight: bold;
         }
-        button:hover { opacity: 0.8; transform: translateY(-2px); }
 
         .review {
-            background: var(--panel); border: 1px solid rgba(255,255,255,0.05);
-            padding: 20px; margin-bottom: 15px; border-radius: 4px;
-            position: relative; transition: 0.3s;
+            background: var(--panel); border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px; margin-bottom: 15px; border-radius: 4px; position: relative;
         }
-        .review:hover { border-color: var(--accent); }
 
-        .reviewName { font-family: 'Orbitron'; color: var(--accent); font-size: 14px; margin-bottom: 5px; display: flex; align-items: center; gap: 10px; }
-        .reviewStars { color: var(--gold); margin-bottom: 10px; font-size: 12px; }
-        .reviewText { opacity: 0.9; line-height: 1.5; font-size: 15px; }
+        .reviewName { font-family: 'Orbitron'; color: var(--accent); font-size: 14px; }
+        .reviewStars { color: var(--gold); margin: 5px 0; }
 
         .delete-btn {
-            position: absolute; top: 20px; right: 20px;
-            color: #ef4444; cursor: pointer; font-size: 10px;
-            font-family: 'Orbitron'; border: 1px solid #ef4444;
-            padding: 4px 8px; border-radius: 4px;
+            position: absolute; top: 15px; right: 15px;
+            color: #ef4444; cursor: pointer; font-size: 9px;
+            font-family: 'Orbitron'; border: 1px solid #ef4444; padding: 3px 6px;
         }
 
-        .back {
-            display: inline-block; margin-top: 30px; color: var(--accent);
-            text-decoration: none; font-family: 'Orbitron'; font-size: 12px;
-        }
+        .back { display: inline-block; margin-top: 20px; color: var(--accent); text-decoration: none; font-family: 'Orbitron'; font-size: 11px; }
     </style>
 </head>
-<body class="stellar">
+<body>
 
 <div class="stars-bg"></div>
 
 <div class="header">
-    <h1>TERMINAL FEEDBACK</h1>
+    <h1>MARKET REVIEWS</h1>
 </div>
 
 <div class="container">
     <div class="formBox">
-        <h2>Submit Transmission</h2>
-        <input id="name" placeholder="User Identity" readonly style="opacity: 0.6;">
-        
+        <h2>Leave a Review</h2>
+        <input id="name" readonly placeholder="Your Name">
         <select id="stars">
-            <option value="★★★★★">★★★★★ (Excellent)</option>
-            <option value="★★★★">★★★★ (Good)</option>
-            <option value="★★★">★★★ (Average)</option>
-            <option value="★★">★★ (Poor)</option>
-            <option value="★">★ (Critical Failure)</option>
+            <option value="★★★★★">★★★★★</option>
+            <option value="★★★★">★★★★</option>
+            <option value="★★★">★★★</option>
+            <option value="★★">★★</option>
+            <option value="★">★</option>
         </select>
-        
-        <textarea id="review" placeholder="Enter feedback details..." rows="4"></textarea>
-        <button onclick="postReview()">BROADCAST REVIEW</button>
+        <textarea id="review" placeholder="Write your review here..." rows="3"></textarea>
+        <button class="post-btn" id="submitBtn">POST REVIEW</button>
     </div>
 
-    <div id="reviews"></div>
+    <div id="reviews-list"></div>
 
-    <a class="back" href="market.html">← RETURN TO MARKET</a>
+    <a class="back" href="market.html">← BACK TO MARKET</a>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
     import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
-    // Same Firebase config as your Auth
+    // CHECK: Ensure your "databaseURL" is exactly what is shown in your Firebase Realtime Database tab
     const firebaseConfig = {
         apiKey: "AIzaSyBVvsUZJlFEMsdjH7FSXxmxCMZgU_zLzBg",
         authDomain: "quickaetherfall.firebaseapp.com",
         projectId: "quickaetherfall",
-        databaseURL: "https://quickaetherfall-default-rtdb.firebaseio.com/", // Make sure RTDB is enabled in Firebase Console
+        databaseURL: "https://quickaetherfall-default-rtdb.firebaseio.com/", 
         storageBucket: "quickaetherfall.firebasestorage.app",
         messagingSenderId: "1061970586865",
         appId: "1:1061970586865:web:ad87fa9b304b0909d04d50"
@@ -128,63 +112,55 @@
     const db = getDatabase(app);
     const reviewsRef = ref(db, 'reviews');
 
-    // Sync Background from Market
+    // SYNC THEME
     const savedBG = localStorage.getItem("marketBG");
     const backgrounds = ["stellar", "nebula", "singularity", "abyss"];
     if (savedBG !== null) {
         document.body.className = backgrounds[parseInt(savedBG)];
-        if(backgrounds[parseInt(savedBG)] !== "stellar") {
-            document.querySelector(".stars-bg").style.display = "none";
-        }
+        if(backgrounds[parseInt(savedBG)] !== "stellar") document.querySelector(".stars-bg").style.display = "none";
     }
 
-    // Get Logged In User
-    const currentUser = localStorage.getItem("market_user") || "Anonymous";
+    const currentUser = localStorage.getItem("market_user") || "Guest";
     document.getElementById("name").value = currentUser;
 
-    window.postReview = function() {
+    // POST LOGIC
+    document.getElementById("submitBtn").addEventListener("click", () => {
         const text = document.getElementById("review").value;
         const stars = document.getElementById("stars").value;
 
-        if (text.trim() === "") return alert("Transmission empty.");
+        if (!text.trim()) return alert("Please enter a review.");
 
         push(reviewsRef, {
             name: currentUser,
             stars: stars,
-            text: text,
-            timestamp: Date.now()
-        });
+            text: text
+        }).then(() => {
+            document.getElementById("review").value = "";
+        }).catch(e => alert("Error: Make sure Realtime Database is enabled in Firebase!"));
+    });
 
-        document.getElementById("review").value = "";
-    };
-
-    window.deleteReview = function(id) {
-        if(confirm("Delete this review?")) {
+    // GLOBAL DELETE LOGIC
+    window.removeReview = (id) => {
+        if(confirm("Delete your review?")) {
             remove(ref(db, 'reviews/' + id));
         }
     };
 
-    // Real-time listener
-    onValue(reviewsRef, (snapshot) => {
-        const container = document.getElementById("reviews");
-        container.innerHTML = "";
-        const data = snapshot.val();
-
+    // LOAD REVIEWS
+    onValue(reviewsRef, (snap) => {
+        const list = document.getElementById("reviews-list");
+        list.innerHTML = "";
+        const data = snap.val();
         if (data) {
-            // Convert to array and reverse to show newest first
             Object.keys(data).reverse().forEach(id => {
                 const r = data[id];
-                const isOwner = r.name === currentUser;
-                
-                container.innerHTML += `
+                const isMine = r.name === currentUser;
+                list.innerHTML += `
                     <div class="review">
-                        <div class="reviewName">
-                            ${r.name} 
-                            ${isOwner ? '<span style="font-size:8px; color:#238636;">(YOU)</span>' : ''}
-                        </div>
+                        <div class="reviewName">${r.name} ${isMine ? '<span style="color:#238636;font-size:8px;">(YOU)</span>' : ''}</div>
                         <div class="reviewStars">${r.stars}</div>
-                        <div class="reviewText">${r.text}</div>
-                        ${isOwner ? `<div class="delete-btn" onclick="deleteReview('${id}')">DELETE</div>` : ''}
+                        <div style="font-size:14px;opacity:0.8;">${r.text}</div>
+                        ${isMine ? `<div class="delete-btn" onclick="removeReview('${id}')">DELETE</div>` : ''}
                     </div>
                 `;
             });
