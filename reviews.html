@@ -53,9 +53,10 @@
         .review {
             background: var(--panel); border: 1px solid rgba(255,255,255,0.1);
             padding: 20px; margin-bottom: 15px; border-radius: 4px; position: relative;
+            transition: 0.3s;
         }
 
-        .reviewName { font-family: 'Orbitron'; color: var(--accent); font-size: 13px; }
+        .reviewName { font-family: 'Orbitron'; color: var(--accent); font-size: 13px; display: flex; align-items: center; }
         .reviewStars { color: var(--gold); margin: 5px 0; font-size: 12px; }
 
         .delete-btn {
@@ -63,6 +64,7 @@
             color: #ef4444; cursor: pointer; font-size: 9px;
             font-family: 'Orbitron'; border: 1px solid #ef4444; padding: 3px 6px; border-radius: 3px;
         }
+        .delete-btn:hover { background: #ef4444; color: white; }
 
         .back { display: inline-block; margin-top: 20px; color: var(--accent); text-decoration: none; font-family: 'Orbitron'; font-size: 11px; }
     </style>
@@ -119,6 +121,9 @@
     const currentUser = localStorage.getItem("market_user") || "GUEST";
     document.getElementById("name").value = currentUser.toUpperCase();
 
+    // ADMIN CHECK
+    const isAdmin = (currentUser.toUpperCase() === "OHNEPIXEL");
+
     // POST REVIEW
     document.getElementById("submitBtn").addEventListener("click", () => {
         const text = document.getElementById("review").value;
@@ -126,9 +131,7 @@
 
         if (!text.trim()) return alert("Transmission empty.");
 
-        // Create unique secret key for this specific post
         const secret = Math.random().toString(36).substring(2);
-        
         const newRef = push(reviewsRef);
         const postId = newRef.key;
 
@@ -138,15 +141,15 @@
             text: text,
             token: secret
         }).then(() => {
-            // Save the secret to the browser so the user can delete it later
             localStorage.setItem("key_" + postId, secret);
             document.getElementById("review").value = "";
-        }).catch(e => alert("System Error: Check Database Rules"));
+        });
     });
 
-    // GLOBAL DELETE
+    // DELETE ACTION
     window.removeReview = (id) => {
-        if(confirm("Confirm Deletion?")) {
+        const msg = isAdmin ? "ADMIN: Permanently wipe this entry?" : "Delete your review?";
+        if(confirm(msg)) {
             remove(ref(db, 'reviews/' + id));
         }
     };
@@ -161,23 +164,27 @@
             Object.keys(data).reverse().forEach(id => {
                 const r = data[id];
                 
-                // Check if user is logged in as an Operative owner
+                // AUTH LOGIC
                 const isOpOwner = (currentUser !== "GUEST" && r.name === currentUser.toUpperCase());
-                
-                // Check if user is a Guest on the same browser that made the post
                 const myToken = localStorage.getItem("key_" + id);
                 const isGuestOwner = (myToken && r.token === myToken);
 
-                const canDelete = isOpOwner || isGuestOwner;
+                // GOD MODE TRIGGER
+                const canDelete = isAdmin || isOpOwner || isGuestOwner;
                 
+                const isGuestReview = (r.name === "GUEST");
+                const badgeColor = isGuestReview ? "#64748b" : "#22c55e";
+                const badgeText = isGuestReview ? "UNVERIFIED" : "OPERATIVE";
+
                 list.innerHTML += `
-                    <div class="review">
+                    <div class="review" style="border-left: 3px solid ${badgeColor}">
                         <div class="reviewName">
                             ${r.name} 
-                            ${canDelete ? '<span style="color:#22c55e;font-size:8px;margin-left:5px;">(YOU)</span>' : ''}
+                            <span style="color:${badgeColor}; font-size:8px; margin-left:8px; border:1px solid ${badgeColor}; padding:1px 4px; border-radius:2px;">${badgeText}</span>
+                            ${(isOpOwner || isGuestOwner) ? '<span style="color:#a855f7; font-size:8px; margin-left:5px;">(YOU)</span>' : ''}
                         </div>
                         <div class="reviewStars">${r.stars}</div>
-                        <div style="font-size:14px;opacity:0.8;line-height:1.5;">${r.text}</div>
+                        <div style="font-size:14px; opacity:0.8; line-height:1.5;">${r.text}</div>
                         ${canDelete ? `<div class="delete-btn" onclick="removeReview('${id}')">DELETE</div>` : ''}
                     </div>
                 `;
