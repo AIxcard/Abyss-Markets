@@ -18,6 +18,7 @@
             color: var(--text);
             font-family: 'Rajdhani', sans-serif;
             overflow-x: hidden;
+            transition: background 0.5s ease;
         }
 
         .stars {
@@ -105,7 +106,6 @@
         .price-tag { color: var(--gold); font-weight: bold; font-family: 'Orbitron'; font-size: 11px; }
         .stock-tag { color: var(--combo); font-size: 9px; float: right; }
 
-        /* Review UI Section */
         .review-ui-container {
             max-width: 1000px;
             margin: 20px auto;
@@ -141,6 +141,7 @@
             padding: 18px; margin-bottom: 12px; border-radius: 4px;
         }
         .info-card h3 { font-family: 'Orbitron'; font-size: 12px; color: var(--combo); margin-bottom: 8px; }
+        .info-card p { font-size: 13px; line-height: 1.6; }
 
         details { margin-bottom: 15px; background: rgba(255,255,255,0.02); border-radius: 4px; overflow: hidden; }
         summary { font-family: 'Orbitron'; font-size: 12px; color: var(--accent); cursor: pointer; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); }
@@ -283,8 +284,23 @@
 <section id="purchase-info">
     <h2>Purchase Information</h2>
     <div class="info-card">
-        <h3>Order Process</h3>
-        <p>Contact <b>tp.buno@gmail.com</b> via Google Chat with your order details. Add account <b>Tpbuno</b> on Roblox to complete the delivery.</p>
+        <h3>Steps to Purchase</h3>
+        <p>1. Send a request on Google Chat to <b>tp.buno@gmail.com</b>.</p>
+        <p>2. Tell the seller the item you want to purchase.</p>
+        <p>3. The seller will verify if the item is in stock.</p>
+        <p>4. Once verified, add the account <b>Tpbuno</b> on Roblox to receive your item or service.</p>
+    </div>
+</section>
+
+<section id="qa">
+    <h2>Q&A</h2>
+    <div class="info-card">
+        <h3>How can I trust this shop?</h3>
+        <p>You can check our verified reviews page for previous successful trades.</p>
+    </div>
+    <div class="info-card">
+        <h3>What if an item is out of stock?</h3>
+        <p>You can ask the seller via Google Chat when the item will be back in stock.</p>
     </div>
 </section>
 
@@ -296,18 +312,59 @@
     <h3 style="font-family:'Orbitron'; font-size: 14px; text-align:center; margin-bottom:15px;">TERMINAL SETTINGS</h3>
     <p style="font-size:10px; color:var(--accent);">AUDIO VOLUME</p>
     <input type="range" min="0" max="100" value="50" id="vol">
+    
+    <p style="font-size:10px; color:var(--accent); margin-top:10px;">VISUAL THEME</p>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px">
+        <button class="review-link-btn" style="margin:0; padding:5px 15px;" onclick="prevBG()">◀</button>
+        <div id="bgName" style="color:white; font-family:'Orbitron'; font-size:10px;">STELLAR</div>
+        <button class="review-link-btn" style="margin:0; padding:5px 15px;" onclick="nextBG()">▶</button>
+    </div>
     <button class="review-link-btn" style="width:100%; margin-top:20px; background:#ef4444;" onclick="closeSettings()">CLOSE</button>
 </div>
 
 <script>
-    const music=document.getElementById("music")
-    document.addEventListener("click",function(){
-        music.volume=0.5
-        music.play()
-    },{once:true})
-    document.getElementById("vol").addEventListener("input",function(){ music.volume=this.value/100 })
-    function openSettings(){ document.getElementById("settings").style.display="block" }
-    function closeSettings(){ document.getElementById("settings").style.display="none" }
+    const music = document.getElementById("music");
+    const backgrounds = ["stellar", "nebula", "singularity", "abyss"];
+    const names = { stellar: "Stellar", nebula: "Nebula Storm", singularity: "Singularity", abyss: "Abyss" };
+    let currentBG = 0;
+
+    // Fixed logic to ensure storage is read and applied on load
+    window.addEventListener('DOMContentLoaded', () => {
+        let saved = localStorage.getItem("marketBG");
+        if (saved !== null) {
+            currentBG = parseInt(saved);
+        }
+        applyBG();
+    });
+
+    document.addEventListener("click", function() {
+        music.volume = 0.5;
+        music.play();
+    }, { once: true });
+
+    document.getElementById("vol").addEventListener("input", function() { music.volume = this.value / 100 });
+
+    function openSettings() { document.getElementById("settings").style.display = "block" }
+    function closeSettings() { document.getElementById("settings").style.display = "none" }
+
+    function applyBG() {
+        document.body.classList.remove("nebula", "singularity", "abyss");
+        const stars = document.querySelector(".stars");
+        let bg = backgrounds[currentBG];
+        
+        if (bg === "stellar") { 
+            stars.style.display = "block"; 
+        } else { 
+            stars.style.display = "none"; 
+            document.body.classList.add(bg); 
+        }
+        
+        document.getElementById("bgName").innerText = names[bg].toUpperCase();
+        localStorage.setItem("marketBG", currentBG);
+    }
+
+    function nextBG() { currentBG++; if (currentBG >= backgrounds.length) { currentBG = 0 } applyBG() }
+    function prevBG() { currentBG--; if (currentBG < 0) { currentBG = backgrounds.length - 1 } applyBG() }
 </script>
 </body>
 </html>
