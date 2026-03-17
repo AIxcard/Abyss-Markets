@@ -18,7 +18,6 @@
             color: var(--text);
             font-family: 'Rajdhani', sans-serif;
             overflow-x: hidden;
-            transition: background 0.5s ease;
         }
 
         .stars {
@@ -113,7 +112,7 @@
         }
         
         .review-banner {
-            background: rgba(124, 58, 237, 0.1);
+            background: rgba(124, 58, 237, 0.15);
             border: 1px dashed var(--accent);
             padding: 20px;
             display: flex;
@@ -141,7 +140,6 @@
             padding: 18px; margin-bottom: 12px; border-radius: 4px;
         }
         .info-card h3 { font-family: 'Orbitron'; font-size: 12px; color: var(--combo); margin-bottom: 8px; }
-        .info-card p { font-size: 13px; line-height: 1.6; }
 
         details { margin-bottom: 15px; background: rgba(255,255,255,0.02); border-radius: 4px; overflow: hidden; }
         summary { font-family: 'Orbitron'; font-size: 12px; color: var(--accent); cursor: pointer; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); }
@@ -284,23 +282,16 @@
 <section id="purchase-info">
     <h2>Purchase Information</h2>
     <div class="info-card">
-        <h3>Steps to Purchase</h3>
-        <p>1. Send a request on Google Chat to <b>tp.buno@gmail.com</b>.</p>
-        <p>2. Tell the seller the item you want to purchase.</p>
-        <p>3. The seller will verify if the item is in stock.</p>
-        <p>4. Once verified, add the account <b>Tpbuno</b> on Roblox to receive your item or service.</p>
+        <h3>How to Order</h3>
+        <p>To place an order, contact the seller via <b>Google Chat</b> at <span style="color:var(--accent)">tp.buno@gmail.com</span>. Please specify the item name. Upon verification, you will receive trade instructions for the Roblox account <b>Tpbuno</b>.</p>
     </div>
 </section>
 
 <section id="qa">
     <h2>Q&A</h2>
     <div class="info-card">
-        <h3>How can I trust this shop?</h3>
-        <p>You can check our verified reviews page for previous successful trades.</p>
-    </div>
-    <div class="info-card">
-        <h3>What if an item is out of stock?</h3>
-        <p>You can ask the seller via Google Chat when the item will be back in stock.</p>
+        <h3>Refunds?</h3>
+        <p>Issued only if a service cannot be completed. Snacks are non-refundable.</p>
     </div>
 </section>
 
@@ -323,48 +314,40 @@
 </div>
 
 <script>
-    const music = document.getElementById("music");
-    const backgrounds = ["stellar", "nebula", "singularity", "abyss"];
-    const names = { stellar: "Stellar", nebula: "Nebula Storm", singularity: "Singularity", abyss: "Abyss" };
-    let currentBG = 0;
+    const music=document.getElementById("music");
+    const backgrounds=["stellar","nebula","singularity","abyss"];
+    const names={ stellar:"Stellar", nebula:"Nebula Storm", singularity:"Singularity", abyss:"Abyss" };
+    let currentBG=0;
 
-    // Fixed logic to ensure storage is read and applied on load
+    // Load and Apply stored settings on page load
     window.addEventListener('DOMContentLoaded', () => {
         let saved = localStorage.getItem("marketBG");
-        if (saved !== null) {
-            currentBG = parseInt(saved);
-        }
+        if(saved !== null) currentBG = parseInt(saved);
         applyBG();
     });
 
-    document.addEventListener("click", function() {
-        music.volume = 0.5;
+    document.addEventListener("click",function(){
+        music.volume=0.5;
         music.play();
-    }, { once: true });
+    },{once:true});
 
-    document.getElementById("vol").addEventListener("input", function() { music.volume = this.value / 100 });
+    document.getElementById("vol").addEventListener("input",function(){ music.volume=this.value/100 });
 
-    function openSettings() { document.getElementById("settings").style.display = "block" }
-    function closeSettings() { document.getElementById("settings").style.display = "none" }
+    function openSettings(){ document.getElementById("settings").style.display="block" }
+    function closeSettings(){ document.getElementById("settings").style.display="none" }
 
-    function applyBG() {
-        document.body.classList.remove("nebula", "singularity", "abyss");
-        const stars = document.querySelector(".stars");
-        let bg = backgrounds[currentBG];
-        
-        if (bg === "stellar") { 
-            stars.style.display = "block"; 
-        } else { 
-            stars.style.display = "none"; 
-            document.body.classList.add(bg); 
-        }
-        
-        document.getElementById("bgName").innerText = names[bg].toUpperCase();
+    function applyBG(){
+        document.body.classList.remove("nebula","singularity","abyss");
+        const stars=document.querySelector(".stars");
+        let bg=backgrounds[currentBG];
+        if(bg==="stellar"){ stars.style.display="block" }
+        else{ stars.style.display="none"; document.body.classList.add(bg) }
+        document.getElementById("bgName").innerText=names[bg].toUpperCase();
         localStorage.setItem("marketBG", currentBG);
     }
 
-    function nextBG() { currentBG++; if (currentBG >= backgrounds.length) { currentBG = 0 } applyBG() }
-    function prevBG() { currentBG--; if (currentBG < 0) { currentBG = backgrounds.length - 1 } applyBG() }
+    function nextBG(){ currentBG++; if(currentBG>=backgrounds.length){currentBG=0} applyBG() }
+    function prevBG(){ currentBG--; if(currentBG<0){currentBG=backgrounds.length-1} applyBG() }
 </script>
 </body>
 </html>
