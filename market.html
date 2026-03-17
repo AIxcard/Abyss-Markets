@@ -92,15 +92,15 @@
 
 <div id="orderModal">
     <div class="modal-content">
-        <h3>ORDER SENT</h3>
-        <p style="margin-bottom:20px; line-height:1.6;">Your order request has been initialized via email. Please ensure you hit 'Send' in your mail app.<br><br><b>Please wait for a response from the seller.</b></p>
-        <button class="btn-action" onclick="closeModal()">CLOSE</button>
+        <h3>ORDER INITIALIZED</h3>
+        <p style="margin-bottom:20px; line-height:1.6;">Your email has been prepared. Please ensure you hit 'Send' in your mail app.<br><br><b>Status: Pending Response</b><br>Please wait for the seller to respond.</p>
+        <button class="btn-action" onclick="closeModal()">CLOSE MESSAGE</button>
     </div>
 </div>
 
 <div class="hero">
     <h1>AETHERFALL MARKET</h1>
-    <p style="opacity:0.5; letter-spacing: 2px; font-size: 10px; margin-top:5px;">TERMINAL v3.7</p>
+    <p style="opacity:0.5; letter-spacing: 2px; font-size: 10px; margin-top:5px;">TERMINAL v3.8</p>
 </div>
 
 <div class="category-grid">
@@ -108,7 +108,6 @@
     <a href="#games" class="cat-card">Roblox Services</a>
     <a href="#purchase-info" class="cat-card">Purchase Info</a>
     <a href="#qa" class="cat-card">Q&A</a>
-    <a href="reviews.html" class="cat-card">Reviews</a>
 </div>
 
 <audio id="music" loop><source src="Petals Beneath the Ice (Anime Vanguards OST).mp3" type="audio/mpeg"></audio>
@@ -116,12 +115,10 @@
 <section id="snacks">
     <h2>Snacks</h2>
     <div class="product-grid">
-        <div class="shop-card">
-            <b>BENG BENG</b>
-            <p>Chocolate caramel wafer snack.</p>
-            <div><span class="price-tag">9 BAHT</span><span class="stock-tag">STOCK: <span class="stock-num">10</span></span></div>
-            <button class="btn-action" onclick="handleOrder(this)">ORDER</button>
-        </div>
+        <div class="shop-card"><b>BENG BENG</b><p>Chocolate caramel wafer snack.</p><div><span class="price-tag">9 BAHT</span><span class="stock-tag">STOCK: <span class="stock-num">10</span></span></div><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+        <div class="shop-card"><b>SKITTLES</b><p>Fruit flavor chewy candy.</p><div><span class="price-tag">23 BAHT</span><span class="stock-tag">STOCK: <span class="stock-num">3</span></span></div><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+        <div class="shop-card"><b>CHIPS</b><p>Salty potato chips.</p><div><span class="price-tag">16 BAHT</span><span class="stock-tag">STOCK: <span class="stock-num">10</span></span></div><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+        <div class="shop-card"><b>CHUPPA LOLLIPOP</b><p>Assorted fruit lollipops.</p><div><span class="price-tag">8 BAHT</span><span class="stock-tag">STOCK: <span class="stock-num">10</span></span></div><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
     </div>
 </section>
 
@@ -134,9 +131,14 @@
             <div class="shop-card"><b>STORY STAGE</b><span class="price-tag">5 BAHT</span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
             <div class="shop-card"><b>CHALLENGE STAGE</b><span class="price-tag">10 BAHT</span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
             <div class="shop-card"><b>RAID STAGE</b><span class="price-tag">15 BAHT</span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+            <div class="shop-card"><b>30 MIN CARRY</b><span class="price-tag">30 BAHT</span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
             <div class="shop-card"><b>1 HOUR CARRY</b><span class="price-tag">50 BAHT</span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+            <div class="shop-card"><b>5 HOUR CARRY</b><span class="price-tag">200 BAHT</span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+            <div class="shop-card"><b>10 HOUR CARRY</b><span class="price-tag">350 BAHT</span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+            <div class="shop-card"><b>24 HOUR CARRY</b><span class="price-tag">600 BAHT</span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
             <div class="shop-card"><b>WOU</b><span class="price-tag">25 BAHT</span><span class="stock-tag">STOCK: <span class="stock-num">10</span></span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
             <div class="shop-card"><b>DIO</b><span class="price-tag">50 BAHT</span><span class="stock-tag">STOCK: <span class="stock-num">6</span></span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+            <div class="shop-card"><b>SHINY DIO</b><span class="price-tag">100 BAHT</span><span class="stock-tag">STOCK: <span class="stock-num">5</span></span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
         </div>
     </details>
 
@@ -145,7 +147,10 @@
         <div class="product-grid" style="padding:15px">
             <div class="shop-card"><b>2X DROP GP</b><span class="price-tag">230 BAHT</span><span class="stock-tag">STOCK: <span class="stock-num">5</span></span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
             <div class="shop-card"><b>UNLIMITED BAG GP</b><span class="price-tag">100 BAHT</span><span class="stock-tag">STOCK: <span class="stock-num">4</span></span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+            <div class="shop-card"><b>2X DROP LUCK GP</b><span class="price-tag">50 BAHT</span><span class="stock-tag">STOCK: <span class="stock-num">2</span></span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
             <div class="shop-card"><b>AINZ SETS</b><span class="price-tag">10 BAHT</span><span class="stock-tag">STOCK: <span class="stock-num">80</span></span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+            <div class="shop-card"><b>HOMURA SETS</b><span class="price-tag">8 BAHT</span><span class="stock-tag">STOCK: <span class="stock-num">5</span></span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+            <div class="shop-card"><b>MADOKA SETS</b><span class="price-tag">8 BAHT</span><span class="stock-tag">STOCK: <span class="stock-num">2</span></span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
         </div>
     </details>
 
@@ -162,6 +167,28 @@
             <div class="shop-card"><b>GOLDEN</b><span class="price-tag">60 BAHT</span><span class="stock-tag">STOCK: <span class="stock-num">1</span></span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
             <div class="shop-card"><b>LUNAR WITCH BROOM</b><span class="price-tag">130 BAHT</span><span class="stock-tag">STOCK: <span class="stock-num">1</span></span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
             <div class="shop-card"><b>ENCHANTED CIRCUS</b><span class="price-tag">130 BAHT</span><span class="stock-tag">STOCK: <span class="stock-num">1</span></span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+        </div>
+    </details>
+
+    <details>
+        <summary>ANIME PARADOX</summary>
+        <div class="product-grid" style="padding:15px">
+            <div class="shop-card"><b>STORY STAGE</b><span class="price-tag">5 BAHT</span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+            <div class="shop-card"><b>RAID STAGE</b><span class="price-tag">15 BAHT</span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+            <div class="shop-card"><b>30 MIN CARRY</b><span class="price-tag">30 BAHT</span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+            <div class="shop-card"><b>1 HOUR CARRY</b><span class="price-tag">50 BAHT</span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+            <div class="shop-card"><b>SUKUNA PORTAL CARRY</b><span class="price-tag">120 BAHT</span><span class="stock-tag">STOCK: <span class="stock-num">5</span></span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+            <div class="shop-card"><b>GOJO PORTAL CARRY</b><span class="price-tag">100 BAHT</span><span class="stock-tag">STOCK: <span class="stock-num">3</span></span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+        </div>
+    </details>
+
+    <details>
+        <summary>99 NIGHTS IN THE FOREST</summary>
+        <div class="product-grid" style="padding:15px">
+            <div class="shop-card"><b>100 DAYS CARRY</b><span class="price-tag">32 BAHT</span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+            <div class="shop-card"><b>250 DAYS CARRY</b><span class="price-tag">60 BAHT</span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+            <div class="shop-card"><b>500 DAYS CARRY</b><span class="price-tag">100 BAHT</span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
+            <div class="shop-card"><b>1K DAYS CARRY</b><span class="price-tag">249 BAHT</span><button class="btn-action" onclick="handleOrder(this)">ORDER</button></div>
         </div>
     </details>
 </section>
@@ -187,9 +214,9 @@
 
 <div class="settingsBtn" onclick="openSettings()">⚙</div>
 <div class="settingsPanel" id="settings">
-    <h3 style="font-family:'Orbitron'; text-align:center; margin-bottom:15px;">SETTINGS</h3>
+    <h3 style="font-family:'Orbitron'; text-align:center; margin-bottom:15px;">TERMINAL CONTROLS</h3>
     <input type="range" min="0" max="100" value="50" id="vol" style="width:100%">
-    <button class="btn-action" onclick="nextBG()">SWITCH THEME</button>
+    <button class="btn-action" onclick="nextBG()">ROTATE THEME</button>
     <button class="btn-action" style="background:#ef4444" onclick="closeSettings()">CLOSE</button>
 </div>
 
