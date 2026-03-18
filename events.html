@@ -2,184 +2,161 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aetherfall | Skele King's Jam Session</title>
+    <title>Aetherfall | Events</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #010206; --panel: rgba(5, 5, 15, 0.95); --accent: #c084fc;
-            --perfect: #5eead4; --good: #fbbf24; --miss: #ef4444;
+            --bg: #010206; --panel: rgba(10, 10, 25, 0.9); --accent: #c084fc;
+            --perfect: #00fff2; --good: #ffea00; --miss: #ff004c;
         }
 
-        body, html { 
-            margin: 0; padding: 0; height: 100%; background: var(--bg);
-            color: white; font-family: 'Rajdhani', sans-serif; overflow: hidden;
-        }
+        body, html { margin: 0; padding: 0; height: 100%; background: var(--bg); color: white; font-family: 'Rajdhani', sans-serif; overflow: hidden; }
 
-        /* SIDEBAR (Left) & INFO (Right) - AV STYLE */
-        #ui-layer { position: absolute; width: 100%; height: 100%; z-index: 10; display: flex; }
+        /* --- EVENT PAGE DESIGN --- */
+        #event-page { position: absolute; width: 100%; height: 100%; display: flex; transition: filter 0.3s; }
+        .sidebar { width: 350px; background: var(--panel); border-right: 2px solid #1e40af; padding: 30px; display: flex; flex-direction: column; }
+        .details { flex: 1; padding: 60px; background: radial-gradient(circle at top right, rgba(192, 132, 252, 0.1), transparent); }
         
-        .sidebar { 
-            width: 320px; background: var(--panel); border-right: 2px solid #1e40af;
-            padding: 30px; display: flex; flex-direction: column;
-        }
+        .event-card { background: rgba(255,255,255,0.05); border: 1px solid var(--accent); padding: 15px; margin-bottom: 10px; cursor: pointer; position: relative; }
+        .event-card.active { background: rgba(192, 132, 252, 0.2); box-shadow: 0 0 15px var(--accent); }
 
-        .event-details { 
-            flex: 1; padding: 60px; background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, transparent 100%);
-        }
+        .btn { background: #1e1b4b; border: 1px solid #444; color: white; padding: 12px; font-family: 'Orbitron'; cursor: pointer; width: 100%; margin-top: 10px; }
+        .btn:hover { background: var(--accent); color: black; }
+        .play-btn { background: #22c55e; font-size: 20px; height: 60px; }
 
-        /* BUTTONS */
-        .nav-btn {
-            background: #1e1b4b; border: 1px solid #312e81; color: white;
-            padding: 15px; margin: 5px 0; font-family: 'Orbitron'; cursor: pointer;
-            text-align: left; transition: 0.2s; clip-path: polygon(0 0, 95% 0, 100% 30%, 100% 100%, 5% 100%, 0 70%);
-        }
-        .nav-btn:hover { background: var(--accent); color: black; }
-        .play-btn { background: #22c55e; color: white; font-size: 20px; padding: 20px; text-align: center; margin-top: 20px; }
+        /* --- SETTINGS MODAL --- */
+        #settings-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #0a0a0a; border: 2px solid var(--accent); padding: 20px; z-index: 1000; width: 300px; }
+        .key-row { display: flex; justify-content: space-between; margin: 10px 0; font-family: 'Orbitron'; }
+        .key-input { width: 50px; background: #222; border: 1px solid var(--accent); color: white; text-align: center; }
 
-        /* RHYTHM HIGHWAY (CENTERED) */
-        #game-area { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #050505; z-index: 20; }
+        /* --- GAME OVERLAY (TRANSPARENT SIDES) --- */
+        #game-overlay { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; background: rgba(0,0,0,0.6); }
         
-        .highway {
-            position: absolute; left: 50%; transform: translateX(-50%);
-            width: 450px; height: 100%; background: rgba(255,255,255,0.03);
-            border-left: 3px solid #222; border-right: 3px solid #222;
-        }
+        /* The Highway (Centered) */
+        .highway { position: absolute; left: 50%; transform: translateX(-50%); width: 400px; height: 100%; background: rgba(0,0,0,0.8); border-left: 2px solid #333; border-right: 2px solid #333; }
+        .lane { position: absolute; top: 0; width: 20%; height: 100%; border-right: 1px dashed rgba(255,255,255,0.1); }
+        .hit-line { position: absolute; bottom: 100px; width: 100%; height: 4px; background: var(--accent); box-shadow: 0 0 15px var(--accent); }
+        .key-label { position: absolute; bottom: 60px; width: 100%; text-align: center; font-family: 'Orbitron'; color: var(--accent); font-size: 18px; }
 
-        .lane { position: absolute; top: 0; width: 20%; height: 100%; border-right: 1px solid rgba(255,255,255,0.05); }
-        .hit-zone { 
-            position: absolute; bottom: 120px; width: 100%; height: 60px; 
-            border-top: 2px solid rgba(255,255,255,0.2); border-bottom: 2px solid var(--accent);
-            background: rgba(192, 132, 252, 0.1);
-        }
+        .note { position: absolute; width: 80%; left: 10%; height: 35px; background: var(--accent); border-radius: 4px; box-shadow: 0 0 10px var(--accent); }
 
-        /* NOTES */
-        .note { 
-            position: absolute; width: 80%; left: 10%; height: 40px; 
-            background: var(--accent); border-radius: 4px; box-shadow: 0 0 15px var(--accent); 
-        }
-
-        /* HUD */
-        .hud-left { position: absolute; left: 50px; top: 50%; transform: translateY(-50%); font-family: 'Orbitron'; }
-        .hud-right { position: absolute; right: 50px; top: 50%; transform: translateY(-50%); font-family: 'Orbitron'; text-align: right; }
-        .rating-popup { 
-            position: absolute; left: 50%; top: 40%; transform: translate(-50%, -50%);
-            font-size: 40px; font-family: 'Orbitron'; font-weight: 900; pointer-events: none; opacity: 0;
-        }
-
-        .perfect { color: var(--perfect); text-shadow: 0 0 20px var(--perfect); }
-        .good { color: var(--good); text-shadow: 0 0 20px var(--good); }
-        .miss { color: var(--miss); text-shadow: 0 0 20px var(--miss); }
+        /* HUD (Bottom Right) */
+        .hud-container { position: absolute; bottom: 40px; right: 40px; text-align: right; font-family: 'Orbitron'; pointer-events: none; }
+        #score-display { font-size: 28px; color: #fff; margin-bottom: -5px; }
+        #combo-display { font-size: 64px; color: var(--accent); text-shadow: 0 0 20px var(--accent); }
+        
+        #rating-text { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); font-size: 48px; font-family: 'Orbitron'; font-weight: 900; opacity: 0; pointer-events: none; }
+        
+        .exit-btn { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(255,0,0,0.5); border: none; color: white; padding: 10px 20px; cursor: pointer; font-family: 'Orbitron'; z-index: 101; }
     </style>
 </head>
 <body>
 
-<div id="ui-layer">
+<div id="event-page">
     <div class="sidebar">
-        <h2 style="font-family:'Orbitron'; color:var(--accent);">EVENTS</h2>
-        <button class="nav-btn">1. Valentine's Duo</button>
-        <button class="nav-btn" style="border-left: 4px solid var(--accent);">2. Skele King's Jam</button>
-        <button class="nav-btn">3. Demonic Rampage</button>
-        
-        <div style="margin-top:auto;">
-            <button class="nav-btn" onclick="window.location.href='game.html'">BACK</button>
+        <h2 style="font-family:'Orbitron'; letter-spacing: 2px; color: var(--accent);">CURRENT EVENTS</h2>
+        <div class="event-card active">
+            <b style="font-family:'Orbitron';">FRACTAL RESONANCE</b><br>
+            <small>Update 1.0 - Active Now</small>
         </div>
+        <button class="btn" onclick="toggleSettings(true)">SETTINGS</button>
+        <button class="btn" style="margin-top: auto;" onclick="window.location.href='game.html'">BACK TO MAIN</button>
     </div>
 
-    <div class="event-details">
-        <h1 style="font-family:'Orbitron'; font-size: 50px;">Skele King's Jam Session</h1>
-        <p style="font-size: 20px; opacity: 0.8;">Jam out with the Skele King! Earn high scores to get great rewards!</p>
-        <div style="background: rgba(0,0,0,0.5); padding: 20px; width: 300px; border: 1px solid #333;">
-            <small>Rewards:</small><br>
-            <b style="color:var(--good)">EventCoin x10</b>
+    <div class="details">
+        <h1 style="font-family:'Orbitron'; font-size: 60px; margin:0;">Fractal Resonance</h1>
+        <p style="font-size: 22px; max-width: 600px; opacity: 0.8;">The Aether is vibrating at a dangerous frequency. Synchronize your clicks to stabilize the fracture and earn rare rewards.</p>
+        <div style="background: rgba(255,255,255,0.05); padding: 20px; width: fit-content; border: 1px solid var(--accent);">
+            <small>REWARDS:</small><br>
+            <span style="color:var(--perfect); font-family: 'Orbitron';">CORRUPTED COINS x15</span>
         </div>
-        <button class="nav-btn play-btn" onclick="startLevel()">PLAY</button>
+        <button class="btn play-btn" onclick="startGame()">PLAY SESSION</button>
     </div>
 </div>
 
-<div id="game-area">
-    <div class="hud-left">
-        <div style="font-size: 14px; opacity: 0.6;">SCORE</div>
-        <div id="score-val" style="font-size: 40px;">000000</div>
-    </div>
+<div id="settings-modal">
+    <h3 style="font-family:'Orbitron'; margin-top:0;">KEY BINDINGS</h3>
+    <div id="key-settings"></div>
+    <button class="btn" onclick="toggleSettings(false)">SAVE & CLOSE</button>
+</div>
 
+<div id="game-overlay">
+    <button class="exit-btn" onclick="exitGame()">EXIT (X)</button>
+    
     <div class="highway">
-        <div class="lane" style="left:0%" id="lane-q"></div>
-        <div class="lane" style="left:20%" id="lane-w"></div>
-        <div class="lane" style="left:40%" id="lane-e"></div>
-        <div class="lane" style="left:60%" id="lane-r"></div>
-        <div class="lane" style="left:80%" id="lane-t"></div>
-        <div class="hit-zone"></div>
+        <div class="lane" id="l0"><div class="key-label" id="k0">Q</div></div>
+        <div class="lane" style="left:20%" id="l1"><div class="key-label" id="k1">W</div></div>
+        <div class="lane" style="left:40%" id="l2"><div class="key-label" id="k2">E</div></div>
+        <div class="lane" style="left:60%" id="l3"><div class="key-label" id="k3">R</div></div>
+        <div class="lane" style="left:80%" id="l4"><div class="key-label" id="k4">T</div></div>
+        <div class="hit-line"></div>
     </div>
 
-    <div class="hud-right">
-        <div id="combo-val" style="font-size: 60px;">0</div>
-        <div style="font-size: 14px; opacity: 0.6;">COMBO</div>
+    <div class="hud-container">
+        <div id="score-display">000000</div>
+        <div style="font-size: 12px; opacity: 0.5;">SCORE</div>
+        <div id="combo-display">0</div>
+        <div style="font-size: 12px; opacity: 0.5;">COMBO</div>
     </div>
 
-    <div id="rating-text" class="rating-popup">PERFECT</div>
+    <div id="rating-text">PERFECT</div>
 </div>
 
 <script>
-    let score = 0;
-    let combo = 0;
-    let isPlaying = false;
-    let activeNotes = [];
-    const keys = ['q', 'w', 'e', 'r', 't'];
+    let config = JSON.parse(localStorage.getItem('rhythmConfig')) || { keys: ['q', 'w', 'e', 'r', 't'] };
+    let score = 0, combo = 0, isPlaying = false, activeNotes = [];
 
-    function startLevel() {
-        document.getElementById('ui-layer').style.display = 'none';
-        document.getElementById('game-area').style.display = 'block';
-        isPlaying = true;
-        score = 0;
-        combo = 0;
+    // --- SETTINGS ---
+    function toggleSettings(show) {
+        document.getElementById('settings-modal').style.display = show ? 'block' : 'none';
+        if(show) {
+            const container = document.getElementById('key-settings');
+            container.innerHTML = config.keys.map((k, i) => `
+                <div class="key-row">Lane ${i+1}: <input class="key-input" maxlength="1" value="${k}" onchange="updateKey(${i}, this.value)"></div>
+            `).join('');
+        }
+    }
+    function updateKey(i, val) { config.keys[i] = val.toLowerCase(); localStorage.setItem('rhythmConfig', JSON.stringify(config)); updateLabels(); }
+    function updateLabels() { config.keys.forEach((k, i) => document.getElementById('k'+i).innerText = k.toUpperCase()); }
+
+    // --- GAME LOGIC ---
+    function startGame() {
+        isPlaying = true; score = 0; combo = 0; activeNotes = [];
+        document.getElementById('event-page').style.filter = 'blur(10px)';
+        document.getElementById('game-overlay').style.display = 'block';
+        updateLabels();
         gameLoop();
-        setInterval(spawnNote, 700);
+        window.spawnClock = setInterval(spawnNote, 600);
+    }
+
+    function exitGame() {
+        isPlaying = false;
+        clearInterval(window.spawnClock);
+        activeNotes.forEach(n => n.el.remove());
+        document.getElementById('event-page').style.filter = 'none';
+        document.getElementById('game-overlay').style.display = 'none';
     }
 
     function spawnNote() {
         if(!isPlaying) return;
-        const laneKey = keys[Math.floor(Math.random() * keys.length)];
-        const laneEl = document.getElementById('lane-' + laneKey);
-        
-        const noteEl = document.createElement('div');
-        noteEl.className = 'note';
-        noteEl.style.top = '-50px';
-        laneEl.appendChild(noteEl);
-
-        activeNotes.push({ el: noteEl, y: -50, key: laneKey, hit: false });
-    }
-
-    function showRating(text, type) {
-        const r = document.getElementById('rating-text');
-        r.innerText = text;
-        r.className = 'rating-popup ' + type;
-        r.style.opacity = '1';
-        setTimeout(() => r.style.opacity = '0', 400);
-    }
-
-    function updateScore(amount) {
-        score += amount;
-        if(score < 0) score = 0; // Prevent negative
-        document.getElementById('score-val').innerText = score.toString().padStart(6, '0');
+        const laneIdx = Math.floor(Math.random() * 5);
+        const laneEl = document.getElementById('l' + laneIdx);
+        const el = document.createElement('div');
+        el.className = 'note';
+        el.style.top = '-50px';
+        laneEl.appendChild(el);
+        activeNotes.push({ el, y: -50, lane: laneIdx, hit: false });
     }
 
     function gameLoop() {
         if(!isPlaying) return;
-
-        for(let i = activeNotes.length - 1; i >= 0; i--) {
+        for(let i = activeNotes.length-1; i >= 0; i--) {
             let n = activeNotes[i];
-            n.y += 7; // Note Speed
+            n.y += 8;
             n.el.style.top = n.y + 'px';
 
-            // Auto-Miss if it goes past the bottom
             if(n.y > window.innerHeight) {
-                if(!n.hit) {
-                    showRating("MISSED", "miss");
-                    combo = 0;
-                    updateScore(-100);
-                    document.getElementById('combo-val').innerText = combo;
-                }
+                if(!n.hit) doMiss();
                 n.el.remove();
                 activeNotes.splice(i, 1);
             }
@@ -187,33 +164,43 @@
         requestAnimationFrame(gameLoop);
     }
 
-    window.addEventListener('keydown', (e) => {
+    function doMiss() {
+        combo = 0;
+        score = Math.max(0, score - 50);
+        showRating("MISSED", "#ff004c");
+        updateHUD();
+    }
+
+    function showRating(txt, col) {
+        const r = document.getElementById('rating-text');
+        r.innerText = txt; r.style.color = col; r.style.opacity = 1;
+        setTimeout(() => r.style.opacity = 0, 400);
+    }
+
+    function updateHUD() {
+        document.getElementById('score-display').innerText = score.toString().padStart(6, '0');
+        document.getElementById('combo-display').innerText = combo;
+    }
+
+    window.addEventListener('keydown', e => {
         if(!isPlaying) return;
-        const key = e.key.toLowerCase();
-        
-        // Find notes in the correct lane within the timing window
-        const hitZoneY = window.innerHeight - 180; // Approximate position of hit-zone
-        
-        const note = activeNotes.find(n => n.key === key && !n.hit && n.y > (hitZoneY - 100));
+        const laneIdx = config.keys.indexOf(e.key.toLowerCase());
+        if(laneIdx === -1) return;
+
+        const hitZone = window.innerHeight - 100;
+        const note = activeNotes.find(n => n.lane === laneIdx && !n.hit && n.y > hitZone - 100);
 
         if(note) {
-            const diff = Math.abs(n.y - hitZoneY);
-            
-            if(diff < 30) {
-                showRating("PERFECT", "perfect");
-                updateScore(150);
-                combo++;
-            } else {
-                showRating("GOOD", "good");
-                updateScore(100);
-                combo++;
-            }
-            
+            const accuracy = Math.abs(note.y - hitZone);
             note.hit = true;
             note.el.style.display = 'none';
-            document.getElementById('combo-val').innerText = combo;
+            if(accuracy < 25) { showRating("PERFECT", "#00fff2"); score += 150; combo++; }
+            else { showRating("GOOD", "#ffea00"); score += 100; combo++; }
+            updateHUD();
         }
     });
+
+    updateLabels();
 </script>
 </body>
 </html>
