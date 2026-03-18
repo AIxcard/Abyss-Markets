@@ -2,205 +2,264 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Aetherfall | Events</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <title>Aetherfall | Fractal Resonance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #010206; --panel: rgba(10, 10, 25, 0.9); --accent: #c084fc;
-            --perfect: #00fff2; --good: #ffea00; --miss: #ff004c;
+            --bg: #010206; --panel: rgba(10, 10, 25, 0.95); --accent: #c084fc;
+            --q-col: #ff00ff; --w-col: #00ffff; --e-col: #ffff00; --r-col: #00ff00; --t-col: #ff4400;
         }
 
         body, html { margin: 0; padding: 0; height: 100%; background: var(--bg); color: white; font-family: 'Rajdhani', sans-serif; overflow: hidden; }
 
-        /* --- EVENT PAGE DESIGN --- */
-        #event-page { position: absolute; width: 100%; height: 100%; display: flex; transition: filter 0.3s; }
-        .sidebar { width: 350px; background: var(--panel); border-right: 2px solid #1e40af; padding: 30px; display: flex; flex-direction: column; }
-        .details { flex: 1; padding: 60px; background: radial-gradient(circle at top right, rgba(192, 132, 252, 0.1), transparent); }
+        /* --- BACKGROUND UI --- */
+        #event-page { position: absolute; width: 100%; height: 100%; display: flex; z-index: 1; }
+        .sidebar { width: 320px; background: var(--panel); border-right: 2px solid #1e40af; padding: 25px; display: flex; flex-direction: column; }
+        .main-content { flex: 1; padding: 50px; position: relative; }
+
+        /* Progress Bar Section */
+        .progress-box { width: 450px; margin-top: 30px; }
+        .progress-header { display: flex; justify-content: space-between; font-family: 'Orbitron'; font-size: 14px; }
+        .progress-bar-bg { width: 100%; height: 8px; background: #222; border-radius: 4px; margin-top: 5px; overflow: hidden; }
+        #progress-fill { width: 25%; height: 100%; background: linear-gradient(90deg, var(--accent), #5eead4); transition: 0.5s; }
+
+        /* AV Styled Buttons */
+        .btn-row { display: flex; gap: 10px; margin-top: 30px; }
+        .av-btn { 
+            padding: 12px 25px; border: none; font-family: 'Orbitron'; cursor: pointer; border-radius: 4px; 
+            font-weight: 900; color: black; transition: 0.2s;
+        }
+        .btn-shop { background: #c084fc; }
+        .btn-play { background: #22c55e; }
+        .btn-missions { background: #eab308; }
+        .av-btn:hover { transform: scale(1.05); filter: brightness(1.2); }
+
+        /* --- MISSION MODAL --- */
+        #mission-modal { 
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            background: #0a0a0a; border: 2px solid var(--accent); padding: 30px; z-index: 2000; width: 400px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+        .mission-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #222; }
+
+        /* --- RHYTHM ENGINE (The Circular Orbs) --- */
+        #game-overlay { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; background: rgba(0,0,0,0.8); }
+        .highway { position: absolute; left: 50%; transform: translateX(-50%); width: 420px; height: 100%; background: rgba(0,0,0,0.5); border-left: 2px solid #222; border-right: 2px solid #222; }
         
-        .event-card { background: rgba(255,255,255,0.05); border: 1px solid var(--accent); padding: 15px; margin-bottom: 10px; cursor: pointer; position: relative; }
-        .event-card.active { background: rgba(192, 132, 252, 0.2); box-shadow: 0 0 15px var(--accent); }
+        /* Hit Line - Positioned low but not too low */
+        .hit-zone-wrapper { position: absolute; bottom: 80px; width: 100%; height: 80px; }
+        .target-circle { 
+            position: absolute; width: 50px; height: 50px; border: 3px solid rgba(255,255,255,0.2); 
+            border-radius: 50%; bottom: 10px; transform: translateX(-50%); left: 50%;
+        }
+        .key-hint { position: absolute; bottom: -30px; width: 100%; text-align: center; font-family: 'Orbitron'; font-size: 14px; opacity: 0.5; }
 
-        .btn { background: #1e1b4b; border: 1px solid #444; color: white; padding: 12px; font-family: 'Orbitron'; cursor: pointer; width: 100%; margin-top: 10px; }
-        .btn:hover { background: var(--accent); color: black; }
-        .play-btn { background: #22c55e; font-size: 20px; height: 60px; }
+        /* Notes (Neon Circles) */
+        .note { 
+            position: absolute; width: 50px; height: 50px; border-radius: 50%; 
+            transform: translateX(-50%); left: 50%; box-shadow: 0 0 20px currentColor;
+            border: 2px solid #fff;
+        }
 
-        /* --- SETTINGS MODAL --- */
-        #settings-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #0a0a0a; border: 2px solid var(--accent); padding: 20px; z-index: 1000; width: 300px; }
-        .key-row { display: flex; justify-content: space-between; margin: 10px 0; font-family: 'Orbitron'; }
-        .key-input { width: 50px; background: #222; border: 1px solid var(--accent); color: white; text-align: center; }
-
-        /* --- GAME OVERLAY (TRANSPARENT SIDES) --- */
-        #game-overlay { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; background: rgba(0,0,0,0.6); }
-        
-        /* The Highway (Centered) */
-        .highway { position: absolute; left: 50%; transform: translateX(-50%); width: 400px; height: 100%; background: rgba(0,0,0,0.8); border-left: 2px solid #333; border-right: 2px solid #333; }
-        .lane { position: absolute; top: 0; width: 20%; height: 100%; border-right: 1px dashed rgba(255,255,255,0.1); }
-        .hit-line { position: absolute; bottom: 100px; width: 100%; height: 4px; background: var(--accent); box-shadow: 0 0 15px var(--accent); }
-        .key-label { position: absolute; bottom: 60px; width: 100%; text-align: center; font-family: 'Orbitron'; color: var(--accent); font-size: 18px; }
-
-        .note { position: absolute; width: 80%; left: 10%; height: 35px; background: var(--accent); border-radius: 4px; box-shadow: 0 0 10px var(--accent); }
-
-        /* HUD (Bottom Right) */
-        .hud-container { position: absolute; bottom: 40px; right: 40px; text-align: right; font-family: 'Orbitron'; pointer-events: none; }
-        #score-display { font-size: 28px; color: #fff; margin-bottom: -5px; }
-        #combo-display { font-size: 64px; color: var(--accent); text-shadow: 0 0 20px var(--accent); }
-        
-        #rating-text { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); font-size: 48px; font-family: 'Orbitron'; font-weight: 900; opacity: 0; pointer-events: none; }
-        
-        .exit-btn { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(255,0,0,0.5); border: none; color: white; padding: 10px 20px; cursor: pointer; font-family: 'Orbitron'; z-index: 101; }
+        /* HUD - Bottom Right */
+        .hud { position: absolute; bottom: 30px; right: 50px; text-align: right; font-family: 'Orbitron'; }
+        #score-num { font-size: 32px; margin: 0; }
+        #combo-num { font-size: 72px; line-height: 0.8; color: var(--accent); text-shadow: 0 0 15px var(--accent); }
     </style>
 </head>
 <body>
 
 <div id="event-page">
     <div class="sidebar">
-        <h2 style="font-family:'Orbitron'; letter-spacing: 2px; color: var(--accent);">CURRENT EVENTS</h2>
-        <div class="event-card active">
+        <h2 style="font-family:'Orbitron'; color: var(--accent);">CURRENT EVENTS</h2>
+        <div style="background: rgba(192, 132, 252, 0.1); padding: 15px; border: 1px solid var(--accent);">
             <b style="font-family:'Orbitron';">FRACTAL RESONANCE</b><br>
-            <small>Update 1.0 - Active Now</small>
+            <small>Update 1.0 - Active</small>
         </div>
-        <button class="btn" onclick="toggleSettings(true)">SETTINGS</button>
-        <button class="btn" style="margin-top: auto;" onclick="window.location.href='game.html'">BACK TO MAIN</button>
+        <button class="av-btn btn-missions" style="margin-top:20px; color:black;" onclick="toggleSettings(true)">SETTINGS</button>
+        <button class="av-btn" style="margin-top: auto; background: #333; color: white;" onclick="window.location.href='game.html'">BACK</button>
     </div>
 
-    <div class="details">
-        <h1 style="font-family:'Orbitron'; font-size: 60px; margin:0;">Fractal Resonance</h1>
-        <p style="font-size: 22px; max-width: 600px; opacity: 0.8;">The Aether is vibrating at a dangerous frequency. Synchronize your clicks to stabilize the fracture and earn rare rewards.</p>
-        <div style="background: rgba(255,255,255,0.05); padding: 20px; width: fit-content; border: 1px solid var(--accent);">
-            <small>REWARDS:</small><br>
-            <span style="color:var(--perfect); font-family: 'Orbitron';">CORRUPTED COINS x15</span>
+    <div class="main-content">
+        <h1 style="font-family:'Orbitron'; font-size: 55px; margin: 0;">Fractal Resonance</h1>
+        
+        <div class="progress-box">
+            <div class="progress-header">
+                <span>Progress</span>
+                <span id="progress-text">0/4</span>
+            </div>
+            <div class="progress-bar-bg"><div id="progress-fill"></div></div>
         </div>
-        <button class="btn play-btn" onclick="startGame()">PLAY SESSION</button>
+
+        <p style="margin-top: 20px;">Owned Event Currency: <span id="coin-count" style="color:var(--accent); font-weight:bold;">0</span>x</p>
+        
+        <div style="margin-top: 20px;">
+            <small>Rewards:</small><br>
+            <div style="display:flex; align-items:center; gap:10px; background: rgba(255,255,255,0.05); padding:10px; width: fit-content;">
+                <div style="width:30px; height:30px; background: gold; border-radius:50%; box-shadow:0 0 10px gold;"></div>
+                <b style="font-family:'Orbitron';">Corrupted Coin</b>
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button class="av-btn btn-shop" onclick="alert('Shop Coming Soon!')">SHOP</button>
+            <button class="av-btn btn-play" onclick="openMissions()">PLAY</button>
+            <button class="av-btn btn-missions" onclick="openMissions()">MISSIONS</button>
+        </div>
     </div>
 </div>
 
-<div id="settings-modal">
-    <h3 style="font-family:'Orbitron'; margin-top:0;">KEY BINDINGS</h3>
-    <div id="key-settings"></div>
-    <button class="btn" onclick="toggleSettings(false)">SAVE & CLOSE</button>
+<div id="mission-modal">
+    <h3 style="font-family:'Orbitron'; margin:0 0 20px 0;">SELECT DIFFICULTY</h3>
+    <div id="mission-container"></div>
+    <button class="av-btn" style="width:100%; margin-top:20px; background:#333; color:white;" onclick="closeMissions()">CLOSE</button>
 </div>
 
 <div id="game-overlay">
-    <button class="exit-btn" onclick="exitGame()">EXIT (X)</button>
+    <button style="position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:1000; background:red; color:white; border:none; padding:10px 20px; font-family:'Orbitron'; cursor:pointer;" onclick="exitGame()">EXIT (X)</button>
     
     <div class="highway">
-        <div class="lane" id="l0"><div class="key-label" id="k0">Q</div></div>
-        <div class="lane" style="left:20%" id="l1"><div class="key-label" id="k1">W</div></div>
-        <div class="lane" style="left:40%" id="l2"><div class="key-label" id="k2">E</div></div>
-        <div class="lane" style="left:60%" id="l3"><div class="key-label" id="k3">R</div></div>
-        <div class="lane" style="left:80%" id="l4"><div class="key-label" id="k4">T</div></div>
-        <div class="hit-line"></div>
+        <div class="lane" style="left:0%; color:var(--q-col);"><div class="target-circle"></div><div class="key-hint" id="k0">Q</div></div>
+        <div class="lane" style="left:20%; color:var(--w-col);"><div class="target-circle"></div><div class="key-hint" id="k1">W</div></div>
+        <div class="lane" style="left:40%; color:var(--e-col);"><div class="target-circle"></div><div class="key-hint" id="k2">E</div></div>
+        <div class="lane" style="left:60%; color:var(--r-col);"><div class="target-circle"></div><div class="key-hint" id="k3">R</div></div>
+        <div class="lane" style="left:80%; color:var(--t-col);"><div class="target-circle"></div><div class="key-hint" id="k4">T</div></div>
     </div>
 
-    <div class="hud-container">
-        <div id="score-display">000000</div>
-        <div style="font-size: 12px; opacity: 0.5;">SCORE</div>
-        <div id="combo-display">0</div>
-        <div style="font-size: 12px; opacity: 0.5;">COMBO</div>
+    <div class="hud">
+        <p id="score-num">000000</p>
+        <small style="opacity:0.5;">SCORE</small>
+        <div id="combo-num">0</div>
+        <small style="opacity:0.5;">COMBO</small>
     </div>
-
-    <div id="rating-text">PERFECT</div>
 </div>
 
 <script>
+    let stats = JSON.parse(localStorage.getItem('aetherSave')) || { 
+        coins: 0, 
+        cleared: { easy: false, medium: false, hard: false, expert: false } 
+    };
     let config = JSON.parse(localStorage.getItem('rhythmConfig')) || { keys: ['q', 'w', 'e', 'r', 't'] };
-    let score = 0, combo = 0, isPlaying = false, activeNotes = [];
+    
+    const DIFFICULTIES = {
+        easy: { speed: 6, rate: 800, goal: 5000, reward: 15 },
+        medium: { speed: 8, rate: 600, goal: 12000, reward: 35 },
+        hard: { speed: 11, rate: 450, goal: 25000, reward: 75 },
+        expert: { speed: 15, rate: 300, goal: 50000, reward: 150 }
+    };
 
-    // --- SETTINGS ---
-    function toggleSettings(show) {
-        document.getElementById('settings-modal').style.display = show ? 'block' : 'none';
-        if(show) {
-            const container = document.getElementById('key-settings');
-            container.innerHTML = config.keys.map((k, i) => `
-                <div class="key-row">Lane ${i+1}: <input class="key-input" maxlength="1" value="${k}" onchange="updateKey(${i}, this.value)"></div>
-            `).join('');
-        }
+    let isPlaying = false, score = 0, combo = 0, activeNotes = [], currentDiff = 'easy';
+
+    function save() {
+        localStorage.setItem('aetherSave', JSON.stringify(stats));
+        document.getElementById('coin-count').innerText = stats.coins;
+        let clearCount = Object.values(stats.cleared).filter(v => v).length;
+        document.getElementById('progress-text').innerText = clearCount + "/4";
+        document.getElementById('progress-fill').style.width = (clearCount / 4 * 100) + "%";
     }
-    function updateKey(i, val) { config.keys[i] = val.toLowerCase(); localStorage.setItem('rhythmConfig', JSON.stringify(config)); updateLabels(); }
-    function updateLabels() { config.keys.forEach((k, i) => document.getElementById('k'+i).innerText = k.toUpperCase()); }
 
-    // --- GAME LOGIC ---
-    function startGame() {
-        isPlaying = true; score = 0; combo = 0; activeNotes = [];
-        document.getElementById('event-page').style.filter = 'blur(10px)';
+    function openMissions() {
+        const container = document.getElementById('mission-container');
+        container.innerHTML = Object.keys(DIFFICULTIES).map(d => `
+            <div class="mission-item">
+                <div>
+                    <b style="text-transform:uppercase; color:${stats.cleared[d] ? 'var(--accent)' : 'white'}">${d} ${stats.cleared[d] ? '✓' : ''}</b><br>
+                    <small>Goal: ${DIFFICULTIES[d].goal} pts</small>
+                </div>
+                <button class="av-btn btn-play" onclick="startGame('${d}')">PLAY</button>
+            </div>
+        `).join('');
+        document.getElementById('mission-modal').style.display = 'block';
+    }
+
+    function closeMissions() { document.getElementById('mission-modal').style.display = 'none'; }
+
+    function startGame(diff) {
+        currentDiff = diff;
+        closeMissions();
         document.getElementById('game-overlay').style.display = 'block';
-        updateLabels();
+        isPlaying = true; score = 0; combo = 0; activeNotes = [];
+        updateHUD();
+        window.spawnClock = setInterval(spawnNote, DIFFICULTIES[diff].rate);
         gameLoop();
-        window.spawnClock = setInterval(spawnNote, 600);
-    }
-
-    function exitGame() {
-        isPlaying = false;
-        clearInterval(window.spawnClock);
-        activeNotes.forEach(n => n.el.remove());
-        document.getElementById('event-page').style.filter = 'none';
-        document.getElementById('game-overlay').style.display = 'none';
+        setTimeout(endGame, 30000); // 30 second sessions
     }
 
     function spawnNote() {
         if(!isPlaying) return;
         const laneIdx = Math.floor(Math.random() * 5);
-        const laneEl = document.getElementById('l' + laneIdx);
+        const laneEl = document.querySelectorAll('.lane')[laneIdx];
+        const color = getComputedStyle(laneEl).color;
+        
         const el = document.createElement('div');
         el.className = 'note';
-        el.style.top = '-50px';
+        el.style.color = color;
+        el.style.top = '-60px';
         laneEl.appendChild(el);
-        activeNotes.push({ el, y: -50, lane: laneIdx, hit: false });
+        activeNotes.push({ el, y: -60, lane: laneIdx, hit: false });
     }
 
     function gameLoop() {
         if(!isPlaying) return;
-        for(let i = activeNotes.length-1; i >= 0; i--) {
-            let n = activeNotes[i];
-            n.y += 8;
+        activeNotes.forEach((n, i) => {
+            n.y += DIFFICULTIES[currentDiff].speed;
             n.el.style.top = n.y + 'px';
-
             if(n.y > window.innerHeight) {
-                if(!n.hit) doMiss();
+                if(!n.hit) { combo = 0; score = Math.max(0, score - 100); updateHUD(); }
                 n.el.remove();
                 activeNotes.splice(i, 1);
             }
-        }
+        });
         requestAnimationFrame(gameLoop);
     }
 
-    function doMiss() {
-        combo = 0;
-        score = Math.max(0, score - 50);
-        showRating("MISSED", "#ff004c");
-        updateHUD();
+    function endGame() {
+        isPlaying = false;
+        clearInterval(window.spawnClock);
+        if(score >= DIFFICULTIES[currentDiff].goal) {
+            if(!stats.cleared[currentDiff]) {
+                stats.coins += DIFFICULTIES[currentDiff].reward;
+                stats.cleared[currentDiff] = true;
+                alert("MISSION COMPLETE! Earned " + DIFFICULTIES[currentDiff].reward + " Coins!");
+            } else {
+                stats.coins += 5; // Farm reward
+                alert("STABILIZED! Earned 5 bonus coins.");
+            }
+        } else {
+            alert("STABILIZATION FAILED. Need " + DIFFICULTIES[currentDiff].goal + " points.");
+        }
+        save();
+        exitGame();
     }
 
-    function showRating(txt, col) {
-        const r = document.getElementById('rating-text');
-        r.innerText = txt; r.style.color = col; r.style.opacity = 1;
-        setTimeout(() => r.style.opacity = 0, 400);
+    function exitGame() {
+        isPlaying = false;
+        clearInterval(window.spawnClock);
+        document.getElementById('game-overlay').style.display = 'none';
+        activeNotes.forEach(n => n.el.remove());
     }
 
     function updateHUD() {
-        document.getElementById('score-display').innerText = score.toString().padStart(6, '0');
-        document.getElementById('combo-display').innerText = combo;
+        document.getElementById('score-num').innerText = score.toString().padStart(6, '0');
+        document.getElementById('combo-num').innerText = combo;
     }
 
     window.addEventListener('keydown', e => {
         if(!isPlaying) return;
         const laneIdx = config.keys.indexOf(e.key.toLowerCase());
         if(laneIdx === -1) return;
-
-        const hitZone = window.innerHeight - 100;
-        const note = activeNotes.find(n => n.lane === laneIdx && !n.hit && n.y > hitZone - 100);
-
+        const hitZone = window.innerHeight - 130;
+        const note = activeNotes.find(n => n.lane === laneIdx && !n.hit && n.y > hitZone - 80);
         if(note) {
-            const accuracy = Math.abs(note.y - hitZone);
             note.hit = true;
             note.el.style.display = 'none';
-            if(accuracy < 25) { showRating("PERFECT", "#00fff2"); score += 150; combo++; }
-            else { showRating("GOOD", "#ffea00"); score += 100; combo++; }
+            combo++;
+            score += 200 + (combo * 10);
             updateHUD();
         }
     });
 
-    updateLabels();
+    save();
 </script>
 </body>
 </html>
