@@ -5,264 +5,341 @@
     <title>Aetherfall | Event Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --purple-glow: 0 0 15px #c084fc;
-            --panel-bg: rgba(10, 10, 25, 0.92);
+        :root { 
+            --accent: #c084fc; --bg: #020205; --panel: rgba(13, 13, 25, 0.95);
+            --q-col: #ff00ff; --w-col: #00ffff; --e-col: #ffff00; --r-col: #00ff00; --t-col: #ff4400;
         }
+        body, html { margin: 0; padding: 0; height: 100%; background: var(--bg); color: white; font-family: 'Rajdhani', sans-serif; overflow: hidden; }
 
-        body, html { margin: 0; padding: 0; height: 100%; background: #000; color: white; font-family: 'Rajdhani', sans-serif; overflow: hidden; }
-
-        /* --- BACKGROUND ART --- */
-        #main-bg {
-            position: fixed; width: 100%; height: 100%;
-            background: url('https://i.imgur.com/your-anime-bg.jpg') center/cover;
-            z-index: -1; filter: brightness(0.6);
-        }
-
-        /* --- EVENT HUB UI --- */
-        #event-hub { display: flex; width: 100%; height: 100%; padding: 40px; box-sizing: border-box; }
+        /* --- MAIN HUB LAYOUT --- */
+        #event-hub { display: flex; width: 100%; height: 100%; padding: 30px; box-sizing: border-box; transition: filter 0.3s; }
         
-        .event-list { width: 350px; display: flex; flex-direction: column; gap: 15px; }
-        .event-item {
-            background: rgba(40, 20, 80, 0.6); border: 2px solid #5b21b6;
-            padding: 15px; display: flex; align-items: center; gap: 15px;
+        /* Left Side: Event List */
+        .sidebar { width: 320px; display: flex; flex-direction: column; gap: 15px; }
+        .event-card {
+            background: rgba(88, 28, 135, 0.2); border: 2px solid #5b21b6; padding: 15px; 
+            display: flex; align-items: center; gap: 15px; cursor: pointer;
             clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
-            cursor: pointer; transition: 0.3s;
         }
-        .event-item.active { border-color: #c084fc; box-shadow: var(--purple-glow); background: rgba(80, 40, 150, 0.8); }
-        .event-num { font-family: 'Orbitron'; font-size: 30px; font-weight: 900; font-style: italic; }
+        .event-card.active { border-color: var(--accent); background: rgba(147, 51, 234, 0.4); box-shadow: 0 0 20px rgba(192, 132, 252, 0.3); }
 
-        .event-details { flex: 1; padding-left: 50px; }
-        .detail-card { background: rgba(0,0,0,0.7); padding: 30px; border-radius: 10px; max-width: 600px; border: 1px solid #333; }
-        .progress-container { margin: 20px 0; width: 100%; }
-        .bar-bg { background: #222; height: 10px; border-radius: 5px; width: 100%; position: relative; }
-        #progress-fill { background: linear-gradient(90deg, #c084fc, #6366f1); width: 75%; height: 100%; border-radius: 5px; box-shadow: 0 0 10px #c084fc; }
+        /* Right Side: Details */
+        .main-panel { flex: 1; padding-left: 50px; }
+        .details-box { background: var(--panel); border: 1px solid #333; padding: 40px; max-width: 650px; border-radius: 12px; position: relative; }
+        
+        /* Progress System */
+        .progress-section { margin: 25px 0; }
+        .bar-bg { width: 100%; height: 12px; background: #111; border-radius: 6px; margin-top: 8px; overflow: hidden; border: 1px solid #333; }
+        #prog-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #c084fc, #6366f1); transition: 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
 
-        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
+        /* Buttons */
+        .btn-row { display: flex; gap: 12px; margin-top: 30px; }
         .av-btn { 
             flex: 1; border: none; padding: 15px; font-family: 'Orbitron'; font-weight: 900; 
-            cursor: pointer; border-radius: 4px; font-size: 16px;
+            cursor: pointer; border-radius: 4px; font-size: 16px; transition: 0.2s;
         }
+        .av-btn:hover { transform: translateY(-2px); filter: brightness(1.2); }
+        .back-btn { position: absolute; bottom: 30px; left: 30px; padding: 6px 20px; font-size: 12px; background: #222; border: 1px solid #444; width: auto; color: #888; }
 
-        /* --- STAGE SELECTION MODAL --- */
-        #stage-modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); z-index: 500; align-items: center; justify-content: center;
+        /* --- MODALS (Shop, Missions, Song Select) --- */
+        .modal-overlay { 
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); 
+            z-index: 2000; align-items: center; justify-content: center; 
         }
-        .stage-box { width: 800px; height: 500px; background: var(--panel-bg); border: 2px solid #444; display: flex; padding: 20px; gap: 20px; }
-        .song-list { flex: 1; border-right: 1px solid #333; overflow-y: auto; }
-        .song-item { 
-            padding: 15px; margin-bottom: 5px; background: rgba(255,255,255,0.05); 
-            display: flex; justify-content: space-between; cursor: pointer; border: 1px solid transparent;
-        }
-        .song-item.selected { border-color: var(--accent); background: rgba(192, 132, 252, 0.1); }
-
-        /* --- GAME ENGINE UI --- */
-        #game-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; }
-        .highway {
-            position: absolute; left: 50%; transform: translateX(-50%);
-            width: 450px; height: 100%; background: #0a0a0f;
-            border-left: 6px solid #4a4a5a; border-right: 6px solid #4a4a5a;
-        }
-        .lane-line { position: absolute; width: 1px; height: 100%; background: rgba(255,255,255,0.1); }
+        .modal-content { background: #0a0a0f; border: 2px solid #333; padding: 30px; width: 850px; height: 550px; display: flex; gap: 20px; }
         
-        /* Notes */
-        .note { position: absolute; width: 60px; height: 60px; border-radius: 50%; transform: translateX(-30px); border: 3px solid #fff; box-shadow: 0 0 20px currentColor; }
-        .note-hold { height: 200px; border-radius: 30px; opacity: 0.7; }
-
-        /* Scoring Frame (Bottom Right) */
-        .scoring-frame {
-            position: absolute; bottom: 40px; right: 60px; width: 200px; height: 150px;
-            background: url('https://i.imgur.com/your-ornate-frame.png') no-repeat center/contain;
-            text-align: center; font-family: 'Orbitron';
+        /* Song Selection List */
+        .song-list { flex: 1; border-right: 1px solid #222; padding-right: 20px; overflow-y: auto; }
+        .song-item { 
+            background: rgba(255,255,255,0.03); padding: 18px; margin-bottom: 8px; 
+            display: flex; justify-content: space-between; cursor: pointer; border-left: 4px solid transparent;
         }
-        #combo-num { font-size: 60px; color: #fff; margin: 0; }
-        #timer-display { position: absolute; top: 20px; right: 20px; font-size: 24px; color: #ff4444; font-family: 'Orbitron'; }
+        .song-item.active { background: rgba(192, 132, 252, 0.1); border-left-color: var(--accent); }
+
+        /* --- RHYTHM ENGINE UI --- */
+        #game-screen { display: none; position: fixed; inset: 0; background: #000; z-index: 3000; }
+        .exit-x { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); color: #ff4444; border: 1px solid #ff4444; background: none; padding: 8px 20px; cursor: pointer; font-family: 'Orbitron'; z-index: 3100; }
+
+        .highway { 
+            position: absolute; left: 50%; transform: translateX(-50%); width: 450px; height: 100%; 
+            background: #08080c; border-inline: 8px solid #2a2a35; 
+        }
+        .bone-divider { position: absolute; width: 6px; height: 100%; background: url('https://i.imgur.com/your-bone-texture.png'); background-color: #333; transform: translateX(-50%); opacity: 0.6; }
+        
+        /* Notes & Flames */
+        .note { 
+            position: absolute; width: 60px; height: 60px; border-radius: 50%; 
+            transform: translateX(-50%); border: 3px solid #fff; box-shadow: 0 0 20px currentColor; 
+        }
+        .note-hold { height: 180px; border-radius: 30px; opacity: 0.8; }
+        .flame { 
+            position: absolute; bottom: 0; width: 100%; height: 100%; 
+            background: radial-gradient(circle at bottom, currentColor, transparent); 
+            filter: blur(8px); animation: flame-move 0.1s infinite alternate; display: none;
+        }
+        @keyframes flame-move { from { opacity: 0.5; transform: scale(1); } to { opacity: 1; transform: scale(1.2); } }
+
+        /* AV Scoring Frame */
+        .score-frame { 
+            position: absolute; bottom: 40px; right: 40px; width: 220px; 
+            background: rgba(0,0,0,0.6); border: 2px solid #555; padding: 20px; border-radius: 10px; text-align: center;
+        }
+        #combo-txt { font-size: 70px; font-weight: 900; line-height: 0.8; color: var(--accent); font-family: 'Orbitron'; }
     </style>
 </head>
 <body>
 
-<div id="main-bg"></div>
-
 <div id="event-hub">
-    <div class="event-list">
-        <h3 style="font-family:'Orbitron'; color:#c084fc;">CURRENT EVENTS</h3>
-        <div class="event-item active">
-            <div class="event-num">1</div>
+    <div class="sidebar">
+        <h3 style="font-family:'Orbitron'; color: var(--accent); letter-spacing: 2px;">CURRENT EVENTS</h3>
+        <div class="event-card active">
+            <span style="font-family:'Orbitron'; font-size: 24px; font-weight: 900;">1</span>
             <div>
-                <b style="font-family:'Orbitron';">Skele King's Jam Session</b><br>
-                <small style="color:#22c55e;">PERMANENT</small>
+                <b style="font-family:'Orbitron'; font-size: 14px;">Skele King's Jam Session</b><br>
+                <small style="color: #22c55e; font-weight: bold;">PERMANENT</small>
             </div>
         </div>
-        <button class="av-btn" style="background:#555; color:white; margin-top:auto;" onclick="window.location.href='game.html'">BACK</button>
+        <button class="av-btn back-btn" onclick="window.location.href='game.html'">BACK</button>
     </div>
 
-    <div class="event-details">
-        <div class="detail-card">
-            <h1 style="font-family:'Orbitron'; margin:0;">Skele King's Jam Session</h1>
-            <p style="font-size: 24px; font-weight: bold;">Jam out with the Skele King! Earn high scores to get great rewards!</p>
+    <div class="main-panel">
+        <div class="details-box">
+            <h1 style="font-family:'Orbitron'; margin:0; font-size: 40px;">Skele King's Jam Session</h1>
+            <p style="font-size: 20px; opacity: 0.8;">Jam out with the Skele King! Earn high scores to get great rewards!</p>
             
-            <div class="progress-container">
-                <div style="display:flex; justify-content:space-between;"><span>Progress</span><span>9/12</span></div>
-                <div class="bar-bg"><div id="progress-fill"></div></div>
+            <div class="progress-section">
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="font-family:'Orbitron'; font-size: 14px;">Progress</span>
+                    <span id="prog-val" style="font-family:'Orbitron'; font-size: 14px;">0/4</span>
+                </div>
+                <div class="bar-bg"><div id="prog-fill"></div></div>
             </div>
 
-            <p>Owned Event Currency: <span style="color:gold;">10x</span></p>
+            <p style="font-size: 18px;">Owned Event Currency: <span id="coin-txt" style="color: gold; font-weight: bold;">0x</span></p>
             
-            <div class="btn-group">
-                <button class="av-btn" style="background:#a855f7;">Shop</button>
-                <button class="av-btn" style="background:#22c55e;" onclick="openStageSelect()">Play</button>
-                <button class="av-btn" style="background:#eab308;">Missions</button>
+            <div style="margin: 20px 0;">
+                <small style="color: gold; font-family:'Orbitron';">Rewards:</small><br>
+                <div style="display:inline-flex; align-items:center; gap:10px; padding:10px; background:rgba(255,255,255,0.05); border:1px solid #444;">
+                    <div style="width:30px; height:30px; background:gold; border-radius:50%; box-shadow:0 0 10px gold;"></div>
+                    <span style="font-family:'Orbitron'; font-weight:bold;">Corrupted Coin</span>
+                </div>
+            </div>
+
+            <div class="btn-row">
+                <button class="av-btn" style="background: #a855f7;" onclick="openModal('shop')">Shop</button>
+                <button class="av-btn" style="background: #22c55e;" onclick="openModal('play')">Play</button>
+                <button class="av-btn" style="background: #eab308;" onclick="openModal('missions')">Missions</button>
             </div>
         </div>
     </div>
 </div>
 
-<div id="stage-modal">
-    <div class="stage-box">
+<div id="play-modal" class="modal-overlay">
+    <div class="modal-content">
         <div class="song-list">
-            <div class="song-item selected"><span>Stage 1: Skele King's Theme</span><span>→</span></div>
-            <div class="song-item" style="opacity:0.5;"><span>Locked</span></div>
-            <button class="av-btn" style="margin-top:auto; background:#444; color:white;" onclick="document.getElementById('stage-modal').style.display='none'">Cancel</button>
+            <h2 style="font-family:'Orbitron'; margin-bottom: 20px;">STAGES</h2>
+            <div class="song-item active"><span>Skele King's Theme</span><span>→</span></div>
+            <div class="song-item" style="opacity: 0.3;"><span>Locked Stage</span></div>
+            <button class="av-btn" style="margin-top:auto; background:#333; color:white;" onclick="closeModals()">CANCEL</button>
         </div>
-        <div style="flex:1; text-align:center;">
-            <h2 id="sel-song-title">Skele King's Theme</h2>
-            <div style="background:rgba(255,255,255,0.1); padding:20px; margin:20px 0;">
-                <p>BEST SCORE: <span id="high-score">0</span></p>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+            <h1 style="font-family:'Orbitron';">Skele King's Theme</h1>
+            <div style="width:100%; padding:20px; background:rgba(255,255,255,0.03); margin: 20px 0;">
+                <p>BEST SCORE: <span id="best-score" style="color:var(--accent); font-weight:bold;">0</span></p>
+                <p>LAST SCORE: <span id="last-score">0</span></p>
             </div>
-            <button class="av-btn" id="diff-btn" style="background:#22c55e; margin-bottom:10px;" onclick="cycleDiff()">Difficulty: EASY</button>
-            <button class="av-btn" style="background:#22c55e; width:100%; height:60px;" onclick="startMatch()">PLAY</button>
+            <button class="av-btn" id="diff-toggle" style="background:#444; width:100%; margin-bottom:10px;" onclick="cycleDifficulty()">Difficulty: EASY</button>
+            <button class="av-btn" style="background:#22c55e; width:100%; height:70px; font-size:24px;" onclick="initMatch()">PLAY</button>
         </div>
+    </div>
+</div>
+
+<div id="missions-modal" class="modal-overlay">
+    <div class="modal-content" style="flex-direction:column; width:500px; height:auto;">
+        <h2 style="font-family:'Orbitron';">EVENT MISSIONS</h2>
+        <div id="mission-list" style="width:100%;"></div>
+        <button class="av-btn" style="background:#333; margin-top:20px;" onclick="closeModals()">CLOSE</button>
     </div>
 </div>
 
 <div id="game-screen">
-    <div id="timer-display">01:00</div>
+    <button class="exit-x" onclick="forceExit()">X EXIT (Back to Hub)</button>
+    <div id="game-timer" style="position:absolute; top:30px; right:40px; font-family:'Orbitron'; font-size:32px; color:white;">01:00</div>
+    
     <div class="highway">
-        <div class="lane-line" style="left:20%"></div>
-        <div class="lane-line" style="left:40%"></div>
-        <div class="lane-line" style="left:60%"></div>
-        <div class="lane-line" style="left:80%"></div>
-        <div style="position:absolute; bottom:80px; width:100%; height:4px; background:#c084fc; box-shadow: 0 0 20px #c084fc;"></div>
-        <div id="lane-anchors" style="position:absolute; bottom:20px; width:100%; display:flex; justify-content:space-around;">
-            <div class="target-circle">Q</div><div class="target-circle">W</div><div class="target-circle">E</div><div class="target-circle">R</div><div class="target-circle">T</div>
+        <div class="bone-divider" style="left:20%"></div>
+        <div class="bone-divider" style="left:40%"></div>
+        <div class="bone-divider" style="left:60%"></div>
+        <div class="bone-divider" style="left:80%"></div>
+        
+        <div style="position:absolute; bottom:110px; width:100%; height:4px; background:var(--accent); box-shadow:0 0 15px var(--accent);"></div>
+        
+        <div id="anchors" style="position:absolute; bottom:40px; width:100%; display:flex; justify-content:space-around;">
+            <div class="target" style="border:2px solid var(--q-col); color:var(--q-col); width:50px; height:50px; border-radius:50%; text-align:center; line-height:50px; font-family:'Orbitron';">Q</div>
+            <div class="target" style="border:2px solid var(--w-col); color:var(--w-col); width:50px; height:50px; border-radius:50%; text-align:center; line-height:50px; font-family:'Orbitron';">W</div>
+            <div class="target" style="border:2px solid var(--e-col); color:var(--e-col); width:50px; height:50px; border-radius:50%; text-align:center; line-height:50px; font-family:'Orbitron';">E</div>
+            <div class="target" style="border:2px solid var(--r-col); color:var(--r-col); width:50px; height:50px; border-radius:50%; text-align:center; line-height:50px; font-family:'Orbitron';">R</div>
+            <div class="target" style="border:2px solid var(--t-col); color:var(--t-col); width:50px; height:50px; border-radius:50%; text-align:center; line-height:50px; font-family:'Orbitron';">T</div>
         </div>
     </div>
-    
-    <div class="scoring-frame">
-        <p style="margin-top:20px; font-size:12px; opacity:0.6;">SCORE: <span id="live-score">00000</span></p>
-        <div id="combo-num">0</div>
-        <small>COMBO</small>
+
+    <div class="score-frame">
+        <div style="font-size:10px; opacity:0.5; font-family:'Orbitron';">SCORE</div>
+        <div id="live-score" style="font-size:24px; font-family:'Orbitron';">000000</div>
+        <div id="combo-txt">0</div>
+        <div style="font-size:10px; opacity:0.5; font-family:'Orbitron';">COMBO</div>
     </div>
 </div>
 
 <script>
-    let stats = JSON.parse(localStorage.getItem('aetherSave')) || { highScores: { easy:0, medium:0, hard:0, expert:0 } };
-    let currentDiff = 'easy';
-    let isPlaying = false, score = 0, combo = 0, activeNotes = [];
-    let matchTime = 60;
-
-    const DIFF_DATA = {
-        easy: { time: 60, speed: 6, rate: 800 },
-        medium: { time: 180, speed: 8, rate: 600 },
-        hard: { time: 300, speed: 11, rate: 450 },
-        expert: { time: 360, speed: 15, rate: 300 }
+    // --- DATA & STATE ---
+    let data = JSON.parse(localStorage.getItem('av_event_v2')) || {
+        coins: 0,
+        cleared: [],
+        best: { easy: 0, med: 0, hard: 0, expert: 0 },
+        last: { easy: 0, med: 0, hard: 0, expert: 0 }
     };
 
-    function openStageSelect() {
-        document.getElementById('stage-modal').style.display = 'flex';
-        document.getElementById('high-score').innerText = stats.highScores[currentDiff];
+    let currentDiff = 'easy';
+    let isPlaying = false, score = 0, combo = 0, activeNotes = [], timeLeft = 60;
+    const diffs = {
+        easy: { label: 'EASY', time: 60, speed: 7, rate: 800, goal: 5000 },
+        med: { label: 'MEDIUM', time: 180, speed: 10, rate: 600, goal: 15000 },
+        hard: { label: 'HARD', time: 300, speed: 13, rate: 450, goal: 35000 },
+        expert: { label: 'EXPERT', time: 360, speed: 18, rate: 300, goal: 75000 }
+    };
+
+    function save() {
+        localStorage.setItem('av_event_v2', JSON.stringify(data));
+        document.getElementById('coin-txt').innerText = data.coins + "x";
+        document.getElementById('prog-val').innerText = data.cleared.length + "/4";
+        document.getElementById('prog-fill').style.width = (data.cleared.length / 4 * 100) + "%";
     }
 
-    function cycleDiff() {
-        const order = ['easy', 'medium', 'hard', 'expert'];
-        let idx = (order.indexOf(currentDiff) + 1) % 4;
-        currentDiff = order[idx];
-        document.getElementById('diff-btn').innerText = "Difficulty: " + currentDiff.toUpperCase();
-        document.getElementById('high-score').innerText = stats.highScores[currentDiff];
+    // --- MODAL CONTROLS ---
+    function openModal(type) {
+        if(type === 'play') {
+            document.getElementById('play-modal').style.display = 'flex';
+            document.getElementById('best-score').innerText = data.best[currentDiff];
+            document.getElementById('last-score').innerText = data.last[currentDiff];
+        } else if (type === 'missions') {
+            const list = document.getElementById('mission-list');
+            list.innerHTML = Object.keys(diffs).map(k => `
+                <div style="padding:15px; border-bottom:1px solid #222; display:flex; justify-content:space-between; align-items:center;">
+                    <span>Clear ${diffs[k].label} (Goal: ${diffs[k].goal})</span>
+                    <b style="color:${data.cleared.includes(k) ? '#22c55e' : '#555'}">${data.cleared.includes(k) ? 'COMPLETE' : 'INCOMPLETE'}</b>
+                </div>
+            `).join('');
+            document.getElementById('missions-modal').style.display = 'flex';
+        }
+    }
+    function closeModals() { document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none'); }
+    function cycleDifficulty() {
+        const keys = Object.keys(diffs);
+        currentDiff = keys[(keys.indexOf(currentDiff) + 1) % 4];
+        document.getElementById('diff-toggle').innerText = "Difficulty: " + diffs[currentDiff].label;
+        document.getElementById('best-score').innerText = data.best[currentDiff];
+        document.getElementById('last-score').innerText = data.last[currentDiff];
     }
 
-    function startMatch() {
-        document.getElementById('stage-modal').style.display = 'none';
+    // --- RHYTHM ENGINE ---
+    function initMatch() {
+        closeModals();
         document.getElementById('game-screen').style.display = 'block';
+        document.getElementById('event-hub').style.filter = 'blur(10px)';
         isPlaying = true; score = 0; combo = 0; activeNotes = [];
-        matchTime = DIFF_DATA[currentDiff].time;
-        
-        window.spawnInterval = setInterval(spawnNote, DIFF_DATA[currentDiff].rate);
-        window.timerInterval = setInterval(() => {
-            matchTime--;
-            let m = Math.floor(matchTime/60);
-            let s = matchTime % 60;
-            document.getElementById('timer-display').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-            if(matchTime <= 0) endMatch();
+        timeLeft = diffs[currentDiff].time;
+        updateHUD();
+
+        window.gameLoop = requestAnimationFrame(runUpdate);
+        window.spawnTimer = setInterval(spawnNote, diffs[currentDiff].rate);
+        window.clockTimer = setInterval(() => {
+            timeLeft--;
+            let m = Math.floor(timeLeft/60), s = timeLeft%60;
+            document.getElementById('game-timer').innerText = `${m}:${s<10?'0':''}${s}`;
+            if(timeLeft <= 0) finishMatch();
         }, 1000);
-        
-        requestAnimationFrame(update);
+    }
+
+    function forceExit() {
+        isPlaying = false;
+        clearInterval(window.spawnTimer);
+        clearInterval(window.clockTimer);
+        cancelAnimationFrame(window.gameLoop);
+        document.getElementById('game-screen').style.display = 'none';
+        document.getElementById('event-hub').style.filter = 'none';
+        activeNotes.forEach(n => n.el.remove());
     }
 
     function spawnNote() {
+        if(!isPlaying) return;
         const lane = Math.floor(Math.random() * 5);
-        const isHold = Math.random() > 0.8;
-        const note = {
-            lane, y: -200, hit: false, 
-            isHold, holdActive: false,
-            el: document.createElement('div')
-        };
-        note.el.className = 'note' + (isHold ? ' note-hold' : '');
-        note.el.style.left = (20 * lane + 10) + "%";
-        note.el.style.color = ['#ff00ff', '#00ffff', '#ffff00', '#00ff00', '#ff4400'][lane];
-        document.querySelector('.highway').appendChild(note.el);
-        activeNotes.push(note);
+        const isHold = Math.random() > 0.85;
+        const el = document.createElement('div');
+        el.className = 'note' + (isHold ? ' note-hold' : '');
+        el.style.left = (lane * 20 + 10) + "%";
+        el.style.color = [var('--q-col'), var('--w-col'), var('--e-col'), var('--r-col'), var('--t-col')][lane];
+        
+        const flame = document.createElement('div');
+        flame.className = 'flame';
+        el.appendChild(flame);
+
+        document.querySelector('.highway').appendChild(el);
+        activeNotes.push({ el, flame, y: -200, lane, isHold, hit: false, holding: false });
     }
 
-    function update() {
+    function runUpdate() {
         if(!isPlaying) return;
         activeNotes.forEach((n, i) => {
-            n.y += DIFF_DATA[currentDiff].speed;
+            n.y += diffs[currentDiff].speed;
             n.el.style.top = n.y + 'px';
+
             if(n.y > window.innerHeight) {
                 if(!n.hit) { combo = 0; updateHUD(); }
                 n.el.remove();
                 activeNotes.splice(i, 1);
             }
         });
-        requestAnimationFrame(update);
+        window.gameLoop = requestAnimationFrame(runUpdate);
     }
 
     function updateHUD() {
-        document.getElementById('combo-num').innerText = combo;
-        document.getElementById('live-score').innerText = score.toString().padStart(5, '0');
+        document.getElementById('live-score').innerText = score.toString().padStart(6, '0');
+        document.getElementById('combo-txt').innerText = combo;
     }
 
-    function endMatch() {
+    function finishMatch() {
         isPlaying = false;
-        clearInterval(window.spawnInterval);
-        clearInterval(window.timerInterval);
-        if(score > stats.highScores[currentDiff]) stats.highScores[currentDiff] = score;
-        localStorage.setItem('aetherSave', JSON.stringify(stats));
-        alert(`Match End! Final Score: ${score}`);
-        location.reload();
+        data.last[currentDiff] = score;
+        if(score > data.best[currentDiff]) data.best[currentDiff] = score;
+        
+        if(score >= diffs[currentDiff].goal && !data.cleared.includes(currentDiff)) {
+            data.cleared.push(currentDiff);
+            data.coins += 15;
+            alert("NEW CLEAR! Earned 15 Corrupted Coins!");
+        } else {
+            alert("Match Finished! Final Score: " + score);
+        }
+        forceExit();
+        save();
     }
 
-    // Input Handling
-    const keys = ['q','w','e','r','t'];
+    // Input
     window.onkeydown = (e) => {
-        const idx = keys.indexOf(e.key.toLowerCase());
-        if(idx === -1 || !isPlaying) return;
-        
-        const note = activeNotes.find(n => n.lane === idx && !n.hit && n.y > window.innerHeight - 200);
-        if(note) {
-            note.hit = true;
-            if(!note.isHold) {
-                note.el.style.display = 'none';
-                combo++; score += 100;
-            } else {
-                note.holdActive = true;
-                score += 50; // Points for starting hold
-            }
+        const k = ['q','w','e','r','t'].indexOf(e.key.toLowerCase());
+        if(k === -1 || !isPlaying) return;
+        const n = activeNotes.find(note => note.lane === k && !note.hit && note.y > window.innerHeight - 250);
+        if(n) {
+            n.hit = true;
+            combo++;
+            score += 100 + (combo * 5);
+            if(n.isHold) { n.flame.style.display = 'block'; n.holding = true; }
+            else { n.el.style.display = 'none'; }
             updateHUD();
         }
     };
+
+    save();
 </script>
 </body>
 </html>
