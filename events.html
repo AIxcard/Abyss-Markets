@@ -7,12 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #010206;
-            --panel: rgba(2, 4, 12, 0.98);
-            --accent: #c084fc;
-            --corrupted: #8b5cf6;
-            --gold: #fbbf24;
-            --border: #1e40af;
+            --bg: #010206; --panel: rgba(2, 4, 12, 0.98); --border: #1e40af;
+            --accent: #c084fc; --gold: #fbbf24; --corrupted: #8b5cf6;
         }
 
         body, html { 
@@ -22,113 +18,81 @@
         }
 
         /* UI OVERLAY */
-        #ui-layer { position: absolute; width: 100%; height: 100%; z-index: 10; display: flex; }
-
-        .sidebar { 
-            width: 350px; background: var(--panel); border-right: 1px solid var(--border); 
-            padding: 25px; display: flex; flex-direction: column;
-        }
-
-        .main-view { flex: 1; padding: 40px; position: relative; }
+        #ui-layer { position: absolute; width: 100%; height: 100%; z-index: 10; display: flex; transition: opacity 0.5s; }
+        .sidebar { width: 350px; background: var(--panel); border-right: 1px solid var(--border); padding: 25px; display: flex; flex-direction: column; }
+        .main-view { flex: 1; padding: 40px; position: relative; background: radial-gradient(circle at center, #0a1128 0%, #000 100%); }
 
         /* BUTTONS */
         .btn {
             background: linear-gradient(180deg, #4f46e5 0%, #3730a3 100%);
-            border: none; color: white; padding: 12px; margin: 5px;
-            font-family: 'Orbitron'; font-size: 12px; cursor: pointer; border-radius: 4px;
+            border: none; color: white; padding: 12px; margin: 5px 0;
+            font-family: 'Orbitron'; font-size: 11px; cursor: pointer; border-radius: 4px; width: 100%;
         }
-        .btn:hover { filter: brightness(1.2); }
-        .btn-green { background: #22c55e; }
-        .btn-yellow { background: #eab308; color: black; }
+        .btn:hover { filter: brightness(1.2); border: 1px solid var(--accent); }
+        .btn:disabled { background: #222; color: #555; cursor: not-allowed; }
 
-        /* STAGE CARDS */
-        .stage-card {
-            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-            padding: 15px; margin-bottom: 10px; cursor: pointer; position: relative;
-        }
-        .stage-card.active { border-color: var(--accent); background: rgba(192, 132, 252, 0.1); }
+        /* CARDS */
+        .stage-card { background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 15px; margin-bottom: 15px; }
+        .mission-row { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); font-family: 'Orbitron'; font-size: 12px; }
 
-        /* RHYTHM GAME AREA */
-        #game-area { 
-            display: none; position: absolute; top: 0; left: 0; 
-            width: 100%; height: 100%; background: #000; z-index: 20; 
-        }
+        /* GAME AREA */
+        #game-area { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 20; }
+        .lane-container { display: flex; gap: 8px; width: 400px; height: 100%; margin: 0 auto; background: rgba(255,255,255,0.02); position: relative; border-left: 2px solid #222; border-right: 2px solid #222; }
+        .lane { flex: 1; position: relative; }
+        .hit-line { position: absolute; bottom: 100px; width: 100%; height: 4px; background: var(--accent); box-shadow: 0 0 20px var(--accent); z-index: 5; }
+        .note { position: absolute; width: 100%; height: 40px; background: var(--accent); border-radius: 5px; box-shadow: 0 0 10px var(--accent); z-index: 10; }
+        .note-long { height: 180px; opacity: 0.8; background: linear-gradient(to bottom, var(--accent), var(--corrupted)); }
 
-        .lane-container {
-            display: flex; gap: 8px; width: 450px; height: 100%;
-            margin: 0 auto; background: rgba(255,255,255,0.02);
-            position: relative; border-left: 2px solid #222; border-right: 2px solid #222;
-        }
+        #combo-hud { position: absolute; right: 80px; top: 40%; font-family: 'Orbitron'; text-align: center; }
+        #combo-val { font-size: 60px; color: var(--accent); text-shadow: 0 0 20px var(--accent); }
 
-        .lane { flex: 1; position: relative; border-right: 1px solid rgba(255,255,255,0.05); }
-        .hit-line { 
-            position: absolute; bottom: 80px; width: 100%; height: 4px; 
-            background: var(--accent); box-shadow: 0 0 15px var(--accent);
-        }
-
-        .note { 
-            position: absolute; width: 100%; height: 50px; 
-            background: var(--accent); border-radius: 10px; 
-            box-shadow: 0 0 10px var(--accent);
-        }
-        
-        /* Hold Note Bar */
-        .note-body {
-            position: absolute; width: 80%; left: 10%;
-            background: linear-gradient(to top, var(--accent), transparent);
-            opacity: 0.6;
-        }
-
-        #combo-hud {
-            position: absolute; right: 50px; top: 50%;
-            font-family: 'Orbitron'; font-size: 40px; text-align: center;
-        }
-
-        /* SHOP & MISSIONS */
-        .modal-content {
-            background: var(--panel); border: 1px solid var(--accent);
-            padding: 20px; position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%); width: 400px;
-        }
+        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--panel); border: 1px solid var(--accent); padding: 30px; z-index: 100; width: 450px; }
     </style>
 </head>
 <body>
 
 <div id="ui-layer">
     <div class="sidebar">
-        <h2 style="font-family:'Orbitron'; color:var(--accent);">AETHER EVENTS</h2>
-        <p>Corrupted Coins: <span id="coin-display" style="color:var(--gold)">0</span></p>
-        <hr style="width:100%; border:0; border-top:1px solid #333;">
-        
-        <div class="stage-card active">
-            <b>JAM SESSION: STAGE 1</b><br>
-            <small>Reward: 10 Corrupted Coins</small>
+        <h2 style="font-family:'Orbitron'; color:var(--accent); letter-spacing: 2px;">NEURAL LINK</h2>
+        <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 4px; margin-bottom: 20px;">
+            <small style="color: var(--corrupted); font-weight: bold;">EVENT CURRENCY</small><br>
+            <span id="coin-display" style="font-family:'Orbitron'; font-size: 20px; color:var(--gold);">0</span> <small>Corrupted Coins</small>
         </div>
+        
         <div class="stage-card">
-            <b>JAM SESSION: STAGE 2</b><br>
-            <small>Requires Lv. 10</small>
+            <b style="font-family:'Orbitron';">SKELE KING'S JAM</b><br>
+            <small style="opacity: 0.6;">Stage 1: The Descent</small>
+            <button class="btn" onclick="openMissions()">MISSIONS / PLAY</button>
         </div>
 
-        <button class="btn" onclick="showSection('main')">MAIN PAGE</button>
-        <button class="btn btn-yellow" onclick="showSection('shop')">EVENT SHOP</button>
-        <button class="btn btn-green" onclick="showSection('play')">PLAY STAGE</button>
-        <button class="btn" style="margin-top:auto" onclick="window.location.href='game.html'">RETURN TO AETHERFALL</button>
+        <button class="btn" style="background: var(--corrupted);" onclick="openShop()">EVENT SHOP</button>
+        <button class="btn" style="margin-top: auto; opacity: 0.7;" onclick="window.location.href='index.html'">BACK TO MAIN</button>
     </div>
 
-    <div class="main-view" id="main-view">
-        <h1 style="font-family:'Orbitron'; font-size: 50px;">SKELE KING'S<br><span style="color:var(--accent)">JAM SESSION</span></h1>
-        <p style="max-width: 500px; opacity: 0.8;">Jam out with the Skele King! Match the Aetheric pulses to earn high scores and Corrupted Coins.</p>
+    <div class="main-view">
+        <h1 style="font-family:'Orbitron'; font-size: 60px; margin: 0;">STAGE 1</h1>
+        <h2 style="font-family:'Orbitron'; color: var(--accent); margin-top: -10px;">JAM SESSION</h2>
+        <p style="max-width: 450px; line-height: 1.6; opacity: 0.8;">Sync your neural pathways with the Skele King's frequency. Higher difficulties yield massive amounts of Corrupted Coins used for permanent Aetherfall upgrades.</p>
     </div>
 </div>
 
-<div id="shop-modal" class="modal-content" style="display:none; z-index:100;">
-    <h3 style="font-family:'Orbitron'">CORRUPTED SHOP</h3>
-    <div style="background:#000; padding:10px; margin-bottom:10px;">
-        <b>Void Infusion</b><br>
-        <small>+5 Click Power in Main Game</small><br>
-        <button class="btn" onclick="buyItem(50, 5)">50 COINS</button>
+<div id="mission-modal" class="modal">
+    <h3 style="font-family:'Orbitron'; margin-top: 0;">SELECT DIFFICULTY</h3>
+    <div id="mission-list"></div>
+    <button class="btn" onclick="closeModal('mission-modal')" style="margin-top: 20px; background: #444;">CLOSE</button>
+</div>
+
+<div id="shop-modal" class="modal">
+    <h3 style="font-family:'Orbitron'; margin-top: 0;">CORRUPTED SHOP</h3>
+    <div class="stage-card">
+        <b>Void Infusion</b><br><small>Permanent +10 Click Power</small><br>
+        <button class="btn" onclick="buyItem(50, 10)">50 COINS</button>
     </div>
-    <button class="btn" onclick="document.getElementById('shop-modal').style.display='none'">CLOSE</button>
+    <div class="stage-card">
+        <b>Aether Overload</b><br><small>Permanent +5% Gold Gain</small><br>
+        <button class="btn" onclick="alert('Coming Soon!')">150 COINS</button>
+    </div>
+    <button class="btn" onclick="closeModal('shop-modal')" style="margin-top: 10px; background: #444;">CLOSE</button>
 </div>
 
 <div id="game-area">
@@ -141,136 +105,149 @@
         <div class="hit-line"></div>
     </div>
     <div id="combo-hud">
-        <div style="font-size:12px; opacity:0.6;">COMBO</div>
         <div id="combo-val">0</div>
+        <div style="font-family:'Orbitron'; font-size: 14px; opacity: 0.5;">COMBO</div>
     </div>
 </div>
 
 <script>
-    // DATA SYNC
-    let gameStats = JSON.parse(localStorage.getItem('aetherSave')) || { gold: 0, corruptedCoins: 0, basePower: 1 };
-    
+    // --- DATA MANAGEMENT ---
+    let gameStats = JSON.parse(localStorage.getItem('aetherSave')) || { 
+        corruptedCoins: 0, basePower: 1, 
+        missions: { stage1: { easy: false, medium: false, hard: false, expert: false } } 
+    };
+
+    const DIFF_SETTINGS = {
+        easy:   { speed: 4, rate: 1000, reward: 10, req: 20 },
+        medium: { speed: 6, rate: 750,  reward: 25, req: 50 },
+        hard:   { speed: 9, rate: 500,  reward: 60, req: 100 },
+        expert: { speed: 13, rate: 350, reward: 150, req: 200 }
+    };
+
     function save() {
         localStorage.setItem('aetherSave', JSON.stringify(gameStats));
         document.getElementById('coin-display').innerText = gameStats.corruptedCoins;
     }
 
-    // GAME VARIABLES
-    let isPlaying = false;
-    let combo = 0;
-    let activeNotes = [];
-    const lanes = ['q', 'w', 'e', 'r', 't'];
-    const keyState = {};
-
-    function showSection(s) {
-        if(s === 'shop') document.getElementById('shop-modal').style.display = 'block';
-        if(s === 'play') startRhythmGame();
+    // --- UI LOGIC ---
+    function openMissions() {
+        const list = document.getElementById('mission-list');
+        list.innerHTML = '';
+        Object.keys(DIFF_SETTINGS).forEach(d => {
+            const cleared = gameStats.missions.stage1[d];
+            list.innerHTML += `
+                <div class="mission-row">
+                    <span style="color:${cleared ? 'var(--accent)' : 'white'}">${d.toUpperCase()} ${cleared ? '✓' : ''}</span>
+                    <button class="btn" style="width: 80px;" onclick="startGame('${d}')">PLAY</button>
+                </div>`;
+        });
+        document.getElementById('mission-modal').style.display = 'block';
     }
+
+    function openShop() { document.getElementById('shop-modal').style.display = 'block'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
     function buyItem(cost, pwr) {
         if(gameStats.corruptedCoins >= cost) {
             gameStats.corruptedCoins -= cost;
             gameStats.basePower += pwr;
-            alert("Power Upgraded! This will reflect in your main game.");
             save();
-        }
+            alert("UPGRADE SUCCESSFUL!");
+        } else { alert("Not enough Corrupted Coins!"); }
     }
 
-    function startRhythmGame() {
-        document.getElementById('game-area').style.display = 'block';
-        isPlaying = true;
-        gameLoop();
-        // Spawn a note every 800ms
-        window.noteSpawner = setInterval(spawnNote, 800);
+    // --- GAME ENGINE ---
+    let isPlaying = false, combo = 0, activeNotes = [], currentDiff = 'easy';
+    const lanes = ['q', 'w', 'e', 'r', 't'];
+    const keyState = {};
+
+    function startGame(diff) {
+        currentDiff = diff;
+        closeModal('mission-modal');
+        document.getElementById('ui-layer').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('ui-layer').style.display = 'none';
+            document.getElementById('game-area').style.display = 'block';
+            isPlaying = true;
+            combo = 0;
+            document.getElementById('combo-val').innerText = '0';
+            activeNotes = [];
+            requestAnimationFrame(update);
+            window.spawner = setInterval(spawnNote, DIFF_SETTINGS[diff].rate);
+            // End song after 45 seconds
+            setTimeout(endGame, 45000);
+        }, 500);
     }
 
     function spawnNote() {
         if(!isPlaying) return;
         const lane = lanes[Math.floor(Math.random() * lanes.length)];
-        const isLong = Math.random() > 0.8;
-        
-        const noteEl = document.createElement('div');
-        noteEl.className = 'note' + (isLong ? ' note-long' : '');
-        noteEl.style.top = "-50px";
-        document.getElementById('lane-' + lane).appendChild(noteEl);
-
-        let noteObj = {
-            el: noteEl,
-            lane: lane,
-            y: -50,
-            isLong: isLong,
-            length: isLong ? 150 : 0,
-            hit: false
-        };
-
-        if(isLong) {
-            const body = document.createElement('div');
-            body.className = 'note-body';
-            body.style.height = noteObj.length + 'px';
-            body.style.bottom = '25px';
-            noteEl.appendChild(body);
-        }
-
-        activeNotes.push(noteObj);
+        const isLong = Math.random() > 0.85;
+        const el = document.createElement('div');
+        el.className = 'note' + (isLong ? ' note-long' : '');
+        el.style.top = '-200px';
+        document.getElementById('lane-' + lane).appendChild(el);
+        activeNotes.push({ el, lane, y: -200, isLong, hit: false });
     }
 
-    function gameLoop() {
+    function update() {
         if(!isPlaying) return;
+        const speed = DIFF_SETTINGS[currentDiff].speed;
 
-        for(let i = activeNotes.length - 1; i >= 0; i--) {
+        for(let i = activeNotes.length-1; i >= 0; i--) {
             let n = activeNotes[i];
-            n.y += 5; // Speed
+            n.y += speed;
             n.el.style.top = n.y + 'px';
 
-            // HOLD NOTE LOGIC
-            if(n.isLong && keyState[n.lane] && n.y > 400 && n.y < 550) {
+            // Hold Note Logic: Points while holding
+            if(n.isLong && keyState[n.lane] && n.y > 450 && n.y < 600) {
                 combo++;
                 document.getElementById('combo-val').innerText = combo;
             }
 
-            // Despawn
-            if(n.y > 700) {
-                if(!n.hit) { combo = 0; document.getElementById('combo-val').innerText = 0; }
+            // Miss logic
+            if(n.y > 800) {
+                if(!n.hit) { combo = 0; document.getElementById('combo-val').innerText = '0'; }
                 n.el.remove();
                 activeNotes.splice(i, 1);
             }
         }
-
-        if(isPlaying) requestAnimationFrame(gameLoop);
+        requestAnimationFrame(update);
     }
 
-    window.addEventListener('keydown', (e) => {
+    function endGame() {
+        isPlaying = false;
+        clearInterval(window.spawner);
+        const settings = DIFF_SETTINGS[currentDiff];
+        
+        if(combo >= settings.req) {
+            let winAmount = gameStats.missions.stage1[currentDiff] ? Math.floor(settings.reward/5) : settings.reward;
+            gameStats.corruptedCoins += winAmount;
+            gameStats.missions.stage1[currentDiff] = true;
+            alert(`STAGE CLEAR! Earned: ${winAmount} Corrupted Coins.`);
+        } else {
+            alert(`FAILED! Needed ${settings.req} combo.`);
+        }
+        
+        save();
+        location.reload(); // Refresh to reset state simply
+    }
+
+    window.addEventListener('keydown', e => {
         const k = e.key.toLowerCase();
         keyState[k] = true;
-        
-        // Tap Check
         activeNotes.forEach(n => {
-            if(n.lane === k && n.y > 450 && n.y < 550 && !n.hit) {
+            if(n.lane === k && n.y > 450 && n.y < 580 && !n.hit) {
                 n.hit = true;
-                n.el.style.background = '#22c55e';
-                combo++;
+                n.el.style.filter = 'brightness(2) saturate(2)';
+                combo += 5;
                 document.getElementById('combo-val').innerText = combo;
-                
-                // Reward on successful run (simplified)
-                if(combo % 50 === 0) {
-                    gameStats.corruptedCoins += 1;
-                    save();
-                }
             }
         });
-
-        if(e.key === "Escape") {
-            isPlaying = false;
-            clearInterval(window.noteSpawner);
-            document.getElementById('game-area').style.display = 'none';
-        }
     });
+    window.addEventListener('keyup', e => { keyState[e.key.toLowerCase()] = false; });
 
-    window.addEventListener('keyup', (e) => {
-        keyState[e.key.toLowerCase()] = false;
-    });
-
-    save(); // Initial Load
+    save(); // Load initial
 </script>
 </body>
 </html>
