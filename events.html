@@ -9,9 +9,9 @@
             --accent: #c084fc; --bg: #020205; --panel: rgba(13, 13, 25, 0.95);
             --q-col: #ff00ff; --w-col: #00ffff; --e-col: #ffff00; --r-col: #00ff00; --t-col: #ff4400;
         }
-        body, html { margin: 0; padding: 0; height: 100%; background: var(--bg); color: white; font-family: 'Rajdhani', sans-serif; overflow: hidden; user-select: none; }
+        body, html { margin: 0; padding: 0; height: 100%; background: var(--bg); color: white; font-family: 'Rajdhani', sans-serif; overflow: hidden; }
 
-        /* --- MAIN HUB --- */
+        /* --- MAIN HUB LAYOUT --- */
         #event-hub { display: flex; width: 100%; height: 100%; padding: 30px; box-sizing: border-box; transition: filter 0.3s; }
         .sidebar { width: 320px; display: flex; flex-direction: column; gap: 15px; }
         .event-card {
@@ -19,170 +19,231 @@
             display: flex; align-items: center; gap: 15px; cursor: pointer;
             clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
         }
+        .event-card.active { border-color: var(--accent); background: rgba(147, 51, 234, 0.4); box-shadow: 0 0 20px rgba(192, 132, 252, 0.3); }
+
         .main-panel { flex: 1; padding-left: 50px; }
         .details-box { background: var(--panel); border: 1px solid #333; padding: 40px; max-width: 650px; border-radius: 12px; position: relative; }
         
-        /* Progress Bar */
+        .progress-section { margin: 25px 0; }
         .bar-bg { width: 100%; height: 12px; background: #111; border-radius: 6px; margin-top: 8px; overflow: hidden; border: 1px solid #333; }
-        #prog-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #c084fc, #6366f1); transition: 1s ease; }
+        #prog-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #c084fc, #6366f1); transition: 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
 
-        /* Buttons */
+        .btn-row { display: flex; gap: 12px; margin-top: 30px; }
         .av-btn { 
             flex: 1; border: none; padding: 15px; font-family: 'Orbitron'; font-weight: 900; 
             cursor: pointer; border-radius: 4px; font-size: 16px; transition: 0.2s;
         }
         .av-btn:hover { transform: translateY(-2px); filter: brightness(1.2); }
-        .settings-trigger { position: fixed; bottom: 20px; left: 20px; background: #1a1a2e; border: 1px solid #444; color: #888; padding: 10px; cursor: pointer; border-radius: 5px; font-family: 'Orbitron'; font-size: 12px; }
+        .back-btn { position: absolute; bottom: 30px; left: 30px; padding: 6px 20px; font-size: 12px; background: #222; border: 1px solid #444; width: auto; color: #888; }
+        
+        /* Settings Button (Bottom Left) */
+        .settings-btn { position: fixed; bottom: 20px; left: 20px; background: rgba(255,255,255,0.05); border: 1px solid #444; color: white; padding: 8px 15px; cursor: pointer; font-family: 'Orbitron'; font-size: 10px; z-index: 100; border-radius: 4px; }
 
         /* --- MODALS --- */
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center; }
-        .modal-content { background: #0a0a0f; border: 2px solid #333; padding: 30px; width: 600px; max-height: 80vh; overflow-y: auto; position: relative; }
-        .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
-        .shop-item { background: #151520; border: 1px solid #333; padding: 15px; text-align: center; border-radius: 8px; }
+        .modal-content { background: #0a0a0f; border: 2px solid #333; padding: 30px; width: 850px; height: 550px; display: flex; gap: 20px; position: relative; }
+        
+        .song-list { flex: 1; border-right: 1px solid #222; padding-right: 20px; overflow-y: auto; }
+        .song-item { background: rgba(255,255,255,0.03); padding: 18px; margin-bottom: 8px; display: flex; justify-content: space-between; cursor: pointer; border-left: 4px solid transparent; }
+        .song-item.active { background: rgba(192, 132, 252, 0.1); border-left-color: var(--accent); }
 
-        /* --- RHYTHM ENGINE (The "Redo") --- */
+        /* Shop Grid */
+        .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
+        .shop-card { background: #111; border: 1px solid #333; padding: 20px; border-radius: 8px; text-align: center; transition: 0.3s; }
+        .shop-card:hover { border-color: var(--accent); }
+
+        /* --- RHYTHM ENGINE UI --- */
         #game-screen { display: none; position: fixed; inset: 0; background: #000; z-index: 3000; }
-        .highway { 
-            position: absolute; left: 50%; transform: translateX(-50%); width: 400px; height: 100%; 
-            background: linear-gradient(to bottom, #050508, #0a0a15); border-inline: 4px solid #2a2a35; 
-        }
-        /* Judgment Line at the VERY bottom */
-        .judgement-line { position: absolute; bottom: 0; width: 100%; height: 60px; background: rgba(192, 132, 252, 0.1); border-top: 3px solid var(--accent); display: flex; justify-content: space-around; align-items: center; }
-        .key-label { font-family: 'Orbitron'; font-size: 14px; color: rgba(255,255,255,0.5); }
+        .exit-x { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); color: #ff4444; border: 1px solid #ff4444; background: none; padding: 8px 20px; cursor: pointer; font-family: 'Orbitron'; z-index: 3100; }
 
-        .note { position: absolute; width: 60px; height: 25px; border-radius: 4px; transform: translateX(-50%); box-shadow: 0 0 15px currentColor; }
+        .highway { position: absolute; left: 50%; transform: translateX(-50%); width: 450px; height: 100%; background: #08080c; border-inline: 8px solid #2a2a35; overflow: hidden; }
+        .bone-divider { position: absolute; width: 2px; height: 100%; background: rgba(255,255,255,0.05); transform: translateX(-50%); }
+        
+        /* Judgment Line at THE BOTTOM */
+        .judgement-line { position: absolute; bottom: 0; width: 100%; height: 80px; background: rgba(192, 132, 252, 0.05); border-top: 4px solid var(--accent); display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -10px 30px rgba(192, 132, 252, 0.2); }
+        
+        .note { position: absolute; width: 70px; height: 30px; border-radius: 4px; transform: translateX(-50%); border: 2px solid #fff; box-shadow: 0 0 20px currentColor; }
 
-        /* Floating Score inside Highway */
-        .highway-ui { position: absolute; bottom: 80px; right: -180px; width: 150px; text-align: right; pointer-events: none; }
-        #live-score { font-family: 'Orbitron'; font-size: 28px; color: white; }
-        #combo-txt { font-family: 'Orbitron'; font-size: 45px; font-weight: 900; color: var(--accent); margin-top: -10px; }
-
-        /* Judgment Text (Perfect/Good/Miss) */
-        .judgment-popup {
-            position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%);
-            font-family: 'Orbitron'; font-weight: 900; font-size: 32px;
-            pointer-events: none; animation: popOut 0.4s ease-out forwards;
-        }
-        @keyframes popOut {
+        /* Feedback Popups */
+        .judgment-msg { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); font-family: 'Orbitron'; font-weight: 900; font-size: 42px; pointer-events: none; animation: popStrike 0.4s ease-out forwards; z-index: 3500; }
+        @keyframes popStrike {
             0% { transform: translate(-50%, -20%) scale(0.5); opacity: 0; }
             50% { opacity: 1; }
-            100% { transform: translate(-50%, -80%) scale(1.2); opacity: 0; }
+            100% { transform: translate(-50%, -100%) scale(1.1); opacity: 0; }
         }
+
+        /* Score & Combo inside Highway (Right Side) */
+        .score-frame { position: absolute; bottom: 100px; right: 20px; text-align: right; pointer-events: none; }
+        #live-score { font-size: 32px; font-weight: bold; font-family: 'Orbitron'; color: white; letter-spacing: 2px; }
+        #combo-wrap { margin-top: -5px; }
+        #combo-txt { font-size: 60px; font-weight: 900; color: var(--accent); font-family: 'Orbitron'; text-shadow: 0 0 20px var(--accent); line-height: 0.8; }
     </style>
 </head>
 <body>
 
 <div id="event-hub">
     <div class="sidebar">
-        <h3 style="font-family:'Orbitron'; color: var(--accent);">AETHERFALL EVENTS</h3>
-        <div class="event-card">
-            <span style="font-size: 24px; font-weight: 900;">01</span>
-            <div><b>Skele King's Jam</b><br><small style="color: #22c55e;">ACTIVE</small></div>
+        <h3 style="font-family:'Orbitron'; color: var(--accent); letter-spacing: 2px;">CURRENT EVENTS</h3>
+        <div class="event-card active">
+            <span style="font-family:'Orbitron'; font-size: 24px; font-weight: 900;">1</span>
+            <div>
+                <b style="font-family:'Orbitron'; font-size: 14px;">Skele King's Jam Session</b><br>
+                <small style="color: #22c55e; font-weight: bold;">PERMANENT</small>
+            </div>
         </div>
+        <button class="av-btn back-btn" onclick="window.location.href='game.html'">BACK</button>
     </div>
 
     <div class="main-panel">
         <div class="details-box">
-            <h1 style="font-family:'Orbitron'; font-size: 40px; margin:0;">Skele King's Jam</h1>
-            <p>Earn high scores to unlock Corrupted Skins and Boosts!</p>
+            <h1 style="font-family:'Orbitron'; margin:0; font-size: 40px;">Skele King's Jam Session</h1>
+            <p style="font-size: 20px; opacity: 0.8;">Jam out with the Skele King! Earn high scores to get great rewards!</p>
             
-            <div class="bar-bg"><div id="prog-fill"></div></div>
-            <p>Owned: <span id="coin-txt" style="color: gold; font-weight: bold;">0x</span> Corrupted Coins</p>
+            <div class="progress-section">
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="font-family:'Orbitron'; font-size: 14px;">Progress</span>
+                    <span id="prog-val" style="font-family:'Orbitron'; font-size: 14px;">0/4</span>
+                </div>
+                <div class="bar-bg"><div id="prog-fill"></div></div>
+            </div>
 
-            <div style="display:flex; gap: 10px;">
-                <button class="av-btn" style="background: #a855f7;" onclick="openModal('shop')">SHOP</button>
-                <button class="av-btn" style="background: #22c55e;" onclick="openModal('play')">PLAY</button>
+            <p style="font-size: 18px;">Owned Event Currency: <span id="coin-txt" style="color: gold; font-weight: bold;">0x</span></p>
+            
+            <div class="btn-row">
+                <button class="av-btn" style="background: #a855f7;" onclick="openModal('shop')">Shop</button>
+                <button class="av-btn" style="background: #22c55e;" onclick="openModal('play')">Play</button>
+                <button class="av-btn" style="background: #eab308;" onclick="openModal('missions')">Missions</button>
             </div>
         </div>
     </div>
 </div>
 
-<button class="settings-trigger" onclick="openModal('settings')">⚙️ SETTINGS</button>
+<button class="settings-btn" onclick="openModal('settings')">⚙️ SETTINGS</button>
+
+<div id="play-modal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="song-list">
+            <h2 style="font-family:'Orbitron';">STAGES</h2>
+            <div class="song-item active"><span>Skele King's Theme</span><span>→</span></div>
+            <button class="av-btn" style="margin-top:auto; background:#333;" onclick="closeModals()">CANCEL</button>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+            <h1 style="font-family:'Orbitron';">Skele King's Theme</h1>
+            <button class="av-btn" id="diff-toggle" style="background:#444; width:100%; margin-bottom:10px;" onclick="cycleDifficulty()">Difficulty: EASY</button>
+            <button class="av-btn" style="background:#22c55e; width:100%; height:70px; font-size:24px;" onclick="initMatch()">PLAY</button>
+        </div>
+    </div>
+</div>
 
 <div id="shop-modal" class="modal-overlay">
-    <div class="modal-content">
-        <h2 style="font-family:'Orbitron'">EVENT SHOP</h2>
+    <div class="modal-content" style="flex-direction:column;">
+        <h2 style="font-family:'Orbitron'; text-align:center;">EVENT SHOP</h2>
         <div class="shop-grid">
-            <div class="shop-item">
-                <h3>Neon Reaper Skin</h3>
-                <button class="av-btn" style="background:var(--accent)" onclick="buy('skin_neon', 50)">50 Coins</button>
+            <div class="shop-card">
+                <h3 style="color:var(--w-col)">Neon Blade Skin</h3>
+                <p>Change note appearance</p>
+                <button class="av-btn" style="background:#333" onclick="buyItem('skin_neon', 50)">50 Coins</button>
             </div>
-            <div class="shop-item">
-                <h3>Score Boost (2x)</h3>
-                <button class="av-btn" style="background:gold; color:black" onclick="buy('boost_score', 20)">20 Coins</button>
+            <div class="shop-card">
+                <h3 style="color:gold">Double Score</h3>
+                <p>One match use</p>
+                <button class="av-btn" style="background:#333" onclick="buyItem('boost_score', 25)">25 Coins</button>
             </div>
         </div>
-        <button class="av-btn" style="background:#222" onclick="closeModals()">BACK</button>
+        <button class="av-btn" style="background:#444; margin-top:auto;" onclick="closeModals()">CLOSE</button>
     </div>
 </div>
 
 <div id="settings-modal" class="modal-overlay">
-    <div class="modal-content" style="width:300px">
-        <h2 style="font-family:'Orbitron'">KEY BINDS</h2>
-        <div id="bind-inputs"></div>
+    <div class="modal-content" style="width:300px; height:auto; flex-direction:column;">
+        <h2 style="font-family:'Orbitron';">KEY BINDS</h2>
+        <div id="key-settings"></div>
         <button class="av-btn" style="background:#22c55e; margin-top:20px;" onclick="closeModals()">SAVE</button>
     </div>
 </div>
 
 <div id="game-screen">
+    <button class="exit-x" onclick="forceExit()">X EXIT</button>
     <div class="highway">
-        <div class="highway-ui">
-            <div style="font-size:10px; opacity:0.5; font-family:'Orbitron';">SCORE</div>
+        <div class="bone-divider" style="left:20%"></div>
+        <div class="bone-divider" style="left:40%"></div>
+        <div class="bone-divider" style="left:60%"></div>
+        <div class="bone-divider" style="left:80%"></div>
+        <div id="note-layer"></div>
+        
+        <div class="score-frame">
             <div id="live-score">000000</div>
-            <div id="combo-txt">0</div>
+            <div id="combo-wrap"><span id="combo-txt">0</span></div>
             <div style="font-size:10px; opacity:0.5; font-family:'Orbitron';">COMBO</div>
         </div>
-        <div id="note-layer"></div>
-        <div class="judgement-line" id="anchors"></div>
+
+        <div class="judgement-line" id="key-anchors"></div>
     </div>
 </div>
 
 <script>
-    let state = JSON.parse(localStorage.getItem('av_data')) || {
+    let data = JSON.parse(localStorage.getItem('av_event_v3')) || {
         coins: 100,
+        cleared: [],
+        best: { easy: 0, med: 0, hard: 0, expert: 0 },
         keys: ['q', 'w', 'e', 'r', 't'],
-        best: 0,
-        skin: 'default'
+        owned: []
     };
 
+    let currentDiff = 'easy';
     let isPlaying = false, score = 0, combo = 0, activeNotes = [];
-    const laneColors = ['#ff00ff', '#00ffff', '#ffff00', '#00ff00', '#ff4400'];
+    const diffs = {
+        easy: { label: 'EASY', time: 60, speed: 7, rate: 800, goal: 5000 },
+        med: { label: 'MEDIUM', time: 180, speed: 10, rate: 600, goal: 15000 }
+    };
 
     function save() {
-        localStorage.setItem('av_data', JSON.stringify(state));
-        document.getElementById('coin-txt').innerText = state.coins;
+        localStorage.setItem('av_event_v3', JSON.stringify(data));
+        document.getElementById('coin-txt').innerText = data.coins + "x";
+        document.getElementById('prog-val').innerText = data.cleared.length + "/4";
+        document.getElementById('prog-fill').style.width = (data.cleared.length / 4 * 100) + "%";
     }
 
-    function openModal(m) {
-        if(m === 'settings') renderSettings();
-        document.getElementById(m + '-modal').style.display = 'flex';
+    function openModal(type) {
+        if(type === 'settings') renderSettings();
+        document.getElementById(type + '-modal').style.display = 'flex';
     }
 
-    function closeModals() { document.querySelectorAll('.modal-overlay').forEach(m => m.style.display='none'); }
+    function closeModals() { document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none'); }
 
     function renderSettings() {
-        const container = document.getElementById('bind-inputs');
-        container.innerHTML = state.keys.map((k, i) => `
-            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+        const div = document.getElementById('key-settings');
+        div.innerHTML = data.keys.map((k, i) => `
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
                 <span>Lane ${i+1}</span>
-                <input style="width:40px; text-align:center; background:#111; color:var(--accent); border:1px solid #444;" 
-                       value="${k.toUpperCase()}" onchange="state.keys[${i}]=this.value.toLowerCase(); save();">
+                <input style="width:40px; text-align:center; background:#222; color:var(--accent); border:1px solid #444;" 
+                       value="${k.toUpperCase()}" onchange="data.keys[${i}]=this.value.toLowerCase(); save();">
             </div>
         `).join('');
     }
 
-    function buy(item, price) {
-        if(state.coins >= price) { state.coins -= price; save(); alert("Unlocked!"); }
-        else alert("Need more coins!");
+    function buyItem(id, price) {
+        if(data.coins >= price) { data.coins -= price; data.owned.push(id); save(); alert("Purchased!"); }
+        else alert("Insufficient Coins!");
     }
 
-    // --- GAME ENGINE ---
+    function cycleDifficulty() {
+        const keys = Object.keys(diffs);
+        currentDiff = keys[(keys.indexOf(currentDiff) + 1) % keys.length];
+        document.getElementById('diff-toggle').innerText = "Difficulty: " + diffs[currentDiff].label;
+    }
+
+    // --- RHYTHM ENGINE ---
     function initMatch() {
-        isPlaying = true; score = 0; combo = 0;
+        closeModals();
         document.getElementById('game-screen').style.display = 'block';
-        document.getElementById('anchors').innerHTML = state.keys.map(k => `<div class="key-label">${k.toUpperCase()}</div>`).join('');
-        gameLoop();
-        spawnInterval = setInterval(spawnNote, 600);
+        isPlaying = true; score = 0; combo = 0; activeNotes = [];
+        
+        // Render Key Labels in Judgment Line
+        document.getElementById('key-anchors').innerHTML = data.keys.map(k => `<span style="font-family:'Orbitron'; opacity:0.6;">${k.toUpperCase()}</span>`).join('');
+        
+        window.gameLoop = requestAnimationFrame(runUpdate);
+        window.spawnTimer = setInterval(spawnNote, diffs[currentDiff].rate);
     }
 
     function spawnNote() {
@@ -191,70 +252,72 @@
         const el = document.createElement('div');
         el.className = 'note';
         el.style.left = (lane * 20 + 10) + "%";
-        el.style.color = laneColors[lane];
-        el.style.backgroundColor = laneColors[lane];
+        el.style.color = [var('--q-col'), var('--w-col'), var('--e-col'), var('--r-col'), var('--t-col')][lane];
         document.getElementById('note-layer').appendChild(el);
         activeNotes.push({ el, y: -50, lane, hit: false });
     }
 
-    function gameLoop() {
-        if(!isPlaying) return;
-        const speed = 8;
-        const screenH = window.innerHeight;
-
-        activeNotes.forEach((n, i) => {
-            n.y += speed;
-            n.el.style.top = n.y + 'px';
-
-            if(n.y > screenH - 60 && !n.hit) {
-                // Auto-miss if it passes the line
-                if(n.y > screenH) {
-                    if(!n.hit) triggerJudgment('Miss');
-                    n.el.remove();
-                    activeNotes.splice(i, 1);
-                }
-            }
-        });
-        requestAnimationFrame(gameLoop);
+    function showJudgment(text) {
+        const colors = { 'PERFECT': '#00ffff', 'GOOD': '#c084fc', 'MISSED': '#ff4444' };
+        const msg = document.createElement('div');
+        msg.className = 'judgment-msg';
+        msg.innerText = text;
+        msg.style.color = colors[text];
+        msg.style.textShadow = `0 0 20px ${colors[text]}`;
+        document.querySelector('.highway').appendChild(msg);
+        setTimeout(() => msg.remove(), 400);
     }
 
-    function triggerJudgment(type) {
-        const colors = { 'Perfect': '#00ffff', 'Good': '#c084fc', 'Miss': '#ff4444' };
-        const popup = document.createElement('div');
-        popup.className = 'judgment-popup';
-        popup.innerText = type.toUpperCase();
-        popup.style.color = colors[type];
-        popup.style.textShadow = `0 0 15px ${colors[type]}`;
-        document.querySelector('.highway').appendChild(popup);
-        setTimeout(() => popup.remove(), 400);
-
-        if(type === 'Miss') combo = 0;
-        else combo++;
+    function runUpdate() {
+        if(!isPlaying) return;
+        const targetY = window.innerHeight - 80;
         
+        activeNotes.forEach((n, i) => {
+            n.y += diffs[currentDiff].speed;
+            n.el.style.top = n.y + 'px';
+
+            if(n.y > window.innerHeight) {
+                if(!n.hit) { combo = 0; showJudgment('MISSED'); updateHUD(); }
+                n.el.remove();
+                activeNotes.splice(i, 1);
+            }
+        });
+        window.gameLoop = requestAnimationFrame(runUpdate);
+    }
+
+    function updateHUD() {
         document.getElementById('live-score').innerText = score.toString().padStart(6, '0');
         document.getElementById('combo-txt').innerText = combo;
     }
 
+    function forceExit() {
+        isPlaying = false;
+        clearInterval(window.spawnTimer);
+        cancelAnimationFrame(window.gameLoop);
+        document.getElementById('game-screen').style.display = 'none';
+        document.getElementById('note-layer').innerHTML = '';
+    }
+
     window.onkeydown = (e) => {
-        if(!isPlaying) {
-            if(e.code === 'Space') initMatch(); // Quick start with Space
-            return;
-        }
-        const lane = state.keys.indexOf(e.key.toLowerCase());
+        if(!isPlaying) return;
+        const lane = data.keys.indexOf(e.key.toLowerCase());
         if(lane === -1) return;
 
-        const targetY = window.innerHeight - 60;
-        const hitNote = activeNotes.find(n => n.lane === lane && !n.hit && Math.abs(n.y - targetY) < 100);
+        const targetY = window.innerHeight - 80;
+        const note = activeNotes.find(n => n.lane === lane && !n.hit && Math.abs(n.y - targetY) < 100);
 
-        if(hitNote) {
-            const diff = Math.abs(hitNote.y - targetY);
-            hitNote.hit = true;
-            hitNote.el.style.display = 'none';
+        if(note) {
+            const dist = Math.abs(note.y - targetY);
+            note.hit = true;
+            note.el.style.display = 'none';
             
-            if(diff < 30) { score += 150; triggerJudgment('Perfect'); }
-            else { score += 100; triggerJudgment('Good'); }
+            if(dist < 35) { score += 150; combo++; showJudgment('PERFECT'); }
+            else { score += 100; combo++; showJudgment('GOOD'); }
+            updateHUD();
         }
     };
+
+    function var(name) { return getComputedStyle(document.documentElement).getPropertyValue(name); }
 
     save();
 </script>
