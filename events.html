@@ -295,15 +295,33 @@
         `).join('');
     }
 
-    function renderMissions() {
-        document.getElementById('mission-list').innerHTML = state.missions.map(m => {
-            let btn = `<button class="av-btn" style="background:#222; max-width:120px;" disabled>LOCKED</button>`;
-            if(m.status === 'ready') btn = `<button class="av-btn" style="background:var(--accent); max-width:120px;" onclick="claimMission(${m.id})">CLAIM</button>`;
-            if(m.status === 'claimed') btn = `<button class="av-btn" style="background:#22c55e; max-width:120px;" disabled>DONE</button>`;
-            return `<div class="mission-row"><div><b>${m.label}</b><br><small>${m.req} Score</small></div><div>${btn}</div></div>`;
-        }).join('');
-    }
+   function renderMissions() {
+    document.getElementById('mission-list').innerHTML = state.missions.map(m => {
+        let btn = `<button class="av-btn" style="background:#222; max-width:120px; font-size:12px;" disabled>LOCKED</button>`;
+        
+        if(m.status === 'ready') {
+            btn = `<button class="av-btn" style="background:var(--accent); max-width:120px; font-size:12px;" onclick="claimMission(${m.id})">CLAIM</button>`;
+        }
+        if(m.status === 'claimed') {
+            btn = `<button class="av-btn" style="background:#22c55e; max-width:120px; font-size:12px;" disabled>DONE</button>`;
+        }
 
+        return `
+            <div class="mission-row">
+                <div style="flex: 1;">
+                    <b style="font-size:18px; font-family:'Orbitron'; display:block;">${m.label}</b>
+                    <small style="opacity:0.6">Target Score: ${m.req.toLocaleString()}</small>
+                </div>
+                <div style="text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
+                    <span style="color: gold; font-weight: bold; font-family:'Orbitron'; font-size:14px;">
+                        +${m.reward} COINS
+                    </span>
+                    ${btn}
+                </div>
+            </div>
+        `;
+    }).join('');
+}
     function claimMission(id) {
         let m = state.missions.find(x => x.id === id);
         if(m && m.status === 'ready') {
