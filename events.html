@@ -242,9 +242,9 @@
 
     const laneColors = ['#ff00ff', '#00ffff', '#ffff00', '#00ff00', '#ff4400'];
 
-    function save() { localStorage.setItem('Aetherfall_Requiem_Final_v1', JSON.stringify(state)); }
+    function save() { localStorage.setItem('Aetherfall_Requiem_Final_v2', JSON.stringify(state)); }
     function load() {
-        let data = localStorage.getItem('Aetherfall_Requiem_Final_v1');
+        let data = localStorage.getItem('Aetherfall_Requiem_Final_v2');
         if(data) state = JSON.parse(data);
         checkDailyReset();
         refreshUI();
@@ -359,7 +359,6 @@
         document.getElementById('game-screen').style.display = 'block';
         document.getElementById('mobile-touch-container').style.display = (state.inputMode === 'mobile' ? 'flex' : 'none');
         
-      // Locate this section inside startRhythm(d)
 document.getElementById('key-hints').innerHTML = state.keys.map((k, i) => `
     <div class="key-hint-box">
         <div class="lane-dot" style="background:${laneColors[i]}"></div>
@@ -392,13 +391,11 @@ document.getElementById('key-hints').innerHTML = state.keys.map((k, i) => `
         if(!isPlaying) return;
         let speed = diffSettings[state.currentDiff].speed;
         const screenH = window.innerHeight;
-        // The impact point is roughly the top of the judgement line (screenH - 120)
         const impactY = screenH - 120;
 
         for (let i = activeNotes.length - 1; i >= 0; i--) {
             let n = activeNotes[i]; n.y += speed; n.el.style.top = n.y + 'px';
             
-            // Auto-miss if note falls below the judgement line
             if(n.y > screenH && !n.hit) {
                 n.hit = true; combo = 0; score = Math.max(0, score - 50); renderJudg('MISS', '#ff0000');
                 n.el.remove(); activeNotes.splice(i, 1); refreshHUD();
@@ -409,7 +406,7 @@ document.getElementById('key-hints').innerHTML = state.keys.map((k, i) => `
 
     function handleHit(lane) {
         if(!isPlaying) return;
-        const impactY = window.innerHeight - 100; // Center of the 120px zone
+        const impactY = window.innerHeight - 100; 
         const noteIndex = activeNotes.findIndex(n => n.lane === lane && !n.hit && Math.abs(n.y - impactY) < 180);
         
         if(noteIndex !== -1) {
@@ -418,7 +415,6 @@ document.getElementById('key-hints').innerHTML = state.keys.map((k, i) => `
             if(off < 60) { score += 200; combo++; renderJudg('PERFECT', '#0ff'); }
             else { score += 100; combo++; renderJudg('GOOD', '#c084fc'); }
         } else {
-            // Shake or subtle miss feedback for empty taps
             combo = 0; renderJudg('MISS', '#ff0000');
         }
         refreshHUD();
